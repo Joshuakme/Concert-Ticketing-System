@@ -567,7 +567,8 @@ public class ConcertTicketingSystem {
         usersList[1] = customerList;
         
         return usersList;
-        
+    }
+    
     public static Catalog createCatalog(Artist[] artistList, Concert[] concertList) {
         Catalog catalog;
         Map<String, Concert> concertTitles = new HashMap();
@@ -691,78 +692,6 @@ public class ConcertTicketingSystem {
         
         return catalog;
     }
-    
-    public static String[][] initializeUsers() {
-        String[][] usernamePasswordList = new String[1000][1000];
-        
-        int counter = 0;
-               // Try-Catch get data from concert.txt
-        try {
-            File userFile = new File("concert.txt");
-            Scanner fileScanner = new Scanner(userFile);
-            String currentLine = fileScanner.nextLine();
-            
-            while (fileScanner.hasNextLine()) {
-                concertDetails = currentLine.split(",");
-            
-                // Concert Name
-                concertNameList[counter] = concertDetails[0];
-                // Concert Artist
-                for(int i=0; i<artistList.length; i++) {
-                    if(artistList[i].getId().equals(concertDetails[1])) {
-                        concertArtistList[counter] = artistList[i];
-                        break;
-                    }
-                }
-                // Concert Datetime
-                concertDatetimeList[counter] = LocalDateTime.parse(concertDetails[2]);
-                // Concert Language
-                concertLanguageList[counter] = concertDetails[3];
-                // Concert Venue
-                for(int i=0; i<venueList.length; i++) {
-                    if(venueList[i].getId().equals(concertDetails[4])) {
-                        concertVenueList[counter] = venueList[i];
-                        break;
-                    }
-                }
-                // Concert isTrending
-                concertIsTrendingList[counter] = Boolean.getBoolean(concertDetails[5]);
-                
-                currentLine = fileScanner.nextLine();        
-                counter++;                
-            }
-            
-            concertDetails = currentLine.split("\t");
-            
-            // Concert Name
-            concertNameList[counter] = concertDetails[0];
-            // Concert Artist
-            for(int i=0; i<artistList.length; i++) {
-                if(artistList[i].getId().equals(concertDetails[1])) {
-                    concertArtistList[counter] = artistList[i];
-                    break;
-                }
-            }
-            // Concert Datetime
-            concertDatetimeList[counter] = LocalDateTime.parse(concertDetails[2]);
-            // Concert Language
-            concertLanguageList[counter] = concertDetails[3];
-            // Concert Venue
-            for(int i=0; i<venueList.length; i++) {
-                if(venueList[i].getId().equals(concertDetails[4])) {
-                    concertVenueList[counter] = venueList[i];
-                    break;
-                }
-            }
-            // Concert isTrending
-            concertIsTrendingList[counter] = Boolean.getBoolean(concertDetails[5]);
-
-            fileScanner.close();
-            
-        } catch (FileNotFoundException ex) {
-            System.out.println("File does not exist!\n");
-        }
-    }
 
     // Login Methods
     public static boolean Login() {
@@ -808,18 +737,8 @@ public class ConcertTicketingSystem {
     }
     
 
-    // Search Concert Methods
-    public static void displayMenu() {
-        String[] custMenu = {"Search Concert", "View Trending", "Buy Ticket", "Login/Register", "Exit" };
-        System.out.println("Menu: ");
-        
-        for(int i=0; i<custMenu.length; i++) {
-            System.out.printf("%-3s%-20s\n",(i + 1) + ".", custMenu[i]);
-        }
-        System.out.print("Select the menu (num): ");
-    }
-    
-    public static void searchConcert(Artist[] artistList, Concert[] concertList) {
+    // Search Concert Methods   
+    public static void searchConcert(Artist[] artistList, Venue[] venueList, Concert[] concertList) {
         Scanner sc = new Scanner(System.in);
         
         // Create catalog
