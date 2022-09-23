@@ -1,5 +1,0 @@
-taruc,taruc
-admin,ctsadmin123
-jkme,jk456
-tscf,scf333
-wwh,wwh78
