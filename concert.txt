@@ -1,8 +1,8 @@
 Justin Lo Fresh Start Live - Malaysia	A006	2022-04-30T20:00:00	Cantonese	V001	false
-Happier Than Ever, The World Tour 2022	A001	2022-08-18T20:30:00	English	V002	false
-Justice World Tour	A005	2022-10-22T20:30:00	English	V002	true	
+Happier Than Ever, The World Tour 2022	A001	2022-08-18T20:30:00	English		V002	false
+Justice World Tour			A005	2022-10-22T20:30:00	English		V002	true	
 Jay Chou Carnival World Tour - Malaysia	A003	2023-01-15T19:00:00	Mandarin	V002	false
-Born Pink World Tour	A002	2023-03-04T20:00:00	Korean	V002	true
-JJ Lin "JJ20" World Tour	A004	2022-12-18T19:00:00	Mandarin	V002	true
-(G)-IDLE 'Just Me ()I-DLE' World Tour	A007	2022-09-09T20:30:00	Korean	V003	false
-JJ Lin "Testing" World Tour	A004	2022-12-18T20:00:00	Mandarin	V002	false
+Born Pink World Tour			A002	2023-03-04T20:00:00	Korean		V002	true
+JJ Lin "JJ20" World Tour		A004	2022-12-18T19:00:00	Mandarin	V002	true
+(G)-IDLE 'Just Me ()I-DLE' World Tour	A007	2022-09-09T20:30:00	Korean		V003	false
+JJ Lin "Testing" World Tour		A004	2022-12-18T20:00:00	Mandarin	V002	false
