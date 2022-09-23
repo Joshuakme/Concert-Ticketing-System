@@ -64,7 +64,7 @@ public class ConcertTicketingSystem {
                         
                             Guest guest = new Guest();
                             // Get user detail (username, password, accStatus)
-                            guest.registerAccount("username", "password", "accStatus");
+                            // guest.registerAccount("username", "password", "accStatus");
                     } else 
                         // Display Concert List
                         System.out.println("-----------------------------------------------------------------------------------------------------------------");
@@ -758,7 +758,6 @@ public class ConcertTicketingSystem {
         System.out.println("");
         
 
-        
         // Get searching choice
         while(!exit) {
             // Search Menu
