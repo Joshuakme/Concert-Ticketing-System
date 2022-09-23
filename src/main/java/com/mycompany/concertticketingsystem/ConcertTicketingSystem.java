@@ -2,6 +2,10 @@ package com.mycompany.concertticketingsystem;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -94,7 +98,131 @@ public class ConcertTicketingSystem {
         System.out.print("Select the menu (num): ");
     }
     
-    // Data Initialization from txt files
+    // Data Initialization Methods
+    public static Catalog createCatalog(Artist[] artistList, Concert[] concertList) {
+        Catalog catalog;
+        Map<String, Concert> concertTitles = new HashMap();
+        Map<String, Concert[]> concertArtists = new HashMap();
+        Map<String, Concert[]> concertLanguages = new HashMap();
+        Map<String, Concert[]> concertDates = new HashMap();
+        Map<String, Concert[]> concertVenues = new HashMap();
+        
+        // Get Current Date
+        LocalDate now = LocalDate.now();
+        
+        int concertValidCount = 0;
+        int languageValidCount = 0;
+        for(int i=0; i<concertList.length; i++) {
+            if(concertList[i] != null) {
+                concertValidCount++;
+                if(concertList[i].getLanguage() != null) {
+                    languageValidCount++;
+                }
+            }
+        }
+        
+        // Map for Concert Titles
+        Concert concertByTitle = null;
+        int titleCount = 0;
+        for(int j=0; j<concertList.length; j++) {
+            if(concertList[j] != null) {
+                for(int i=0; i<concertList.length; i++) {
+                    if(concertList[i] != null) {
+                        if(concertList[j].getName().toUpperCase().equals(concertList[i].getName().toUpperCase())) {
+                            concertByTitle = concertList[i];
+
+                            titleCount++;
+                        }
+                    }
+                }
+                concertTitles.put(concertList[j].getName(), concertByTitle);
+            } 
+        }
+        
+        // Map for Concert Artists
+        for(int j=0; j<artistList.length; j++) {
+            Concert[] concertByArtist = new Concert[concertValidCount];
+            int artistCount = 0;
+            
+            if(artistList[j] != null) {
+                for(int i=0; i<concertList.length; i++) {
+                    if(concertList[i] != null) {
+                        if(artistList[j].getName().toUpperCase().equals(concertList[i].getArtist().getName().toUpperCase())) {
+                            concertByArtist[artistCount] = concertList[i];
+                            
+                            artistCount++;
+                        }
+                    }
+                }
+                concertArtists.put(artistList[j].getName(), concertByArtist);
+            }
+        }   
+        
+        // Map for Concert Language
+        String[] languageList = {"Cantonese", "English", "Mandarin", "Korean"};
+        int languageCount = 0;
+        
+        for(int j=0; j<languageList.length; j++) {
+            Concert[] concertByLanguage = new Concert[1000];
+            
+            if(concertList[j] != null) {
+                for(int i=0; i<concertList.length; i++) {
+                    if(concertList[i] != null) {
+                        if(languageList[j].toUpperCase().equals(concertList[i].getLanguage().toUpperCase())) {
+                            concertByLanguage[languageCount] = concertList[i];
+                    
+                            languageCount++;
+                        }
+                    }
+                }
+                concertLanguages.put(languageList[j], concertByLanguage);
+            }
+        }
+        
+        // Map for Concert Date
+        Concert[] concertByDate = new Concert[concertValidCount];
+        int dateCount = 0;
+        for(int j=0; j<concertList.length; j++) {
+            if(concertList[j] != null) {
+                for(int i=0; i<concertList.length; i++) {
+                    if(concertList[i] != null) {
+                        if(concertList[j].getDatetime().equals(concertList[i].getDatetime())) {
+                            concertByDate[dateCount] = concertList[i];
+                            
+                            dateCount++;
+                        }
+                    }
+                }
+                concertDates.put(concertList[j].getDatetime().toString(), concertByDate);
+            }
+            
+        }
+        
+        // Map for Concert Venue
+        Concert[] concertByVenue = new Concert[1000];
+        int venueCount = 0;
+        for(int j=0; j<concertList.length; j++) {
+            if(concertList[j] != null) {
+                for(int i=0; i<concertList.length; i++) {
+                    if(concertList[i] != null) {
+                        if(concertList[j].getVenue().getName().toUpperCase().equals(concertList[i].getVenue().getName().toUpperCase())) {
+                            concertByVenue[venueCount] = concertList[i];
+                            
+                                    
+                            venueCount++;
+                        }
+                    }
+                }
+                concertVenues.put(concertList[j].getVenue().getName(), concertByVenue);
+            }
+        }
+        
+        // Create Catalog Object
+        catalog = new Catalog(now, concertTitles, concertArtists, concertLanguages, concertDates, concertVenues);
+        
+        return catalog;
+    }
+      
     public static Artist[] initializeArtists() {
         // Variables
         String[] artistDetails;
@@ -471,6 +599,96 @@ public class ConcertTicketingSystem {
             System.out.println("File does not exist!\n");
         }
     }
+    
+    public static Person[][] initializePerson() {
+        int fileLineNumber = (int)countFileLineNumber("user.txt");
+        Person[][] usersList = null;   // Person[0][] is Admin users, Person[1][] is Customer users
+        Admin[] adminList = new Admin[fileLineNumber];
+        Customer[] customerList = new Customer[fileLineNumber];
+        
+        String[] userDetails;
+        int counter = 0;
+        String[] userType = new String[fileLineNumber];
+        String[] username = new String[fileLineNumber];
+        String[] password = new String[fileLineNumber];
+        String[] accStatus = new String[fileLineNumber];
+        String[] userFirstName = new String[fileLineNumber];
+        String[] userLastName = new String[fileLineNumber];
+        String[] userAddress = new String[fileLineNumber];
+        String[] userEmail = new String[fileLineNumber];
+        String[] userPhoneNum = new String[fileLineNumber];
+        String[] userJoinedDate = new String[fileLineNumber];
+        
+        
+        // Try-Catch get data from venue.txt
+        try {
+            File userFile = new File("user.txt");
+            Scanner fileScanner = new Scanner(userFile);
+            String currentLine = fileScanner.nextLine();
+
+            while (fileScanner.hasNextLine()) {
+                userDetails = currentLine.split(",");
+                
+                userType[counter] = userDetails[0];
+                username[counter] = userDetails[1];
+                password[counter] = userDetails[2];
+                accStatus[counter] = userDetails[3];
+                userFirstName[counter] = userDetails[4];
+                userLastName[counter] = userDetails[5];
+                userAddress[counter] = userDetails[6];
+                userEmail[counter] = userDetails[7];
+                userPhoneNum[counter] = userDetails[8];
+                userJoinedDate[counter] = userDetails[9];
+
+                currentLine = fileScanner.nextLine();        
+                counter++;                
+            }
+
+            userDetails = currentLine.split(",");
+
+            userType[counter] = userDetails[0];
+            username[counter] = userDetails[1];
+            password[counter] = userDetails[2];
+            accStatus[counter] = userDetails[3];
+            userFirstName[counter] = userDetails[4];
+            userLastName[counter] = userDetails[5];
+            userAddress[counter] = userDetails[6];
+            userEmail[counter] = userDetails[7];
+            userPhoneNum[counter] = userDetails[8];
+            userJoinedDate[counter] = userDetails[9];
+
+            fileScanner.close();
+            
+            // Create Admin object & Customer object
+            int accStatusLength = AccountStatus.values().length;
+            AccountStatus accountStatus;
+            for(int i=0; i<counter; i++) {            
+                
+                if (userType[counter].equals("admin")) {
+                    for (int j = 0; j < accStatusLength; j++) {
+                        if (accStatus[i].toUpperCase().equals(AccountStatus.values()[j].toString())) {
+                            accountStatus = AccountStatus.valueOf(accStatus[i].toUpperCase());
+                            adminList[i] = new Admin(new Account(username[i], password[i], accountStatus), userFirstName[i], userLastName[i], userAddress[i], userEmail[i], userPhoneNum[i], userJoinedDate[i]);
+                        }
+                    }                
+                } 
+                else if (userType[counter].equals("customer")) {
+                    for (int j = 0; j < accStatusLength; j++) {
+                        if (accStatus[i].toUpperCase().equals(AccountStatus.values()[j].toString())) {
+                            accountStatus = AccountStatus.valueOf(accStatus[i].toUpperCase());
+                            customerList[i] = new Customer(new Account(username[i], password[i], accountStatus), userFirstName[i], userLastName[i], userAddress[i], userEmail[i], userPhoneNum[i], userJoinedDate[i]);
+                        }
+                    }
+                }
+            }
+
+
+        } catch (FileNotFoundException ex) {
+            System.out.println("File does not exist!\n");
+        }
+        
+        return usersList;
+    }
 
     // Login Methods
     public static boolean Login() {
@@ -515,8 +733,23 @@ public class ConcertTicketingSystem {
         return isEqual;
     }
     
+<<<<<<< HEAD
  
     // Search Concert Methods
+=======
+    public static void displayMenu() {
+        String[] custMenu = {"Search Concert", "View Trending", "Buy Ticket", "Login/Register", "Exit" };
+        System.out.println("Menu: ");
+        
+        for(int i=0; i<custMenu.length; i++) {
+            System.out.printf("%-3s%-20s\n",(i + 1) + ".", custMenu[i]);
+        }
+        System.out.print("Select the menu (num): ");
+    }
+    
+  
+    // Search Methods
+>>>>>>> d7df8969d5c5c5e36c41c60ad0309a17ade526d3
     public static void searchConcert(Artist[] artistList, Concert[] concertList) {
         Scanner sc = new Scanner(System.in);
         
@@ -761,6 +994,9 @@ public class ConcertTicketingSystem {
         }
     }
     
+    // Buy Ticket Methods
+    
+    // General Methods
     public static void printCurrentDate() {
         LocalDate today = LocalDate.now();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -789,5 +1025,23 @@ public class ConcertTicketingSystem {
         
         System.out.print("Press any key to continue...");
         sc.nextLine();
+    }
+    
+    public static long countFileLineNumber(String fileName) {
+        Path path = Paths.get(fileName);
+
+        long lines = 0;
+        try {
+
+            // much slower, this task better with sequence access
+            //lines = Files.lines(path).parallel().count();
+
+            lines = Files.lines(path).count();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return lines;
     }
 }
