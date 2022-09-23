@@ -34,6 +34,7 @@ public class ConcertTicketingSystem {
         Artist[] artistList = initializeArtists();
         Venue[] venueList = initializeVenues();
         Concert[] concertList = initializeConcerts(artistList, venueList);
+        Person[][] userList = initializePerson();   // userList[0][] is Admin list, serList[1][] is Customer list
         
                
         // Welcome User
@@ -54,20 +55,84 @@ public class ConcertTicketingSystem {
                 case 3: // Buy Ticket
                     System.out.println("Buy Ticket\n");
                     
+                    // Check Login Status
                     if(!isLoggedIn) {
                         System.out.println("You are not signed in. Please sign in before buy ticket.");
                         
                         if(Login())
                             isLoggedIn = true;
+                        
+                            Guest guest = new Guest();
+                            // Get user detail (username, password, accStatus)
+                            guest.registerAccount("username", "password", "accStatus");
                     } else 
+                        // Display Concert List
+                        System.out.println("-----------------------------------------------------------------------------------------------------------------");
+                        System.out.println("| NO |       DATE & TIME       |                CONCERT TITLE                |              VENUE               |");
+                        System.out.println("|----|-------------------------|---------------------------------------------|----------------------------------|");
+                        System.out.println("|  1 |  2022-04-30  T20:00:00  |    Justin Lo Fresh Start Live - Malaysia    |          Arena of Stars          |");
+                        System.out.println("|----|-------------------------|---------------------------------------------|----------------------------------|");
+                        System.out.println("|  2 |  2022-08-18  T20:30:00  |    Happier Than Ever, The World Tour 2022   |   Bukit Jalil National Stadium   |");
+                        System.out.println("|----|-------------------------|---------------------------------------------|----------------------------------|");
+                        System.out.println("|  3 |  2022-09-09  T20:30:00  |    (G)-IDLE 'Just Me ()I-DLE' World Tour    |         Zepp Kuala Lumpur        |");
+                        System.out.println("|----|-------------------------|---------------------------------------------|----------------------------------|");
+                        System.out.println("|  4 |  2022-10-22  T20:30:00  |             Justice World Tour              |   Bukit Jalil National Stadium   |");
+                        System.out.println("|----|-------------------------|---------------------------------------------|----------------------------------|");
+                        System.out.println("|  5 |  2022-12-18  T19:00:00  |           JJ Lin \"JJ20\" World Tour          |   Bukit Jalil National Stadium   |");
+                        System.out.println("|----|-------------------------|---------------------------------------------|----------------------------------|");
+                        System.out.println("|  6 |  2023-01-15  T19:00:00  |   Jay Chou Carnival World Tour - Malaysia   |   Bukit Jalil National Stadium   |");
+                        System.out.println("|----|-------------------------|---------------------------------------------|----------------------------------|");
+                        System.out.println("|  7 |  2023-03-04  T20:00:00  |             Born Pink World Tour            |   Bukit Jalil National Stadium   |");
+                        System.out.println("-----------------------------------------------------------------------------|----------------------------------|");
+
+                        // Get choice
+                        do{
+                            System.out.println("Please Enter Your Preference Concert Show (1-8): ");
+                            int choice = sc.nextInt();
+                            
+                            if(choice > 10 && choice < 0){
+                                System.out.println("\t\t\t*****************************************");
+                                System.out.println("\t\t\t\tPLEASE ENTER 1 - 10 ONLY! ");
+                                System.out.println("\t\t\t*****************************************");
+                            }
+                            
+                            else if(choice > 0 && choice <11){
+                                
+                            }
+                        
+                        
+                        System.out.println("Are you sure? (Y for yes, N for no): ") ;
+                        char confirmation = sc.next().charAt(0);
+                            if (confirmation == 'Y' || confirmation == 'y'){
+                                
+                                
+                            }
+                        // Display seat status(booked / empty) [table maybe]
+                        // Ask for detail (no, ticketCat, etc.)
+                        // 
+                        } while(true));
                         break;
-                    
-                    System.out.println("Select Concert show you want");
-                    
-                    break;
+                   
+                
                 case 4: // Login/Register
                     System.out.println("Login\n");
-                case 5: // Exit
+                    
+                    // Remember to use userList[][] (Line 37) to check credentials
+                    
+                    // Login/Register
+                    
+                    // Menu
+                    
+                    // User input username & password
+                    
+                    //            
+                case 5: // Other
+                    System.out.println("Other");
+                    
+                    // Code Here
+                    
+
+                case 6: // Exit
                     exit = true;
                     System.out.println("Successfully Exited");
                     break;
@@ -87,13 +152,13 @@ public class ConcertTicketingSystem {
     public static void startScreen() {
         System.out.println("Welcome to Concert Ticketing System!\n");
     }
-        
+    
     public static void displayMenu() {
-        String[] custMenu = {"Search Concert", "View Trending", "Buy Ticket", "Login/Register", "Exit" };
+        String[] custMenu = {"Search Concert", "View Trending", "Buy Ticket", "Login/Register", "Other", "Exit"};
         System.out.println("Menu: ");
-        
-        for(int i=0; i<custMenu.length; i++) {
-            System.out.printf("%-3s%-20s\n",(i + 1) + ".", custMenu[i]);
+
+        for (int i = 0; i < custMenu.length; i++) {
+            System.out.printf("%-3s%-20s\n", (i + 1) + ".", custMenu[i]);
         }
         System.out.print("Select the menu (num): ");
     }
@@ -405,6 +470,98 @@ public class ConcertTicketingSystem {
         return concertList;
     }
     
+    public static Person[][] initializePerson() {
+        int fileLineNumber = (int)countFileLineNumber("user.txt");
+        Person[][] usersList = null;   // Person[0][] is Admin users, Person[1][] is Customer users
+        Admin[] adminList = new Admin[fileLineNumber];
+        Customer[] customerList = new Customer[fileLineNumber];
+        
+        String[] userDetails;
+        int counter = 0;
+        String[] userType = new String[fileLineNumber];
+        String[] username = new String[fileLineNumber];
+        String[] password = new String[fileLineNumber];
+        String[] accStatus = new String[fileLineNumber];
+        String[] userFirstName = new String[fileLineNumber];
+        String[] userLastName = new String[fileLineNumber];
+        String[] userAddress = new String[fileLineNumber];
+        String[] userEmail = new String[fileLineNumber];
+        String[] userPhoneNum = new String[fileLineNumber];
+        String[] userJoinedDate = new String[fileLineNumber];
+        
+        
+        // Try-Catch get data from venue.txt
+        try {
+            File userFile = new File("user.txt");
+            Scanner fileScanner = new Scanner(userFile);
+            String currentLine = fileScanner.nextLine();
+
+            while (fileScanner.hasNextLine()) {
+                userDetails = currentLine.split("\t");
+                
+                userType[counter] = userDetails[0];
+                username[counter] = userDetails[1];
+                password[counter] = userDetails[2];
+                accStatus[counter] = userDetails[3];
+                userFirstName[counter] = userDetails[4];
+                userLastName[counter] = userDetails[5];
+                userAddress[counter] = userDetails[6];
+                userEmail[counter] = userDetails[7];
+                userPhoneNum[counter] = userDetails[8];
+                userJoinedDate[counter] = userDetails[9];
+
+                currentLine = fileScanner.nextLine();        
+                counter++;                
+            }
+
+            userDetails = currentLine.split("\t");
+
+            userType[counter] = userDetails[0];
+            username[counter] = userDetails[1];
+            password[counter] = userDetails[2];
+            accStatus[counter] = userDetails[3];
+            userFirstName[counter] = userDetails[4];
+            userLastName[counter] = userDetails[5];
+            userAddress[counter] = userDetails[6];
+            userEmail[counter] = userDetails[7];
+            userPhoneNum[counter] = userDetails[8];
+            userJoinedDate[counter] = userDetails[9];
+
+            fileScanner.close();
+            
+            // Create Admin object & Customer object
+            int accStatusLength = AccountStatus.values().length;
+            AccountStatus accountStatus;
+            for(int i=0; i<counter; i++) {            
+                
+                if (userType[counter].equals("admin")) {
+                    for (int j = 0; j < accStatusLength; j++) {
+                        if (accStatus[i].toUpperCase().equals(AccountStatus.values()[j].toString())) {
+                            accountStatus = AccountStatus.valueOf(accStatus[i].toUpperCase());
+                            adminList[i] = new Admin(new Account(username[i], password[i], accountStatus), userFirstName[i], userLastName[i], userAddress[i], userEmail[i], userPhoneNum[i], userJoinedDate[i]);
+                        }
+                    }                
+                } 
+                else if (userType[counter].equals("customer")) {
+                    for (int j = 0; j < accStatusLength; j++) {
+                        if (accStatus[i].toUpperCase().equals(AccountStatus.values()[j].toString())) {
+                            accountStatus = AccountStatus.valueOf(accStatus[i].toUpperCase());
+                            customerList[i] = new Customer(new Account(username[i], password[i], accountStatus), userFirstName[i], userLastName[i], userAddress[i], userEmail[i], userPhoneNum[i], userJoinedDate[i]);
+                        }
+                    }
+                }
+            }
+
+
+        } catch (FileNotFoundException ex) {
+            System.out.println("File does not exist!\n");
+        }
+        
+        usersList[0] = adminList;
+        usersList[1] = customerList;
+        
+        return usersList;
+        
     public static Catalog createCatalog(Artist[] artistList, Concert[] concertList) {
         Catalog catalog;
         Map<String, Concert> concertTitles = new HashMap();
@@ -644,14 +801,8 @@ public class ConcertTicketingSystem {
         return isEqual;
     }
     
-<<<<<<< HEAD
- 
+
     // Search Concert Methods
-=======
-<<<<<<< HEAD
- 
-    // Search Concert Methods
-=======
     public static void displayMenu() {
         String[] custMenu = {"Search Concert", "View Trending", "Buy Ticket", "Login/Register", "Exit" };
         System.out.println("Menu: ");
@@ -662,10 +813,6 @@ public class ConcertTicketingSystem {
         System.out.print("Select the menu (num): ");
     }
     
-  
-    // Search Methods
->>>>>>> d7df8969d5c5c5e36c41c60ad0309a17ade526d3
->>>>>>> 3aefb1e1f30d567692436dcff838e9ca1e4c2310
     public static void searchConcert(Artist[] artistList, Concert[] concertList) {
         Scanner sc = new Scanner(System.in);
         
@@ -885,10 +1032,6 @@ public class ConcertTicketingSystem {
         
     }
     
-    // Buy Tickets Methods
-    
-    
-    // General Methods
     public static void displayConcert(Concert[] concertList) {
         for(int i=0; i<concertList.length; i++) {
             if(concertList[i] != null) {
