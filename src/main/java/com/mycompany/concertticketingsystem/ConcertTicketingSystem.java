@@ -83,7 +83,18 @@ public class ConcertTicketingSystem {
     public static void startScreen() {
         System.out.println("Welcome to Concert Ticketing System!\n");
     }
+        
+    public static void displayMenu() {
+        String[] custMenu = {"Search Concert", "View Trending", "Buy Ticket", "Login/Register", "Exit" };
+        System.out.println("Menu: ");
+        
+        for(int i=0; i<custMenu.length; i++) {
+            System.out.printf("%-3s%-20s\n",(i + 1) + ".", custMenu[i]);
+        }
+        System.out.print("Select the menu (num): ");
+    }
     
+    // Data Initialization from txt files
     public static Artist[] initializeArtists() {
         // Variables
         String[] artistDetails;
@@ -265,62 +276,6 @@ public class ConcertTicketingSystem {
         return concertList;
     }
     
-    public static String[] initializeUsers() {
-        
-    }
-
-    public static boolean Login() {
-        Scanner sc = new Scanner(System.in);
-        
-        // Ask user Login Information
-        System.out.println("");
-        System.out.printf("%12s\n%12s\n", " Login Page ", "------------");
-        System.out.print("Username: ");
-        String inputUsername = sc.nextLine().trim();
-        System.out.print("Password: ");
-        String inputPwd = sc.nextLine().trim();
-        
-        // Check Credentials
-        boolean isLogged = checkCredential(inputUsername, inputPwd);
-        
-        if(isLogged) {
-            System.out.println("Welcome! You are logged in!\n");
-            return true;
-        }
-        else {
-            System.out.println("Incorrect credentials, please try again!\n");
-            return false;  
-        }                 
-    }
-    
-    public static boolean checkCredential(String inputUsername, String inputPwd) {
-        // Login Credentials
-        String[] usernameList = {"taruc", "admin"};
-        String[] pwdList = {"taruc", "0000"};
-        boolean isEqual = false;
-
-        // Check Empty inputs
-        if(inputUsername.equals("") || inputPwd.equals("")) 
-            return false;
-        
-        for(int i=0; i<usernameList.length; i++) {
-            if(inputUsername.equals(usernameList[i]) && inputPwd.equals(pwdList[i]))
-                isEqual = true; 
-        }
-        
-        return isEqual;
-    }
-    
-    public static void displayMenu() {
-        String[] custMenu = {"Search Concert", "View Trending", "Buy Ticket", "Login/Register", "Exit" };
-        System.out.println("Menu: ");
-        
-        for(int i=0; i<custMenu.length; i++) {
-            System.out.printf("%-3s%-20s\n",(i + 1) + ".", custMenu[i]);
-        }
-        System.out.print("Select the menu (num): ");
-    }
-    
     public static Catalog createCatalog(Artist[] artistList, Concert[] concertList) {
         Catalog catalog;
         Map<String, Concert> concertTitles = new HashMap();
@@ -445,6 +400,123 @@ public class ConcertTicketingSystem {
         return catalog;
     }
     
+    public static String[][] initializeUsers() {
+        String[][] usernamePasswordList = new String[1000][1000];
+        
+        int counter = 0;
+               // Try-Catch get data from concert.txt
+        try {
+            File userFile = new File("concert.txt");
+            Scanner fileScanner = new Scanner(userFile);
+            String currentLine = fileScanner.nextLine();
+            
+            while (fileScanner.hasNextLine()) {
+                concertDetails = currentLine.split(",");
+            
+                // Concert Name
+                concertNameList[counter] = concertDetails[0];
+                // Concert Artist
+                for(int i=0; i<artistList.length; i++) {
+                    if(artistList[i].getId().equals(concertDetails[1])) {
+                        concertArtistList[counter] = artistList[i];
+                        break;
+                    }
+                }
+                // Concert Datetime
+                concertDatetimeList[counter] = LocalDateTime.parse(concertDetails[2]);
+                // Concert Language
+                concertLanguageList[counter] = concertDetails[3];
+                // Concert Venue
+                for(int i=0; i<venueList.length; i++) {
+                    if(venueList[i].getId().equals(concertDetails[4])) {
+                        concertVenueList[counter] = venueList[i];
+                        break;
+                    }
+                }
+                // Concert isTrending
+                concertIsTrendingList[counter] = Boolean.getBoolean(concertDetails[5]);
+                
+                currentLine = fileScanner.nextLine();        
+                counter++;                
+            }
+            
+            concertDetails = currentLine.split("\t");
+            
+            // Concert Name
+            concertNameList[counter] = concertDetails[0];
+            // Concert Artist
+            for(int i=0; i<artistList.length; i++) {
+                if(artistList[i].getId().equals(concertDetails[1])) {
+                    concertArtistList[counter] = artistList[i];
+                    break;
+                }
+            }
+            // Concert Datetime
+            concertDatetimeList[counter] = LocalDateTime.parse(concertDetails[2]);
+            // Concert Language
+            concertLanguageList[counter] = concertDetails[3];
+            // Concert Venue
+            for(int i=0; i<venueList.length; i++) {
+                if(venueList[i].getId().equals(concertDetails[4])) {
+                    concertVenueList[counter] = venueList[i];
+                    break;
+                }
+            }
+            // Concert isTrending
+            concertIsTrendingList[counter] = Boolean.getBoolean(concertDetails[5]);
+
+            fileScanner.close();
+            
+        } catch (FileNotFoundException ex) {
+            System.out.println("File does not exist!\n");
+        }
+    }
+
+    // Login Methods
+    public static boolean Login() {
+        Scanner sc = new Scanner(System.in);
+        
+        // Ask user Login Information
+        System.out.println("");
+        System.out.printf("%12s\n%12s\n", " Login Page ", "------------");
+        System.out.print("Username: ");
+        String inputUsername = sc.nextLine().trim();
+        System.out.print("Password: ");
+        String inputPwd = sc.nextLine().trim();
+        
+        // Check Credentials
+        boolean isLogged = checkCredential(inputUsername, inputPwd);
+        
+        if(isLogged) {
+            System.out.println("Welcome! You are logged in!\n");
+            return true;
+        }
+        else {
+            System.out.println("Incorrect credentials, please try again!\n");
+            return false;  
+        }                 
+    }
+    
+    public static boolean checkCredential(String inputUsername, String inputPwd) {
+        // Login Credentials
+        String[] usernameList = {"taruc", "admin"};
+        String[] pwdList = {"taruc", "0000"};
+        boolean isEqual = false;
+
+        // Check Empty inputs
+        if(inputUsername.equals("") || inputPwd.equals("")) 
+            return false;
+        
+        for(int i=0; i<usernameList.length; i++) {
+            if(inputUsername.equals(usernameList[i]) && inputPwd.equals(pwdList[i]))
+                isEqual = true; 
+        }
+        
+        return isEqual;
+    }
+    
+ 
+    // Search Concert Methods
     public static void searchConcert(Artist[] artistList, Concert[] concertList) {
         Scanner sc = new Scanner(System.in);
         
@@ -664,6 +736,10 @@ public class ConcertTicketingSystem {
         
     }
     
+    // Buy Tickets Methods
+    
+    
+    // General Methods
     public static void displayConcert(Concert[] concertList) {
         for(int i=0; i<concertList.length; i++) {
             if(concertList[i] != null) {
