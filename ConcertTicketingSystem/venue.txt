@@ -1,0 +1,3 @@
+V001	Arena of Stars	Arena Of Stars, Resorts World Genting Genting Highlands, 69000 Bentong, Pahang	theater	6000
+V002	Bukit Jalil National Stadium	Jalan Barat, Bukit Jalil, 57000 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur	stadium	87411
+V003	Zepp Kuala Lumpur	B2-01-02, Level B2, Entertaisnment Hub), BBCC, 2, Jalan Hang Tuah, 55100 Kuala Lumpur, Federal Territory of Kuala Lumpur	concert hall	2414

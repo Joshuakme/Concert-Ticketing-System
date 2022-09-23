@@ -163,6 +163,7 @@ public class ConcertTicketingSystem {
         System.out.print("Select the menu (num): ");
     }
     
+    // Data Initialization from txt files
     // Data Initialization Methods
     public static Catalog createCatalog(Artist[] artistList, Concert[] concertList) {
         Catalog catalog;
@@ -560,6 +561,201 @@ public class ConcertTicketingSystem {
         usersList[1] = customerList;
         
         return usersList;
+        
+    public static Catalog createCatalog(Artist[] artistList, Concert[] concertList) {
+        Catalog catalog;
+        Map<String, Concert> concertTitles = new HashMap();
+        Map<String, Concert[]> concertArtists = new HashMap();
+        Map<String, Concert[]> concertLanguages = new HashMap();
+        Map<String, Concert[]> concertDates = new HashMap();
+        Map<String, Concert[]> concertVenues = new HashMap();
+        
+        // Get Current Date
+        LocalDate now = LocalDate.now();
+        
+        int concertValidCount = 0;
+        int languageValidCount = 0;
+        for(int i=0; i<concertList.length; i++) {
+            if(concertList[i] != null) {
+                concertValidCount++;
+                if(concertList[i].getLanguage() != null) {
+                    languageValidCount++;
+                }
+            }
+        }
+        
+        // Map for Concert Titles
+        Concert concertByTitle = null;
+        int titleCount = 0;
+        for(int j=0; j<concertList.length; j++) {
+            if(concertList[j] != null) {
+                for(int i=0; i<concertList.length; i++) {
+                    if(concertList[i] != null) {
+                        if(concertList[j].getName().toUpperCase().equals(concertList[i].getName().toUpperCase())) {
+                            concertByTitle = concertList[i];
+
+                            titleCount++;
+                        }
+                    }
+                }
+                concertTitles.put(concertList[j].getName(), concertByTitle);
+            } 
+        }
+        
+        // Map for Concert Artists
+        for(int j=0; j<artistList.length; j++) {
+            Concert[] concertByArtist = new Concert[concertValidCount];
+            int artistCount = 0;
+            
+            if(artistList[j] != null) {
+                for(int i=0; i<concertList.length; i++) {
+                    if(concertList[i] != null) {
+                        if(artistList[j].getName().toUpperCase().equals(concertList[i].getArtist().getName().toUpperCase())) {
+                            concertByArtist[artistCount] = concertList[i];
+                            
+                            artistCount++;
+                        }
+                    }
+                }
+                concertArtists.put(artistList[j].getName(), concertByArtist);
+            }
+        }   
+        
+        // Map for Concert Language
+        String[] languageList = {"Cantonese", "English", "Mandarin", "Korean"};
+        int languageCount = 0;
+        
+        for(int j=0; j<languageList.length; j++) {
+            Concert[] concertByLanguage = new Concert[1000];
+            
+            if(concertList[j] != null) {
+                for(int i=0; i<concertList.length; i++) {
+                    if(concertList[i] != null) {
+                        if(languageList[j].toUpperCase().equals(concertList[i].getLanguage().toUpperCase())) {
+                            concertByLanguage[languageCount] = concertList[i];
+                    
+                            languageCount++;
+                        }
+                    }
+                }
+                concertLanguages.put(languageList[j], concertByLanguage);
+            }
+        }
+        
+        // Map for Concert Date
+        Concert[] concertByDate = new Concert[concertValidCount];
+        int dateCount = 0;
+        for(int j=0; j<concertList.length; j++) {
+            if(concertList[j] != null) {
+                for(int i=0; i<concertList.length; i++) {
+                    if(concertList[i] != null) {
+                        if(concertList[j].getDatetime().equals(concertList[i].getDatetime())) {
+                            concertByDate[dateCount] = concertList[i];
+                            
+                            dateCount++;
+                        }
+                    }
+                }
+                concertDates.put(concertList[j].getDatetime().toString(), concertByDate);
+            }
+            
+        }
+        
+        // Map for Concert Venue
+        Concert[] concertByVenue = new Concert[1000];
+        int venueCount = 0;
+        for(int j=0; j<concertList.length; j++) {
+            if(concertList[j] != null) {
+                for(int i=0; i<concertList.length; i++) {
+                    if(concertList[i] != null) {
+                        if(concertList[j].getVenue().getName().toUpperCase().equals(concertList[i].getVenue().getName().toUpperCase())) {
+                            concertByVenue[venueCount] = concertList[i];
+                            
+                                    
+                            venueCount++;
+                        }
+                    }
+                }
+                concertVenues.put(concertList[j].getVenue().getName(), concertByVenue);
+            }
+        }
+        
+        // Create Catalog Object
+        catalog = new Catalog(now, concertTitles, concertArtists, concertLanguages, concertDates, concertVenues);
+        
+        return catalog;
+    }
+    
+    public static String[][] initializeUsers() {
+        String[][] usernamePasswordList = new String[1000][1000];
+        
+        int counter = 0;
+               // Try-Catch get data from concert.txt
+        try {
+            File userFile = new File("concert.txt");
+            Scanner fileScanner = new Scanner(userFile);
+            String currentLine = fileScanner.nextLine();
+            
+            while (fileScanner.hasNextLine()) {
+                concertDetails = currentLine.split(",");
+            
+                // Concert Name
+                concertNameList[counter] = concertDetails[0];
+                // Concert Artist
+                for(int i=0; i<artistList.length; i++) {
+                    if(artistList[i].getId().equals(concertDetails[1])) {
+                        concertArtistList[counter] = artistList[i];
+                        break;
+                    }
+                }
+                // Concert Datetime
+                concertDatetimeList[counter] = LocalDateTime.parse(concertDetails[2]);
+                // Concert Language
+                concertLanguageList[counter] = concertDetails[3];
+                // Concert Venue
+                for(int i=0; i<venueList.length; i++) {
+                    if(venueList[i].getId().equals(concertDetails[4])) {
+                        concertVenueList[counter] = venueList[i];
+                        break;
+                    }
+                }
+                // Concert isTrending
+                concertIsTrendingList[counter] = Boolean.getBoolean(concertDetails[5]);
+                
+                currentLine = fileScanner.nextLine();        
+                counter++;                
+            }
+            
+            concertDetails = currentLine.split("\t");
+            
+            // Concert Name
+            concertNameList[counter] = concertDetails[0];
+            // Concert Artist
+            for(int i=0; i<artistList.length; i++) {
+                if(artistList[i].getId().equals(concertDetails[1])) {
+                    concertArtistList[counter] = artistList[i];
+                    break;
+                }
+            }
+            // Concert Datetime
+            concertDatetimeList[counter] = LocalDateTime.parse(concertDetails[2]);
+            // Concert Language
+            concertLanguageList[counter] = concertDetails[3];
+            // Concert Venue
+            for(int i=0; i<venueList.length; i++) {
+                if(venueList[i].getId().equals(concertDetails[4])) {
+                    concertVenueList[counter] = venueList[i];
+                    break;
+                }
+            }
+            // Concert isTrending
+            concertIsTrendingList[counter] = Boolean.getBoolean(concertDetails[5]);
+
+            fileScanner.close();
+            
+        } catch (FileNotFoundException ex) {
+            System.out.println("File does not exist!\n");
+        }
     }
 
     // Login Methods
@@ -605,7 +801,18 @@ public class ConcertTicketingSystem {
         return isEqual;
     }
     
-    // Search Methods
+
+    // Search Concert Methods
+    public static void displayMenu() {
+        String[] custMenu = {"Search Concert", "View Trending", "Buy Ticket", "Login/Register", "Exit" };
+        System.out.println("Menu: ");
+        
+        for(int i=0; i<custMenu.length; i++) {
+            System.out.printf("%-3s%-20s\n",(i + 1) + ".", custMenu[i]);
+        }
+        System.out.print("Select the menu (num): ");
+    }
+    
     public static void searchConcert(Artist[] artistList, Concert[] concertList) {
         Scanner sc = new Scanner(System.in);
         
