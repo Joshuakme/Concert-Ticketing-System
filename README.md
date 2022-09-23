@@ -2,7 +2,7 @@
 
 ## Description
 This is a RSF1S3 project assignment for subject ***Object-Oriented Programming (OOP)***.   
-This project is a console-based ticketing system for concert, so all output will be printed on console.
+This project is a **[JAVA](https://www.java.com/en/)** console-based ticketing system for concert, so all output will be printed on console.
 
 ## Developed by 
 1. [Joshua Koh](https://github.com/Joshuakme)
