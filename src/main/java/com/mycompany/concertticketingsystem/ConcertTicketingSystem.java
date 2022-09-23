@@ -47,7 +47,7 @@ public class ConcertTicketingSystem {
             
             switch(menuChoice) {
                 case 1: // Search Concert
-                    searchConcert(artistList, concertList);
+                    searchConcert(artistList, venueList, concertList);
                     break;
                 case 2: // View Trending
                     System.out.println("View Trending");
@@ -110,10 +110,8 @@ public class ConcertTicketingSystem {
                         // Display seat status(booked / empty) [table maybe]
                         // Ask for detail (no, ticketCat, etc.)
                         // 
-                        } while(true));
-                        break;
-                   
-                
+                        } while(true);
+//                        break;     
                 case 4: // Login/Register
                     System.out.println("Login\n");
                     
@@ -164,7 +162,7 @@ public class ConcertTicketingSystem {
     }
     
     // Data Initialization Methods
-    public static Catalog createCatalog(Artist[] artistList, Concert[] concertList) {
+    public static Catalog createCatalog(Artist[] artistList, Venue[] venueList, Concert[] concertList) {
         Catalog catalog;
         Map<String, Concert> concertTitles = new HashMap();
         Map<String, Concert[]> concertArtists = new HashMap();
@@ -264,21 +262,25 @@ public class ConcertTicketingSystem {
         }
         
         // Map for Concert Venue
-        Concert[] concertByVenue = new Concert[1000];
+        String[] venueNameList = new String[venueList.length];
+        
+        for(int i=0; i<venueList.length; i++) {
+            venueNameList[i] = venueList[i].getName();
+        }
+        
+        Concert[] concertByVenue = new Concert[concertList.length];
         int venueCount = 0;
         for(int j=0; j<concertList.length; j++) {
             if(concertList[j] != null) {
-                for(int i=0; i<concertList.length; i++) {
-                    if(concertList[i] != null) {
-                        if(concertList[j].getVenue().getName().toUpperCase().equals(concertList[i].getVenue().getName().toUpperCase())) {
-                            concertByVenue[venueCount] = concertList[i];
-                            
-                                    
-                            venueCount++;
-                        }
+                for(int i=0; i<venueNameList.length; i++) {
+                    if(concertList[j].getVenue().getName().toUpperCase().equals(venueNameList[i].toUpperCase())) {
+                        concertByVenue[venueCount] = concertList[i];
+
+                        venueCount++;
                     }
+                    concertVenues.put(venueNameList[i], concertByVenue);
                 }
-                concertVenues.put(concertList[j].getVenue().getName(), concertByVenue);
+
             }
         }
         
@@ -289,12 +291,14 @@ public class ConcertTicketingSystem {
     }
       
     public static Artist[] initializeArtists() {
+        int fileLineNumber = (int)countFileLineNumber("artist.txt");
+        
         // Variables
         String[] artistDetails;
         int counter = 0;
-        String[] artistNameList = new String[1000];
-        String[] artistLanguageList = new String[1000];
-        String[] artistGenreList = new String[1000];
+        String[] artistNameList = new String[fileLineNumber];
+        String[] artistLanguageList = new String[fileLineNumber];
+        String[] artistGenreList = new String[fileLineNumber];
         
         // Try-Catch get data from artist.txt
         try {
@@ -326,7 +330,7 @@ public class ConcertTicketingSystem {
         }
 
         // Create Artist[] Object
-        Artist[] artistList = new Artist[counter + 1];
+        Artist[] artistList = new Artist[fileLineNumber];
         for(int i=0; i<=counter; i++) {
             artistList[i] = new Artist(artistNameList[i], artistLanguageList[i], artistGenreList[i]);
         }
@@ -335,12 +339,14 @@ public class ConcertTicketingSystem {
     }
             
     public static Venue[] initializeVenues() {
+        int fileLineNumber = (int)countFileLineNumber("venue.txt");
+                
         String[] venueDetails;
         int counter = 0;
-        String[] venueNameList = new String[1000];
-        String[] venueLocationList = new String[1000];
-        String[] venueTypeList = new String[1000];
-        int[] venueCapacityList = new int[1000];
+        String[] venueNameList = new String[fileLineNumber];
+        String[] venueLocationList = new String[fileLineNumber];
+        String[] venueTypeList = new String[fileLineNumber];
+        int[] venueCapacityList = new int[fileLineNumber];
         
         // Try-Catch get data from venue.txt
         try {
@@ -374,7 +380,7 @@ public class ConcertTicketingSystem {
         }
         
         // Create Venue[] Object
-        Venue[] venueList = new Venue[counter + 1];
+        Venue[] venueList = new Venue[fileLineNumber];
         for(int i=0; i<=counter; i++) {
             venueList[i] = new Venue(venueNameList[i], venueLocationList[i], venueTypeList[i], venueCapacityList[i]);
         }
@@ -383,15 +389,16 @@ public class ConcertTicketingSystem {
     }
     
     public static Concert[] initializeConcerts(Artist[] artistList, Venue[] venueList) {
+        int fileLineNumber = (int)countFileLineNumber("concert.txt");
+        
         String[] concertDetails;
         int counter = 0;
-        int concertMaxId = 10000;
-        String[] concertNameList = new String[concertMaxId];
-        Artist[] concertArtistList = new Artist[concertMaxId];
-        LocalDateTime[] concertDatetimeList = new LocalDateTime[concertMaxId];
-        String[] concertLanguageList = new String[concertMaxId];
-        Venue[] concertVenueList = new Venue[concertMaxId];
-        boolean[] concertIsTrendingList = new boolean[concertMaxId];
+        String[] concertNameList = new String[fileLineNumber];
+        Artist[] concertArtistList = new Artist[fileLineNumber];
+        LocalDateTime[] concertDatetimeList = new LocalDateTime[fileLineNumber];
+        String[] concertLanguageList = new String[fileLineNumber];
+        Venue[] concertVenueList = new Venue[fileLineNumber];
+        boolean[] concertIsTrendingList = new boolean[fileLineNumber];
         
         // Try-Catch get data from concert.txt
         try {
@@ -400,7 +407,7 @@ public class ConcertTicketingSystem {
             String currentLine = fileScanner.nextLine();
             
             while (fileScanner.hasNextLine()) {
-                concertDetails = currentLine.split("\t");
+                concertDetails = currentLine.split(";");
             
                 // Concert Name
                 concertNameList[counter] = concertDetails[0];
@@ -429,7 +436,7 @@ public class ConcertTicketingSystem {
                 counter++;                
             }
             
-            concertDetails = currentLine.split("\t");
+            concertDetails = currentLine.split(";");
             
             // Concert Name
             concertNameList[counter] = concertDetails[0];
@@ -461,7 +468,7 @@ public class ConcertTicketingSystem {
         }
         
         // Create Concert[] Object
-        Concert[] concertList = new Concert[10000];
+        Concert[] concertList = new Concert[fileLineNumber];
         for(int i=0; i<=counter; i++) {
             concertList[i] = new Concert(concertNameList[i], concertArtistList[i], concertDatetimeList[i], concertLanguageList[i], concertVenueList[i], concertIsTrendingList[i]);
         }
@@ -471,7 +478,7 @@ public class ConcertTicketingSystem {
     
     public static Person[][] initializePerson() {
         int fileLineNumber = (int)countFileLineNumber("user.txt");
-        Person[][] usersList = null;   // Person[0][] is Admin users, Person[1][] is Customer users
+        Person[][] usersList = new Person[2][];   // Person[0][] is Admin users, Person[1][] is Customer users
         Admin[] adminList = new Admin[fileLineNumber];
         Customer[] customerList = new Customer[fileLineNumber];
         
@@ -486,7 +493,7 @@ public class ConcertTicketingSystem {
         String[] userAddress = new String[fileLineNumber];
         String[] userEmail = new String[fileLineNumber];
         String[] userPhoneNum = new String[fileLineNumber];
-        String[] userJoinedDate = new String[fileLineNumber];
+        LocalDate[] userJoinedDate = new LocalDate[fileLineNumber];
         
         
         // Try-Catch get data from venue.txt
@@ -496,8 +503,8 @@ public class ConcertTicketingSystem {
             String currentLine = fileScanner.nextLine();
 
             while (fileScanner.hasNextLine()) {
-                userDetails = currentLine.split("\t");
-                
+                userDetails = currentLine.split(";");
+       
                 userType[counter] = userDetails[0];
                 username[counter] = userDetails[1];
                 password[counter] = userDetails[2];
@@ -507,14 +514,13 @@ public class ConcertTicketingSystem {
                 userAddress[counter] = userDetails[6];
                 userEmail[counter] = userDetails[7];
                 userPhoneNum[counter] = userDetails[8];
-                userJoinedDate[counter] = userDetails[9];
+                userJoinedDate[counter] = LocalDate.parse(userDetails[9]);
 
                 currentLine = fileScanner.nextLine();        
                 counter++;                
             }
 
-            userDetails = currentLine.split("\t");
-
+            userDetails = currentLine.split(";");
             userType[counter] = userDetails[0];
             username[counter] = userDetails[1];
             password[counter] = userDetails[2];
@@ -524,7 +530,7 @@ public class ConcertTicketingSystem {
             userAddress[counter] = userDetails[6];
             userEmail[counter] = userDetails[7];
             userPhoneNum[counter] = userDetails[8];
-            userJoinedDate[counter] = userDetails[9];
+            userJoinedDate[counter] =  LocalDate.parse(userDetails[9]);
 
             fileScanner.close();
             
@@ -606,11 +612,11 @@ public class ConcertTicketingSystem {
     }
     
     // Search Methods
-    public static void searchConcert(Artist[] artistList, Concert[] concertList) {
+    public static void searchConcert(Artist[] artistList, Venue[] venueList, Concert[] concertList) {
         Scanner sc = new Scanner(System.in);
         
         // Create catalog
-        Catalog catalog = createCatalog(artistList, concertList);
+        Catalog catalog = createCatalog(artistList,venueList, concertList);
         
         // Flag
         boolean exit = false;
