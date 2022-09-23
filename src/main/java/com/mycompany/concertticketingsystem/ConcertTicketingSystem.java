@@ -996,8 +996,7 @@ public class ConcertTicketingSystem {
                 concertList[i].displayAllDetail();
                 
                 count++;
-            }
-            
+            } 
         }
     }
     
