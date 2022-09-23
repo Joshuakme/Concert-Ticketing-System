@@ -8,7 +8,7 @@ import java.util.Date;
  */
 public class Ticket {
     private String serielNo;
-    private String concertId;
+    private Concert concert;
     private TicketCat ticketCategory;
     private String seat;
     private Date purchaseDate;

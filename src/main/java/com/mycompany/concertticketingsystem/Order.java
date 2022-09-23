@@ -11,6 +11,7 @@ public class Order  {
     private int numberOfSeats;
     private Date createdOn;
     private OrderStatus status;
+    private Payment payment;
     
     // Constructor
     

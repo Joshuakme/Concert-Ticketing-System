@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.concertticketingsystem;
 
 import java.util.Date;
@@ -11,6 +7,7 @@ import java.util.Date;
  * @author Joshua Koh
  */
 public class TicketCat {
+    // CAT 1, ... , CAT 6 (from High to Low)
     private String description;
     private double price;
     private Date startDate;
