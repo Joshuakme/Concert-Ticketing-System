@@ -25,20 +25,14 @@ public class TestConcert {
         Venue[] venueList = initializeVenues();
         Concert[] concertList = initializeConcerts(artistList, venueList);
         Person[][] userList = initializePerson();   // userList[0][] is Admin list, serList[1][] is Customer list
-        
-        String[] venueNameList = new String[venueList.length];
-        
-      for(int i=0; i<venueList.length; i++) {
-          venueNameList[i] = venueList[i].getName();
-      }
-      
-      for(int i=0; i<concertList.length; i++) {
-          System.out.println(concertList[i].getVenue().getName());
-      }
+       
       
         // Create catalog
-//        Catalog catalog = createCatalog(artistList, venueList, concertList);
+        Catalog catalog = createCatalog(artistList, venueList, concertList);
 
+        for(Map.Entry pairEntry: catalog.getConcertDates().entrySet()) {
+            System.out.println(pairEntry.getKey());
+        }
 
         
     }
