@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -31,6 +32,7 @@ public class ConcertTicketingSystem {
         boolean isLoggedIn = false;
         
         // Object Initialization
+        Guest guest = new Guest();
         Artist[] artistList = initializeArtists();
         Venue[] venueList = initializeVenues();
         Concert[] concertList = initializeConcerts(artistList, venueList);
@@ -62,11 +64,10 @@ public class ConcertTicketingSystem {
                         if(Login())
                             isLoggedIn = true;
                         
-                            Guest guest = new Guest();
                             // Get user detail (username, password, accStatus)
                             // guest.registerAccount("username", "password", "accStatus");
                     } else 
-                        // Display Concert List
+                        // Display Concert Listd
                         System.out.println("-----------------------------------------------------------------------------------------------------------------");
                         System.out.println("| NO |       DATE & TIME       |                CONCERT TITLE                |              VENUE               |");
                         System.out.println("|----|-------------------------|---------------------------------------------|----------------------------------|");
@@ -128,6 +129,14 @@ public class ConcertTicketingSystem {
                     System.out.println("Other");
                     
                     // Code Here
+                    
+                    // Change Order
+                    
+                    // View Order
+                    
+                    // Cancel order
+                    
+                    // 
                     
 
                 case 6: // Exit
@@ -784,18 +793,7 @@ public class ConcertTicketingSystem {
                     break;
                 case 3:
                     // Get Search Date (Concert)
-                    System.out.print("Enter Concert Date: ");
-                    String searchConcertDate = sc.nextLine();
-                    
-                    searchResult = catalog.searchByDate(searchConcertDate);
-                    
-                    // Display the Concerts
-                    displayConcert(searchResult);                   
-                    
-                    isEqual = true;
-                    
-                    // Press anything to continue
-                    blankInput();
+                    searchConcertDate(catalog);
                     break;
                 case 4:
                     // Get Search Artist (Concert)
@@ -881,7 +879,7 @@ public class ConcertTicketingSystem {
         // Display the Concerts
         if (searchResult != null && searchResult[0] != null) {
             System.out.println("Search Result");
-            listConcertTitle(searchResult);
+            displayConcertTitle(searchResult);
 
             // Ask user to display detail or not
             System.out.print("Do you want to display detail of the concert?(Y/N): ");
@@ -943,7 +941,7 @@ public class ConcertTicketingSystem {
 
         // Input Validation
         while(!isValidNo) {
-            System.out.print("Enter Concert Language: ");
+            System.out.print("Select Concert Language: ");
             int searchConcertLanguageChoice = Character.getNumericValue(sc.next().charAt(0));
 
             if(searchConcertLanguageChoice > 0 && searchConcertLanguageChoice <= languageTitleList.length) {
@@ -971,6 +969,46 @@ public class ConcertTicketingSystem {
         blankInput();
     }
     
+    public static void searchConcertDate(Catalog catalog) {
+        Scanner sc = new Scanner(System.in);
+        Concert[] searchResult = null;
+        
+        // Get user input for search language
+        boolean isValidDate = false;
+        String searchConcertDate = null;
+        
+        // Input Validation
+        while(!isValidDate) {
+            // Get search Date
+            System.out.print("Enter Concert Date(yyyy-mm-dd): ");
+            searchConcertDate = sc.nextLine();
+            
+            if(checkValidDate(searchConcertDate)) {
+                // Get search result from Catalog
+                searchResult = catalog.searchByDate(searchConcertDate);
+                
+                if(searchResult != null) {
+                    // Display the Concerts
+                    displayConcert(searchResult);
+
+                    // Press anything to continue
+                    blankInput();
+                    
+                    isValidDate = true;
+                }
+            }
+            else {
+                System.out.println("");
+                System.err.println("Invalid date. Please check the date format is in (yyyy-mm-dd).");
+                System.out.println("");
+            }  
+        }
+    }
+    
+    public static void searchConcertArtist(Catalog catalog) {
+        
+    }
+    
     public static int countValidConcert(Concert[] concertList) {
         int count = 0;
         
@@ -981,10 +1019,6 @@ public class ConcertTicketingSystem {
         }
         
         return count;
-    }
-    
-    public static void displayConcertName(int noOfConcert) {
-        
     }
     
     public static void displayConcert(Concert[] concertList) {
@@ -1000,7 +1034,7 @@ public class ConcertTicketingSystem {
         }
     }
     
-    public static void listConcertTitle(Concert[] concertList) {
+    public static void displayConcertTitle(Concert[] concertList) {
         for(int i=0; i<concertList.length; i++) {
             if(concertList[i] != null) {
                 System.out.print((i+1) + ". ");
@@ -1013,22 +1047,29 @@ public class ConcertTicketingSystem {
     // Buy Ticket Methods
     
     // General Methods
-    public static void printCurrentDate() {
+    public static String getCurrentDateTime() {
+        LocalDateTime today = LocalDateTime.now();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a");
+        
+        return today.format(format);
+    }
+    
+    public static String getCurrentDate() {
         LocalDate today = LocalDate.now();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         
         String formattedDate = today.format(format);
         
-        System.out.println(formattedDate);
+        return formattedDate;
     }
     
-    public static void printCurrentTime() {
+    public static String getCurrentTime() {
         LocalTime now = LocalTime.now();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("hh:mm a");
         
         String formattedTime = now.format(format);
         
-        System.out.println(formattedTime);
+        return formattedTime;
     }
     
     public static void clearScreen()  {
@@ -1059,5 +1100,17 @@ public class ConcertTicketingSystem {
         }
 
         return lines;
+    }
+    
+    public static boolean checkValidDate(String dateStr) {
+        DateTimeFormatter datetimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        
+        try {
+            LocalDate.parse(dateStr, datetimeFormatter);
+        }
+        catch (DateTimeParseException e) {
+            return false;
+        }
+        return true;
     }
 }
