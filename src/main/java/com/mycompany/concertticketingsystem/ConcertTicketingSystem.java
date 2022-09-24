@@ -80,7 +80,7 @@ public class ConcertTicketingSystem {
 
                                 for(int i=0;i<venueList.length;i++){
                                     if(concertList[choice-1].getVenue().getName().equals(venueList[i].getName())){
-                                        displayVenue(venueList[i].getName());
+                                        displayVenue(venueList, venueList[i].getName());
                                         break;
                                     }
                                 }
@@ -928,19 +928,46 @@ public class ConcertTicketingSystem {
         }
     }
     
-    public static void displayVenue(String venueName){
-        switch (venueName){
-            case "Arena of Stars":
-                displayVenue1();
-                break;
+    public static void displayVenue(Venue[] venueList, String venueName){
+        String mapFileName = null;
+        
+        for(int i=0; i<venueList.length; i++) {
+            if(venueName.equals(venueList[i].getName())) {
+                mapFileName = "Map(" + venueList[i].getName() + ").txt";
+            }
+        }
+        
+//        switch (venueName){
+//            case "Arena of Stars":
+//                displayVenue1();
+//                break;
+//                
+//            case "Bukit Jalil National Stadium":
+//                displayVenue2();
+//                break;
+//                
+//            case "Zepp Kuala Lumpur":
+//                displayVenue3();
+//                break;
+//        }
+        
+                // Try-Catch get data from artist.txt
+        try {
+            File mapFile = new File(mapFileName);
+            Scanner fileScanner = new Scanner(mapFile);
+            String currentLine = fileScanner.nextLine();
+            
+            while (fileScanner.hasNextLine()) {
+                System.out.println(currentLine);
                 
-            case "Bukit Jalil National Stadium":
-                displayVenue2();
-                break;
-                
-            case "Zepp Kuala Lumpur":
-                displayVenue3();
-                break;
+                currentLine = fileScanner.nextLine();
+            }
+
+            System.out.println(currentLine);
+            
+            fileScanner.close();    // Close file    
+        } catch (FileNotFoundException ex) {
+            System.out.println("File does not exist!\n");
         }
     }
     
