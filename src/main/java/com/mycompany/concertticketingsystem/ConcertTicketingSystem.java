@@ -36,7 +36,7 @@ public class ConcertTicketingSystem {
         Artist[] artistList = initializeArtists();
         Venue[] venueList = initializeVenues();
         Concert[] concertList = initializeConcerts(artistList, venueList);
-        Person[][] userList = initializePerson();   // userList[0][] is Admin list, serList[1][] is Customer list
+        Person[][] userList = initializePerson();   // userList[0][] is Admin list, userList[1][] is Customer list
         
                
         // Welcome User
@@ -1231,10 +1231,6 @@ public class ConcertTicketingSystem {
 
         long lines = 0;
         try {
-
-            // much slower, this task better with sequence access
-            //lines = Files.lines(path).parallel().count();
-
             lines = Files.lines(path).count();
 
         } catch (IOException e) {
