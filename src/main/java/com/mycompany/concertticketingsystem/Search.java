@@ -7,9 +7,9 @@ import java.util.List;
  * @author Joshua Koh
  */
 public interface Search {
-   public Concert[] searchByTitle(String title);
-   public Concert[] searchByLanguage(String language);
-   public Concert[] searchByDate(String date);
-   public Concert[] searchByArtist(String artist);
-   public Concert[] searchByVenue(String venue);    
+   public List<Concert> searchByTitle(String title);
+   public List<Concert> searchByLanguage(String language);
+   public List<Concert> searchByDate(String date);
+   public List<Concert> searchByArtist(String artist);
+   public List<Concert> searchByVenue(String venue);    
 }

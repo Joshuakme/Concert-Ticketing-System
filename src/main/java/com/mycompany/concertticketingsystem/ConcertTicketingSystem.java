@@ -11,7 +11,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -45,7 +47,7 @@ public class ConcertTicketingSystem {
         boolean exit = false;
         while(!exit) {
             displayMainMenu();
-            int menuChoice = getChoice();
+            int menuChoice = Character.getNumericValue(sc.next().charAt(0));
             
             switch(menuChoice) {
                 case 1: // Search Concert
@@ -63,7 +65,7 @@ public class ConcertTicketingSystem {
                                             
                     while (!isConfirmed){
                         System.out.print("Please Enter Your Preference Concert Show (1 - " + concertList.length + "): ");
-                        int choice = getChoice();
+                        int choice = Character.getNumericValue(sc.next().charAt(0));
 
                         if(choice > concertList.length || choice < 0){
                             System.out.println("************************");
@@ -159,106 +161,100 @@ public class ConcertTicketingSystem {
         System.out.print("Select the menu (num): ");
     }
     
-    // Data Initialization from txt files
-    // Data Initialization Methods
+    // Data Initialization Methods (from txt files)
     public static Catalog createCatalog(Artist[] artistList, Venue[] venueList, Concert[] concertList) {
         Catalog catalog;
-        Map<String, Concert> concertTitles = new HashMap();
-        Map<String, Concert[]> concertArtists = new HashMap();
-        Map<String, Concert[]> concertLanguages = new HashMap();
-        Map<String, Concert[]> concertDates = new HashMap();
-        Map<String, Concert[]> concertVenues = new HashMap();
+        Map<String, List<Concert>> concertTitles = new HashMap();
+        Map<String, List<Concert>> concertArtists = new HashMap();
+        Map<String, List<Concert>> concertLanguages = new HashMap();
+        Map<String, List<Concert>> concertDates = new HashMap();
+        Map<String, List<Concert>> concertVenues = new HashMap();
         
         // Get Current Date
         LocalDate now = LocalDate.now();
         
-        int concertValidCount = 0;
-        int languageValidCount = 0;
-        for(int i=0; i<concertList.length; i++) {
-            if(concertList[i] != null) {
-                concertValidCount++;
-                if(concertList[i].getLanguage() != null) {
-                    languageValidCount++;
+        // Map for Concert Titles
+        for(int j=0; j<concertList.length; j++) {
+            List<Concert> concertByTitle = new ArrayList<>();
+            
+            for(int i=0; i<concertList.length; i++) {
+                if(concertList[j].getName().toUpperCase().equals(concertList[i].getName().toUpperCase())) {
+                    concertByTitle.add(concertList[i]);
                 }
             }
+            concertTitles.put(concertList[j].getName(), concertByTitle);
         }
         
-        // Map for Concert Titles
-        Concert concertByTitle = null;
-        int titleCount = 0;
-        for(int j=0; j<concertList.length; j++) {
-            if(concertList[j] != null) {
-                for(int i=0; i<concertList.length; i++) {
-                    if(concertList[i] != null) {
-                        if(concertList[j].getName().toUpperCase().equals(concertList[i].getName().toUpperCase())) {
-                            concertByTitle = concertList[i];
-
-                            titleCount++;
-                        }
-                    }
-                }
-                concertTitles.put(concertList[j].getName(), concertByTitle);
-            } 
-        }
         
         // Map for Concert Artists
         for(int j=0; j<artistList.length; j++) {
-            Concert[] concertByArtist = new Concert[concertValidCount];
-            int artistCount = 0;
+            List<Concert> concertByArtist = new ArrayList<>();
             
-            if(artistList[j] != null) {
-                for(int i=0; i<concertList.length; i++) {
-                    if(concertList[i] != null) {
-                        if(artistList[j].getName().toUpperCase().equals(concertList[i].getArtist().getName().toUpperCase())) {
-                            concertByArtist[artistCount] = concertList[i];
-                            
-                            artistCount++;
-                        }
-                    }
+            for(int i=0; i<concertList.length; i++) {
+                if(artistList[j].getName().toUpperCase().equals(concertList[i].getArtist().getName().toUpperCase())) {
+                    concertByArtist.add(concertList[i]);
                 }
-                concertArtists.put(artistList[j].getName(), concertByArtist);
             }
+            concertArtists.put(artistList[j].getName(), concertByArtist);
         }   
+        
         
         // Map for Concert Language
         String[] languageList = {"Cantonese", "English", "Mandarin", "Korean"};
-        int languageCount = 0;
         
         for(int j=0; j<languageList.length; j++) {
-            Concert[] concertByLanguage = new Concert[1000];
+            List<Concert> concertByLanguage = new ArrayList<>();
             
-            if(concertList[j] != null) {
-                for(int i=0; i<concertList.length; i++) {
-                    if(concertList[i] != null) {
-                        if(languageList[j].toUpperCase().equals(concertList[i].getLanguage().toUpperCase())) {
-                            concertByLanguage[languageCount] = concertList[i];
-                    
-                            languageCount++;
-                        }
+            for(int i=0; i<concertList.length; i++) {
+                if(concertList[i] != null) {
+                    if(languageList[j].toUpperCase().equals(concertList[i].getLanguage().toUpperCase())) {
+                        concertByLanguage.add(concertList[i]);
                     }
                 }
-                concertLanguages.put(languageList[j], concertByLanguage);
             }
+            concertLanguages.put(languageList[j], concertByLanguage);
         }
         
         // Map for Concert Date
-        Concert[] concertByDate = new Concert[concertValidCount];
-        int dateCount = 0;
-        for(int j=0; j<concertList.length; j++) {
-            if(concertList[j] != null) {
-                for(int i=0; i<concertList.length; i++) {
-                    if(concertList[i] != null) {
-                        if(concertList[j].getDatetime().equals(concertList[i].getDatetime())) {
-                            concertByDate[dateCount] = concertList[i];
-                            
-                            dateCount++;
-                        }
-                    }
-                }
-                concertDates.put(concertList[j].getDatetime().toString(), concertByDate);
-            }
-            
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        List<String> rawDateList = new ArrayList<>();       // Use List instead of Array because the size is unknown
+        List<String> uniqueDateList = new ArrayList<>();    // Same here
+
+        // Get rawDateList
+        for(int i=0; i<concertList.length; i++) {
+            rawDateList.add(concertList[i].getDatetime().format(dateFormat));
         }
+        
+        // Filter out duplicate date
+        for(int i=0; i<rawDateList.size(); i++) {
+            boolean isDuplicated = false;    // flag to determine the value is duplicate or not
+            
+            for(int j=0; j<i; j++) {
+                if(rawDateList.get(i).equals(rawDateList.get(j))) { // Skip those duplicated date
+                    isDuplicated = true;
+                    break;  // skip to next outer loop if there is ANY ONE duplicate
+                }
+            }
+            // copy date to uniqueList
+            if(!isDuplicated) {
+                uniqueDateList.add(rawDateList.get(i));
+            }
+        }
+
+        // Insert concert[i] object into MAP according to the date
+        for(int j=0; j<uniqueDateList.size(); j++) {
+            List<Concert> concertByDate = new ArrayList<>();  
+            
+            for(int i=0; i<concertList.length; i++) {      
+                String formattedDateStr = concertList[i].getDatetime().format(dateFormat);
+                
+                if(uniqueDateList.get(j).equals(formattedDateStr)) {
+                    concertByDate.add(concertList[i]);
+                }
+            }
+            concertDates.put(uniqueDateList.get(j), concertByDate);
+        }
+        
         
         // Map for Concert Venue
         String[] venueNameList = new String[venueList.length];
@@ -267,15 +263,12 @@ public class ConcertTicketingSystem {
             venueNameList[i] = venueList[i].getName();
         }
         
-        Concert[] concertByVenue = new Concert[concertList.length];
-        int venueCount = 0;
+        List<Concert> concertByVenue = new ArrayList<>();
         for(int j=0; j<concertList.length; j++) {
             if(concertList[j] != null) {
                 for(int i=0; i<venueNameList.length; i++) {
                     if(concertList[j].getVenue().getName().toUpperCase().equals(venueNameList[i].toUpperCase())) {
-                        concertByVenue[venueCount] = concertList[i];
-
-                        venueCount++;
+                        concertByVenue.add(concertList[i]);
                     }
                     concertVenues.put(venueNameList[i], concertByVenue);
                 }
@@ -568,7 +561,7 @@ public class ConcertTicketingSystem {
     }
 
     
-    // Login Methods
+    // Login Methods (Wei Hao)
     public static boolean Login() {
         Scanner sc = new Scanner(System.in);
         
@@ -612,7 +605,7 @@ public class ConcertTicketingSystem {
     }
     
 
-    // Search Concert Methods   
+    // Search Concert Methods (Joshua)
     public static void searchConcert(Artist[] artistList, Venue[] venueList, Concert[] concertList) {
         Scanner sc = new Scanner(System.in);
         
@@ -624,7 +617,7 @@ public class ConcertTicketingSystem {
         boolean isEqual = false;
         
         // Variable
-        Concert[] searchResult = null;
+        List<Concert> searchResult = new ArrayList<>();
         
         // Title / Heading
         System.out.println("");
@@ -647,7 +640,6 @@ public class ConcertTicketingSystem {
         
             System.out.print("Choice: ");
             int searchChoice = Character.getNumericValue(sc.next().charAt(0));
-            sc.nextLine();
             System.out.println("");
             
             switch(searchChoice) {
@@ -666,7 +658,7 @@ public class ConcertTicketingSystem {
                     System.out.print("Enter Concert Artist: ");
                     String searchConcertArtist = sc.nextLine();
                     
-                    searchResult = catalog.searchByArtist(searchConcertArtist);
+//                    searchResult.add(catalog.searchByArtist(searchConcertArtist));
                     
                     // Display the Concerts
                     displayConcert(searchResult);                    
@@ -681,7 +673,7 @@ public class ConcertTicketingSystem {
                     System.out.print("Enter Concert Venue: ");
                     String searchConcertVenue = sc.nextLine();
                     
-                    searchResult = catalog.searchByVenue(searchConcertVenue);
+//                    searchResult = catalog.searchByVenue(searchConcertVenue);
                     
                     // Display the Concerts
                     displayConcert(searchResult);                   
@@ -707,7 +699,7 @@ public class ConcertTicketingSystem {
     
     public static void searchConcertName(Catalog catalog) {
         Scanner sc = new Scanner(System.in);
-        Concert[] searchResult = null;
+        List<Concert> searchResult = new ArrayList<>();
         
         // Get Search Name (Concert)
         System.out.print("Enter Concert Name: ");
@@ -717,27 +709,26 @@ public class ConcertTicketingSystem {
         searchResult = catalog.searchByTitle(searchConcertName);
 
         // Display the Concerts
-        if (searchResult != null && searchResult[0] != null) {
+        if (searchResult != null) {
             System.out.println("Search Result");
             displayConcertTitle(searchResult);
 
             // Ask user to display detail or not
             System.out.print("Do you want to display detail of the concert?(Y/N): ");
-            char searchDisplayAll = sc.next().toUpperCase().charAt(0);
+            char searchDisplayAllChoice = sc.next().toUpperCase().charAt(0);
             System.out.println("");
 
-            switch (searchDisplayAll) {
+            switch (searchDisplayAllChoice) {
                 case 'Y':
                     boolean isValidNo = false;
                     while (!isValidNo) {
                         System.out.print("Enter Concert No.: ");
                         int concertDetailChoice = Character.getNumericValue(sc.next().charAt(0));
                         // Display selected concert
-                        System.out.println(countValidConcert(searchResult));
-                        if (concertDetailChoice <= countValidConcert(searchResult) && concertDetailChoice != 0) {
+                        if (concertDetailChoice > 0 && concertDetailChoice <= searchResult.size()) {
                             System.out.println("");
                             System.out.println("*Concert Detail*");
-                            searchResult[concertDetailChoice - 1].displayAllDetail();
+                            searchResult.get(concertDetailChoice - 1).displayAllDetail();
 
                             isValidNo = true;
                         } else {
@@ -751,7 +742,8 @@ public class ConcertTicketingSystem {
                 default:
                     System.out.println("Invalid character!");
             }
-        } else {
+        } 
+        else {
             System.err.println("We couldn't find a match for \"" + searchConcertName + "\", Do you want to try another search?");
             System.out.println("(Double check your search for any typo or spelling errors - or try different search term)");
             System.out.println("");
@@ -760,11 +752,12 @@ public class ConcertTicketingSystem {
         // Press anything to continue
         blankInput();
         System.out.println("");
+        sc.close();     // Close scanner
     }
     
     public static void searchConcertLang(Catalog catalog) {
         Scanner sc = new Scanner(System.in);
-        Concert[] searchResult = null;
+        List<Concert> searchResult = null;
         
         // Get Search Language (Concert)
         String[] languageTitleList = catalog.getlanguageTitleList();
@@ -782,7 +775,7 @@ public class ConcertTicketingSystem {
         // Input Validation
         while(!isValidNo) {
             System.out.print("Select Concert Language: ");
-            int searchConcertLanguageChoice = getChoice();
+            int searchConcertLanguageChoice = Character.getNumericValue(sc.next().charAt(0));
 
             if(searchConcertLanguageChoice > 0 && searchConcertLanguageChoice <= languageTitleList.length) {
                 for(int i=0; i<languageTitleList.length; i++) {
@@ -807,11 +800,12 @@ public class ConcertTicketingSystem {
 
         // Press anything to continue
         blankInput();
+        sc.close();     // Close scanner
     }
     
     public static void searchConcertDate(Catalog catalog) {
         Scanner sc = new Scanner(System.in);
-        Concert[] searchResult = null;
+        List<Concert> searchResult = new ArrayList<>();
         
         // Get user input for search language
         boolean isValidDate = false;
@@ -848,22 +842,11 @@ public class ConcertTicketingSystem {
                 System.out.println("");
             }  
         }
+        sc.close();     // Close scanner
     }
     
     public static void searchConcertArtist(Catalog catalog) {
         
-    }
-    
-    public static int countValidConcert(Concert[] concertList) {
-        int count = 0;
-        
-        for(int i=0; i<concertList.length; i++) {
-            if(concertList[i] != null) {
-                count++;
-            } 
-        }
-        
-        return count;
     }
     
     public static void displayConcert(Concert[] concertList) {
@@ -873,6 +856,19 @@ public class ConcertTicketingSystem {
                 System.out.println("");
                 System.out.println("**Concert " + (count) + "**");
                 concertList[i].displayAllDetail();
+                
+                count++;
+            } 
+        }
+    }
+    
+    public static void displayConcert(List<Concert> concertList) {
+        int count = 1;
+        for(int i=0; i<concertList.size(); i++) {
+            if(concertList.get(i) != null) {
+                System.out.println("");
+                System.out.println("**Concert " + (count) + "**");
+                concertList.get(i).displayAllDetail();
                 
                 count++;
             } 
@@ -889,8 +885,18 @@ public class ConcertTicketingSystem {
         }
     }
     
+    public static void displayConcertTitle(List<Concert> concertList) {
+        for(int i=0; i<concertList.size(); i++) {
+            if(concertList.get(i) != null) {
+                System.out.print((i+1) + ". ");
+                System.out.println(concertList.get(i).getName());
+                System.out.println("");
+            }
+        }
+    }
     
-    //Buy Ticket Method
+    
+    //Buy Ticket Method (Tiffany)
     public static void displayConcertList(Concert[] concertList){
         // Display Concert List
         System.out.println("------------------------------------------------------------------------------------|----------------------------------|");
@@ -931,15 +937,10 @@ public class ConcertTicketingSystem {
         }
     }
     
+    
     // General Methods
-    public static int getChoice() {
-        Scanner sc = new Scanner(System.in);
-        
-        return Character.getNumericValue(sc.next().charAt(0));
-    }
-
     public static String getFormattedDateTime(LocalDateTime datetime) {
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd kk:mm ");
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd kk:mm");
         return datetime.format(format);
     }
     
