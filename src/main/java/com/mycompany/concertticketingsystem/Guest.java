@@ -6,7 +6,11 @@ package com.mycompany.concertticketingsystem;
  */
 public class Guest {
     
-    // Methods   
+    // Constructor
+    public Guest() {
+    }
+
+    // Methods
     public boolean registerAccount(String username, String password, String accStatus) {
         if(username.trim().equals("") || password.trim().equals("") || accStatus.trim().equals("")) {
             return false;
