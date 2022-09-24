@@ -90,7 +90,7 @@ public class ConcertTicketingSystem {
                     // Check Login Status
                     if(!isLoggedIn) {
                         System.out.println("You are not signed in. Please sign in before buy ticket.");
-                        
+                         
                         if(Login())
                             isLoggedIn = true;
                         
@@ -1251,6 +1251,7 @@ public class ConcertTicketingSystem {
         }
         return true;
     }
+    
     public static String centerString (int width, String s) {
         return String.format("%-" + width  + "s", String.format("%" + (s.length() + (width - s.length()) / 2) + "s", s));
     }
