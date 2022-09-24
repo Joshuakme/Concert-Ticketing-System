@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -31,10 +32,11 @@ public class ConcertTicketingSystem {
         boolean isLoggedIn = false;
         
         // Object Initialization
+        Guest guest = new Guest();
         Artist[] artistList = initializeArtists();
         Venue[] venueList = initializeVenues();
         Concert[] concertList = initializeConcerts(artistList, venueList);
-        Person[][] userList = initializePerson();   // userList[0][] is Admin list, serList[1][] is Customer list
+        Person[][] userList = initializePerson();   // userList[0][] is Admin list, userList[1][] is Customer list
         
                
         // Welcome User
@@ -49,12 +51,42 @@ public class ConcertTicketingSystem {
                 case 1: // Search Concert
                     searchConcert(artistList, venueList, concertList);
                     break;
+                    
                 case 2: // View Trending
                     System.out.println("View Trending");
                     break;
-                case 3: // Buy Ticket
-                    System.out.println("Buy Ticket\n");
                     
+                case 3: // Buy Ticket
+                    boolean isConfirmed = false;
+                    while (!isConfirmed){
+                        displayConcertList(concertList);
+                        
+                        System.out.print("Please Enter Your Preference Concert Show (1 - " + concertList.length + "): ");
+                        int choice = sc.nextInt();
+
+                        if(choice > concertList.length || choice < 0){
+                            System.out.println("************************");
+                            System.out.println("PLEASE ENTER 1 - " + concertList.length + " ONLY! ");
+                            System.out.println("************************");
+                        }
+                        
+                        else if(choice > 0 && choice <= concertList.length){
+                            isConfirmed = true;
+                            System.out.println("Are you sure? (Y for yes, N for no): ") ;
+                            char confirmation = sc.next().toUpperCase().charAt(0);
+                            if (confirmation == 'Y'){
+                                concertList[choice-1].getVenue().getName();
+
+                                for(int i=0;i<venueList.length;i++){
+                                    if(concertList[choice-1].getVenue().getName().equals(venueList[i].getName())){
+                                        displayVenue(venueList[i].getName());
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                                                               
                     // Check Login Status
                     if(!isLoggedIn) {
                         System.out.println("You are not signed in. Please sign in before buy ticket.");
@@ -62,55 +94,17 @@ public class ConcertTicketingSystem {
                         if(Login())
                             isLoggedIn = true;
                         
-                            Guest guest = new Guest();
                             // Get user detail (username, password, accStatus)
                             // guest.registerAccount("username", "password", "accStatus");
-                    } else 
-                        // Display Concert List
-                        System.out.println("-----------------------------------------------------------------------------------------------------------------");
-                        System.out.println("| NO |       DATE & TIME       |                CONCERT TITLE                |              VENUE               |");
-                        System.out.println("|----|-------------------------|---------------------------------------------|----------------------------------|");
-                        System.out.println("|  1 |  2022-04-30  T20:00:00  |    Justin Lo Fresh Start Live - Malaysia    |          Arena of Stars          |");
-                        System.out.println("|----|-------------------------|---------------------------------------------|----------------------------------|");
-                        System.out.println("|  2 |  2022-08-18  T20:30:00  |    Happier Than Ever, The World Tour 2022   |   Bukit Jalil National Stadium   |");
-                        System.out.println("|----|-------------------------|---------------------------------------------|----------------------------------|");
-                        System.out.println("|  3 |  2022-09-09  T20:30:00  |    (G)-IDLE 'Just Me ()I-DLE' World Tour    |         Zepp Kuala Lumpur        |");
-                        System.out.println("|----|-------------------------|---------------------------------------------|----------------------------------|");
-                        System.out.println("|  4 |  2022-10-22  T20:30:00  |             Justice World Tour              |   Bukit Jalil National Stadium   |");
-                        System.out.println("|----|-------------------------|---------------------------------------------|----------------------------------|");
-                        System.out.println("|  5 |  2022-12-18  T19:00:00  |           JJ Lin \"JJ20\" World Tour          |   Bukit Jalil National Stadium   |");
-                        System.out.println("|----|-------------------------|---------------------------------------------|----------------------------------|");
-                        System.out.println("|  6 |  2023-01-15  T19:00:00  |   Jay Chou Carnival World Tour - Malaysia   |   Bukit Jalil National Stadium   |");
-                        System.out.println("|----|-------------------------|---------------------------------------------|----------------------------------|");
-                        System.out.println("|  7 |  2023-03-04  T20:00:00  |             Born Pink World Tour            |   Bukit Jalil National Stadium   |");
-                        System.out.println("-----------------------------------------------------------------------------|----------------------------------|");
-
-                        // Get choice
-                        do{
-                            System.out.println("Please Enter Your Preference Concert Show (1-8): ");
-                            int choice = sc.nextInt();
-                            
-                            if(choice > 10 && choice < 0){
-                                System.out.println("\t\t\t*****************************************");
-                                System.out.println("\t\t\t\tPLEASE ENTER 1 - 10 ONLY! ");
-                                System.out.println("\t\t\t*****************************************");
-                            }
-                            
-                            else if(choice > 0 && choice <11){
-                                
-                            }
+                    }
+                       
                         
                         
-                        System.out.println("Are you sure? (Y for yes, N for no): ") ;
-                        char confirmation = sc.next().charAt(0);
-                            if (confirmation == 'Y' || confirmation == 'y'){
-                                
-                                
-                            }
+                            
                         // Display seat status(booked / empty) [table maybe]
                         // Ask for detail (no, ticketCat, etc.)
                         // 
-                        } while(true);
+                        
 //                        break;     
                 case 4: // Login/Register
                     System.out.println("Login\n");
@@ -128,6 +122,14 @@ public class ConcertTicketingSystem {
                     System.out.println("Other");
                     
                     // Code Here
+                    
+                    // Change Order
+                    
+                    // View Order
+                    
+                    // Cancel order
+                    
+                    // 
                     
 
                 case 6: // Exit
@@ -784,18 +786,7 @@ public class ConcertTicketingSystem {
                     break;
                 case 3:
                     // Get Search Date (Concert)
-                    System.out.print("Enter Concert Date: ");
-                    String searchConcertDate = sc.nextLine();
-                    
-                    searchResult = catalog.searchByDate(searchConcertDate);
-                    
-                    // Display the Concerts
-                    displayConcert(searchResult);                   
-                    
-                    isEqual = true;
-                    
-                    // Press anything to continue
-                    blankInput();
+                    searchConcertDate(catalog);
                     break;
                 case 4:
                     // Get Search Artist (Concert)
@@ -881,7 +872,7 @@ public class ConcertTicketingSystem {
         // Display the Concerts
         if (searchResult != null && searchResult[0] != null) {
             System.out.println("Search Result");
-            listConcertTitle(searchResult);
+            displayConcertTitle(searchResult);
 
             // Ask user to display detail or not
             System.out.print("Do you want to display detail of the concert?(Y/N): ");
@@ -943,7 +934,7 @@ public class ConcertTicketingSystem {
 
         // Input Validation
         while(!isValidNo) {
-            System.out.print("Enter Concert Language: ");
+            System.out.print("Select Concert Language: ");
             int searchConcertLanguageChoice = Character.getNumericValue(sc.next().charAt(0));
 
             if(searchConcertLanguageChoice > 0 && searchConcertLanguageChoice <= languageTitleList.length) {
@@ -971,6 +962,51 @@ public class ConcertTicketingSystem {
         blankInput();
     }
     
+    public static void searchConcertDate(Catalog catalog) {
+        Scanner sc = new Scanner(System.in);
+        Concert[] searchResult = null;
+        
+        // Get user input for search language
+        boolean isValidDate = false;
+        String searchConcertDate = null;
+        
+        // Input Validation
+        while(!isValidDate) {
+            // Get search Date
+            System.out.print("Enter Concert Date(yyyy-mm-dd): ");
+            searchConcertDate = sc.nextLine();
+            
+            if(checkValidDate(searchConcertDate)) {
+                // Get search result from Catalog
+                searchResult = catalog.searchByDate(searchConcertDate);
+                
+                if(searchResult != null) {
+                    // Display the Concerts
+                    displayConcert(searchResult);
+
+                    // Press anything to continue
+                    blankInput();
+                    
+                    isValidDate = true;
+                }
+                else {
+                    System.out.println("");
+                    System.err.println("We couldn't find a match for \"" + searchConcertDate + "\", Do you want to try another search?");
+                    System.out.println("");
+                }  
+            }
+            else {
+                System.out.println("");
+                System.err.println("Invalid date. Please check the date format is in (yyyy-mm-dd).");
+                System.out.println("");
+            }  
+        }
+    }
+    
+    public static void searchConcertArtist(Catalog catalog) {
+        
+    }
+    
     public static int countValidConcert(Concert[] concertList) {
         int count = 0;
         
@@ -981,10 +1017,6 @@ public class ConcertTicketingSystem {
         }
         
         return count;
-    }
-    
-    public static void displayConcertName(int noOfConcert) {
-        
     }
     
     public static void displayConcert(Concert[] concertList) {
@@ -1000,7 +1032,7 @@ public class ConcertTicketingSystem {
         }
     }
     
-    public static void listConcertTitle(Concert[] concertList) {
+    public static void displayConcertTitle(Concert[] concertList) {
         for(int i=0; i<concertList.length; i++) {
             if(concertList[i] != null) {
                 System.out.print((i+1) + ". ");
@@ -1010,25 +1042,176 @@ public class ConcertTicketingSystem {
         }
     }
     
-    // Buy Ticket Methods
+    //Buy Ticket Method
+    public static void displayConcertList(Concert[] concertList){
+    // Display Concert List
+        System.out.println("------------------------------------------------------------------------------------|----------------------------------|");
+        System.out.println("| NO |       DATE & TIME       |                     CONCERT TITLE                  |              VENUE               |");
+        System.out.println("|----|-------------------------|----------------------------------------------------|----------------------------------|");
+        for(int i =0; i<concertList.length;i++){
+            System.out.printf("| %2d | %18s | %50s | %30s |\n", (i+1), centerString(23,getFormattedDateTime(concertList[i].getDatetime())), centerString(50,concertList[i].getName()), centerString(32,concertList[i].getVenue().getName()));
+            System.out.println("|----|-------------------------|----------------------------------------------------|----------------------------------|");
+        }
+    }
     
+    public static void displayVenue(String venueName){
+        switch (venueName){
+            case "Arena of Stars":
+                displayVenue1();
+                break;
+                
+            case "Bukit Jalil National Stadium":
+                displayVenue2();
+                break;
+                
+            case "Zepp Kuala Lumpur":
+                displayVenue3();
+                break;
+        }
+    }
+    
+    public static void displayVenue1() {        //Create Venue Layout Plan Method (Arena of Stars)
+        System.out.println("_________________________________________________________________________________________________________________");
+        System.out.println("|                                               | S  T  A  G  E  |                                              |");        
+        System.out.println("|                                               |________________|                                              |");
+        System.out.println("|                                                                                                               |");
+        System.out.println("|         ----------------------                                                 ----------------------         |");
+        System.out.println("|         |                    |      -------- --------   -------- --------      |                    |         |");
+        System.out.println("|         |                    |      |      | |      |   |      | |      |      |                    |         |");        
+        System.out.println("|         |                    |      |      | |      |   |      | |      |      |                    |         |");
+        System.out.println("|         |                    |      |      | |      |   |      | |      |      |                    |         |");
+        System.out.println("|         |          P         |      |      | |      |   |      | |      |      |          P         |         |");        
+        System.out.println("|         |          S         |      |   V  | |   V  |   |  V   | |  V   |      |          S         |         |");
+        System.out.println("|         |          2         |      |   I  | |   I  |   |  I   | |  I   |      |          2         |         |");
+        System.out.println("|         |                    |      |   P  | |   P  |   |  P   | |  P   |      |                    |         |");
+        System.out.println("|         |                    |      |      | |      |   |      | |      |      |                    |         |");
+        System.out.println("|         |                    |      |      | |      |   |      | |      |      |                    |         |");        
+        System.out.println("|         |                    |      |      | |      |   |      | |      |      |                    |         |");
+        System.out.println("|         |                    |      |      | |      |   |      | |      |      |                    |         |");
+        System.out.println("|         ----------------------      -------- --------   -------- --------      ----------------------         |");        
+        System.out.println("|                                                                                                               |");
+        System.out.println("|         ----------------------      -----------------   -----------------      ----------------------         |");
+        System.out.println("|         |                    |      |               |   |               |      |                    |         |");
+        System.out.println("|         |                    |      |       P       |   |       P       |      |                    |         |");
+        System.out.println("|         |          P         |      |       S       |   |       S       |      |          P         |         |");        
+        System.out.println("|         |          S         |      |       1       |   |       1       |      |          S         |         |");
+        System.out.println("|         |          2         |      |               |   |               |      |          2         |         |");
+        System.out.println("|         |                    |      |               |   |               |      |                    |         |");        
+        System.out.println("|         ----------------------      -----------------   -----------------      ----------------------         |");
+        System.out.println("|                                                                                                               |");
+        System.out.println("|         ----------------------       ---------------     ---------------       ----------------------         |");
+        System.out.println("|         |                    |       |             |     |             |       |                    |         |");        
+        System.out.println("|         |          P         |       |      P      |     |      P      |       |          P         |         |");
+        System.out.println("|         |          S         |       |      S      |     |      S      |       |          S         |         |");        
+        System.out.println("|         |          4         |       |      3      |     |      3      |       |          4         |         |");       
+        System.out.println("|         |                    |       |             |     |             |       |                    |         |");
+        System.out.println("|         ----------------------       ---------------     ---------------       ----------------------         |");        
+        System.out.println("|                                                                                                               |");     
+        System.out.println("|_______________________________________________________________________________________________________________|");
+    }
+
+    
+    public static void displayVenue2() {        //Create Venue Layout Plan Method (Bukit Jalil National Stadium)
+        System.out.println("________________________________________________________________________________________________________________________________");
+        System.out.println("|                                                      | S  T  A  G  E  |                                                      |");        
+        System.out.println("|                                                      |________________|                                                      |");
+        System.out.println("|                                               ------  ------  ------  ------                                                 |");
+        System.out.println("|                                               | R  |  | R  |  | R  |  | R  |                                                 |");        
+        System.out.println("|                                    ------     | O  |  | O  |  | O  |  | O  |     ------                                      |");
+        System.out.println("|                                    | R  |     | C  |  | C  |  | C  |  | C  |     | R  |                                      |");
+        System.out.println("|                                    | O  |     | K  |  | K  |  | K  |  | K  |     | O  |                                      |");        
+        System.out.println("|                                    | C  |     |    |  |    |  |    |  |    |     | C  |                                      |");
+        System.out.println("|         ----------  ----------     | K  |     ------  ------  ------  ------     | K  |       ----------  ----------         |");
+        System.out.println("|         |  PS 4  |  |  PS 1  |     ------                                        ------       |  PS 1  |  |  PS 4  |         |");
+        System.out.println("|         |        |  |        |                ------  ------  ------  ------                  |        |  |        |         |");
+        System.out.println("|         ----------  ----------                | R  |  | R  |  | R  |  | R  |                  ----------  ----------         |");        
+        System.out.println("|         |  PS 4  |  |  PS 1  |     ------     | O  |  | O  |  | O  |  | O  |     ------       |  PS 1  |  |  PS 4  |         |");
+        System.out.println("|         |        |  |        |     | R  |     | C  |  | C  |  | C  |  | C  |     | R  |       |        |  |        |         |");
+        System.out.println("|         ----------  ----------     | O  |     | K  |  | K  |  | K  |  | K  |     | O  |       ----------  ----------         |");        
+        System.out.println("|         |  PS 4  |  |  PS 1  |     | C  |     |    |  |    |  |    |  |    |     | C  |       |  PS 1  |  |  PS 4  |         |");
+        System.out.println("|         |        |  |        |     | K  |     ------  ------  ------  ------     | K  |       |        |  |        |         |");
+        System.out.println("|         ----------  ----------     ------                                        ------       ----------  ----------         |");
+        System.out.println("|         |  PS 4  |  |  PS 2  |                    ------  ------  ------                      |  PS 2  |  |  PS 4  |         |");
+        System.out.println("|         |        |  |        |                    | V  |  | V  |  | V  |                      |        |  |        |         |");        
+        System.out.println("|         ----------  ----------     ------         | V  |  | V  |  | V  |         ------       ----------  ----------         |");
+        System.out.println("|         |  PS 5  |  |  PS 2  |     | V  |         | I  |  | I  |  | I  |         | V  |       |  PS 2  |  |  PS 5  |         |");
+        System.out.println("|         |        |  |        |     | V  |         | P  |  | P  |  | P  |         | V  |       |        |  |        |         |");        
+        System.out.println("|         ----------  ----------     | I  |         |    |  |    |  |    |         | I  |       ----------  ----------         |");
+        System.out.println("|         |  PS 5  |  |  PS 2  |     | P  |         ------  ------  ------         | P  |       |  PS 2  |  |  PS 5  |         |");
+        System.out.println("|         |        |  |        |     ------                                        ------       |        |  |        |         |");
+        System.out.println("|         ----------  ----------                                                                ----------  ----------         |");        
+        System.out.println("|         |  PS 5  |  |  PS 3  |                                                                |  PS 3  |  |  PS 5  |         |");
+        System.out.println("|         |        |  |        |                                                                |        |  |        |         |");        
+        System.out.println("|         ----------  ----------    ----------  ----------            ----------  ----------    ----------  ----------         |");       
+        System.out.println("|         |  PS 5  |  |  PS 3  |    |  PS 3  |  |  PS 3  |   E X I T  |  PS 3  |  |  PS 3  |    |  PS 3  |  |  PS 5  |         |");
+        System.out.println("|         |        |  |        |    |        |  |        |            |        |  |        |    |        |  |        |         |");        
+        System.out.println("|         ----------  ----------    ----------  ----------            ----------  ----------    ----------  ----------         |");     
+        System.out.println("|                                                                                                                              |");
+        System.out.println("|______________________________________________________________________________________________________________________________|");
+    }
+        
+    
+    public static void displayVenue3() {            //Create Venue Layout Plan Method (Zepp Kuala Lumpur)
+        System.out.println("_________________________________________________________________________________________________________________");
+        System.out.println("|                                               | S  T  A  G  E  |                                              |");        
+        System.out.println("|                                               |________________|                                              |");
+        System.out.println("|                                                                                                               |");
+        System.out.println("|                                                                                                               |");
+        System.out.println("|                                     -------------------------------------                                     |");
+        System.out.println("|                                     |                                   |                                     |");        
+        System.out.println("|                                     |                                   |                                     |");
+        System.out.println("|                                     |               V I P               |                                     |");
+        System.out.println("|                                     |                                   |                                     |");        
+        System.out.println("|                                     |         R O C K   Z O N E         |                                     |");
+        System.out.println("|         ----------------------      |                                   |      ----------------------         |");
+        System.out.println("|         |                    |      |                                   |      |                    |         |");
+        System.out.println("|         |      C A T 2       |      -------------------------------------      |      C A T 2       |         |");
+        System.out.println("|         |   PREMIUM PADDED   |                                                 |   PREMIUM PADDED   |         |");        
+        System.out.println("|         |        SEATS       |      -------------------------------------      |        SEATS       |         |");
+        System.out.println("|         |                    |      |                                   |      |                    |         |");
+        System.out.println("|         ----------------------      |                                   |      ----------------------         |");        
+        System.out.println("|                                     |              C A T 1              |                                     |");
+        System.out.println("|         ----------------------      |                                   |      ----------------------         |");
+        System.out.println("|         |                    |      |         R O C K   Z O N E         |      |                    |         |");
+        System.out.println("|         |      C A T 2       |      |                                   |      |      C A T 2       |         |");
+        System.out.println("|         |   PREMIUM PADDED   |      |                                   |      |   PREMIUM PADDED   |         |");        
+        System.out.println("|         |        SEATS       |      -------------------------------------      |        SEATS       |         |");
+        System.out.println("|         |                    |                                                 |                    |         |");
+        System.out.println("|         ----------------------      -------------------------------------      ----------------------         |");        
+        System.out.println("|                                     |                                   |                                     |");
+        System.out.println("|         ----------------------      |                                   |      ----------------------         |");
+        System.out.println("|         |                    |      |              C A T 2              |      |                    |         |");
+        System.out.println("|         |      C A T 3       |      |                                   |      |      C A T 3       |         |");        
+        System.out.println("|         | NON-PREMIUM PADDED |      |         R O C K   Z O N E         |      | NON-PREMIUM PADDED |         |");
+        System.out.println("|         |        SEATS       |      |                                   |      |        SEATS       |         |");        
+        System.out.println("|         |                    |      |                                   |      |                    |         |");       
+        System.out.println("|         ----------------------      -------------------------------------      ----------------------         |");
+        System.out.println("|                                                                                                               |");           
+        System.out.println("|_______________________________________________________________________________________________________________|");
+    }
+         
     // General Methods
-    public static void printCurrentDate() {
+    public static String getFormattedDateTime(LocalDateTime datetime) {
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd kk:mm ");
+        return datetime.format(format);
+    }
+    
+    public static String getCurrentDate() {
         LocalDate today = LocalDate.now();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         
         String formattedDate = today.format(format);
         
-        System.out.println(formattedDate);
+        return formattedDate;
     }
     
-    public static void printCurrentTime() {
+    public static String getCurrentTime() {
         LocalTime now = LocalTime.now();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("hh:mm a");
         
         String formattedTime = now.format(format);
         
-        System.out.println(formattedTime);
+        return formattedTime;
     }
     
     public static void clearScreen()  {
@@ -1048,10 +1231,6 @@ public class ConcertTicketingSystem {
 
         long lines = 0;
         try {
-
-            // much slower, this task better with sequence access
-            //lines = Files.lines(path).parallel().count();
-
             lines = Files.lines(path).count();
 
         } catch (IOException e) {
@@ -1059,5 +1238,20 @@ public class ConcertTicketingSystem {
         }
 
         return lines;
+    }
+    
+    public static boolean checkValidDate(String dateStr) {
+        DateTimeFormatter datetimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        
+        try {
+            LocalDate.parse(dateStr, datetimeFormatter);
+        }
+        catch (DateTimeParseException e) {
+            return false;
+        }
+        return true;
+    }
+    public static String centerString (int width, String s) {
+        return String.format("%-" + width  + "s", String.format("%" + (s.length() + (width - s.length()) / 2) + "s", s));
     }
 }
