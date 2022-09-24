@@ -58,9 +58,10 @@ public class ConcertTicketingSystem {
                     
                 case 3: // Buy Ticket
                     boolean isConfirmed = false;
+                    // Display Concert details in list table
+                    displayConcertList(concertList);
+                                            
                     while (!isConfirmed){
-                        displayConcertList(concertList);
-                        
                         System.out.print("Please Enter Your Preference Concert Show (1 - " + concertList.length + "): ");
                         int choice = sc.nextInt();
 
@@ -79,7 +80,7 @@ public class ConcertTicketingSystem {
 
                                 for(int i=0;i<venueList.length;i++){
                                     if(concertList[choice-1].getVenue().getName().equals(venueList[i].getName())){
-                                        displayVenue(venueList[i].getName());
+                                        displayVenue(venueList, venueList[i].getName());
                                         break;
                                     }
                                 }
@@ -97,15 +98,10 @@ public class ConcertTicketingSystem {
                             // Get user detail (username, password, accStatus)
                             // guest.registerAccount("username", "password", "accStatus");
                     }
-                       
-                        
-                        
-                            
+                           
                         // Display seat status(booked / empty) [table maybe]
                         // Ask for detail (no, ticketCat, etc.)
-                        // 
-                        
-//                        break;     
+                           
                 case 4: // Login/Register
                     System.out.println("Login\n");
                     
@@ -570,131 +566,8 @@ public class ConcertTicketingSystem {
         
         return usersList;
     }
+
     
-    public static Catalog createCatalog(Artist[] artistList, Concert[] concertList) {
-        Catalog catalog;
-        Map<String, Concert> concertTitles = new HashMap();
-        Map<String, Concert[]> concertArtists = new HashMap();
-        Map<String, Concert[]> concertLanguages = new HashMap();
-        Map<String, Concert[]> concertDates = new HashMap();
-        Map<String, Concert[]> concertVenues = new HashMap();
-        
-        // Get Current Date
-        LocalDate now = LocalDate.now();
-        
-        int concertValidCount = 0;
-        int languageValidCount = 0;
-        for(int i=0; i<concertList.length; i++) {
-            if(concertList[i] != null) {
-                concertValidCount++;
-                if(concertList[i].getLanguage() != null) {
-                    languageValidCount++;
-                }
-            }
-        }
-        
-        // Map for Concert Titles
-        Concert concertByTitle = null;
-        int titleCount = 0;
-        for(int j=0; j<concertList.length; j++) {
-            if(concertList[j] != null) {
-                for(int i=0; i<concertList.length; i++) {
-                    if(concertList[i] != null) {
-                        if(concertList[j].getName().toUpperCase().equals(concertList[i].getName().toUpperCase())) {
-                            concertByTitle = concertList[i];
-
-                            titleCount++;
-                        }
-                    }
-                }
-                concertTitles.put(concertList[j].getName(), concertByTitle);
-            } 
-        }
-        
-        // Map for Concert Artists
-        for(int j=0; j<artistList.length; j++) {
-            Concert[] concertByArtist = new Concert[concertValidCount];
-            int artistCount = 0;
-            
-            if(artistList[j] != null) {
-                for(int i=0; i<concertList.length; i++) {
-                    if(concertList[i] != null) {
-                        if(artistList[j].getName().toUpperCase().equals(concertList[i].getArtist().getName().toUpperCase())) {
-                            concertByArtist[artistCount] = concertList[i];
-                            
-                            artistCount++;
-                        }
-                    }
-                }
-                concertArtists.put(artistList[j].getName(), concertByArtist);
-            }
-        }   
-        
-        // Map for Concert Language
-        String[] languageList = {"Cantonese", "English", "Mandarin", "Korean"};
-        int languageCount = 0;
-        
-        for(int j=0; j<languageList.length; j++) {
-            Concert[] concertByLanguage = new Concert[1000];
-            
-            if(concertList[j] != null) {
-                for(int i=0; i<concertList.length; i++) {
-                    if(concertList[i] != null) {
-                        if(languageList[j].toUpperCase().equals(concertList[i].getLanguage().toUpperCase())) {
-                            concertByLanguage[languageCount] = concertList[i];
-                    
-                            languageCount++;
-                        }
-                    }
-                }
-                concertLanguages.put(languageList[j], concertByLanguage);
-            }
-        }
-        
-        // Map for Concert Date
-        Concert[] concertByDate = new Concert[concertValidCount];
-        int dateCount = 0;
-        for(int j=0; j<concertList.length; j++) {
-            if(concertList[j] != null) {
-                for(int i=0; i<concertList.length; i++) {
-                    if(concertList[i] != null) {
-                        if(concertList[j].getDatetime().equals(concertList[i].getDatetime())) {
-                            concertByDate[dateCount] = concertList[i];
-                            
-                            dateCount++;
-                        }
-                    }
-                }
-                concertDates.put(concertList[j].getDatetime().toString(), concertByDate);
-            }
-            
-        }
-        
-        // Map for Concert Venue
-        Concert[] concertByVenue = new Concert[1000];
-        int venueCount = 0;
-        for(int j=0; j<concertList.length; j++) {
-            if(concertList[j] != null) {
-                for(int i=0; i<concertList.length; i++) {
-                    if(concertList[i] != null) {
-                        if(concertList[j].getVenue().getName().toUpperCase().equals(concertList[i].getVenue().getName().toUpperCase())) {
-                            concertByVenue[venueCount] = concertList[i];
-                            
-                                    
-                            venueCount++;
-                        }
-                    }
-                }
-                concertVenues.put(concertList[j].getVenue().getName(), concertByVenue);
-            }
-        }
-        
-        // Create Catalog Object
-        catalog = new Catalog(now, concertTitles, concertArtists, concertLanguages, concertDates, concertVenues);
-        
-        return catalog;
-    }
-
     // Login Methods
     public static boolean Login() {
         Scanner sc = new Scanner(System.in);
@@ -1042,6 +915,7 @@ public class ConcertTicketingSystem {
         }
     }
     
+    
     //Buy Ticket Method
     public static void displayConcertList(Concert[] concertList){
     // Display Concert List
@@ -1054,19 +928,46 @@ public class ConcertTicketingSystem {
         }
     }
     
-    public static void displayVenue(String venueName){
-        switch (venueName){
-            case "Arena of Stars":
-                displayVenue1();
-                break;
+    public static void displayVenue(Venue[] venueList, String venueName){
+        String mapFileName = null;
+        
+        for(int i=0; i<venueList.length; i++) {
+            if(venueName.equals(venueList[i].getName())) {
+                mapFileName = "Map(" + venueList[i].getName() + ").txt";
+            }
+        }
+        
+//        switch (venueName){
+//            case "Arena of Stars":
+//                displayVenue1();
+//                break;
+//                
+//            case "Bukit Jalil National Stadium":
+//                displayVenue2();
+//                break;
+//                
+//            case "Zepp Kuala Lumpur":
+//                displayVenue3();
+//                break;
+//        }
+        
+                // Try-Catch get data from artist.txt
+        try {
+            File mapFile = new File(mapFileName);
+            Scanner fileScanner = new Scanner(mapFile);
+            String currentLine = fileScanner.nextLine();
+            
+            while (fileScanner.hasNextLine()) {
+                System.out.println(currentLine);
                 
-            case "Bukit Jalil National Stadium":
-                displayVenue2();
-                break;
-                
-            case "Zepp Kuala Lumpur":
-                displayVenue3();
-                break;
+                currentLine = fileScanner.nextLine();
+            }
+
+            System.out.println(currentLine);
+            
+            fileScanner.close();    // Close file    
+        } catch (FileNotFoundException ex) {
+            System.out.println("File does not exist!\n");
         }
     }
     
@@ -1110,7 +1011,6 @@ public class ConcertTicketingSystem {
         System.out.println("|_______________________________________________________________________________________________________________|");
     }
 
-    
     public static void displayVenue2() {        //Create Venue Layout Plan Method (Bukit Jalil National Stadium)
         System.out.println("________________________________________________________________________________________________________________________________");
         System.out.println("|                                                      | S  T  A  G  E  |                                                      |");        
@@ -1149,8 +1049,7 @@ public class ConcertTicketingSystem {
         System.out.println("|                                                                                                                              |");
         System.out.println("|______________________________________________________________________________________________________________________________|");
     }
-        
-    
+         
     public static void displayVenue3() {            //Create Venue Layout Plan Method (Zepp Kuala Lumpur)
         System.out.println("_________________________________________________________________________________________________________________");
         System.out.println("|                                               | S  T  A  G  E  |                                              |");        
@@ -1190,6 +1089,7 @@ public class ConcertTicketingSystem {
         System.out.println("|_______________________________________________________________________________________________________________|");
     }
          
+    
     // General Methods
     public static String getFormattedDateTime(LocalDateTime datetime) {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd kk:mm ");
