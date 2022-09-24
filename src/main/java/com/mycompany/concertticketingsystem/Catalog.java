@@ -29,11 +29,9 @@ public class Catalog implements Search {
 
 
     // Getters
-    public Map<String, Concert[]> getConcertLanguages() {
-        return concertLanguages;
-    }
-
+    
     // Setters
+    
     // Methods
     @Override
     public Concert[] searchByTitle(String title) {
@@ -51,17 +49,24 @@ public class Catalog implements Search {
         return matchedConcertList;
     }
     
-    public String[] getlanguageTitleList() {        
-        String[] languageTitleList = new String[concertLanguages.entrySet().toArray().length];
+    public String[] getlanguageList() {
+        String[] languageList = new String[concertLanguages.entrySet().toArray().length];
         int count = 0;
         
         for (Map.Entry pairEntry : concertLanguages.entrySet()) {
-            languageTitleList[count] = (String)pairEntry.getKey();
+            for(int i=0; i<languageList.length; i++) {
+                if(languageList[i] != null && pairEntry.getKey().toString().toUpperCase().equals(languageList[i].toUpperCase())) {
+                    
+                }
+                else {
+                    languageList[count] = (String) pairEntry.getKey();
 
-            count++;
+                    count++;
+                }
+            }
         }
         
-        return languageTitleList;
+        return languageList;
     }
 
     @Override
