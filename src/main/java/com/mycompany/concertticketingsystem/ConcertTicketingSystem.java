@@ -34,7 +34,7 @@ public class ConcertTicketingSystem {
         Artist[] artistList = initializeArtists();
         Venue[] venueList = initializeVenues();
         Concert[] concertList = initializeConcerts(artistList, venueList);
-        Person[][] userList = initializePerson();   // userList[0][] is Admin list, serList[1][] is Customer list
+        Person[][] userList = initializePerson();   // userList[0][] is Admin list, userList[1][] is Customer list
         
                
         // Welcome User
@@ -470,128 +470,7 @@ public class ConcertTicketingSystem {
         
         return concertList;
     }
-    
-        //Create Venue Layout Plan Method (Arena of Star)
-         public static void displayVenue1() {
-             System.out.println("_________________________________________________________________________________________________________________");
-            System.out.println("|                                               | S  T  A  G  E  |                                              |");        
-            System.out.println("|                                               |________________|                                              |");
-            System.out.println("|                                                                                                               |");
-            System.out.println("|         ----------------------                                                 ----------------------         |");
-            System.out.println("|         |                    |      -------- --------   -------- --------      |                    |         |");
-            System.out.println("|         |                    |      |      | |      |   |      | |      |      |                    |         |");        
-            System.out.println("|         |                    |      |      | |      |   |      | |      |      |                    |         |");
-            System.out.println("|         |                    |      |      | |      |   |      | |      |      |                    |         |");
-            System.out.println("|         |          P         |      |      | |      |   |      | |      |      |          P         |         |");        
-            System.out.println("|         |          S         |      |   V  | |   V  |   |  V   | |  V   |      |          S         |         |");
-            System.out.println("|         |          2         |      |   I  | |   I  |   |  I   | |  I   |      |          2         |         |");
-            System.out.println("|         |                    |      |   P  | |   P  |   |  P   | |  P   |      |                    |         |");
-            System.out.println("|         |                    |      |      | |      |   |      | |      |      |                    |         |");
-            System.out.println("|         |                    |      |      | |      |   |      | |      |      |                    |         |");        
-            System.out.println("|         |                    |      |      | |      |   |      | |      |      |                    |         |");
-            System.out.println("|         |                    |      |      | |      |   |      | |      |      |                    |         |");
-            System.out.println("|         ----------------------      -------- --------   -------- --------      ----------------------         |");        
-            System.out.println("|                                                                                                               |");
-            System.out.println("|         ----------------------      -----------------   -----------------      ----------------------         |");
-            System.out.println("|         |                    |      |               |   |               |      |                    |         |");
-            System.out.println("|         |                    |      |       P       |   |       P       |      |                    |         |");
-            System.out.println("|         |          P         |      |       S       |   |       S       |      |          P         |         |");        
-            System.out.println("|         |          S         |      |       1       |   |       1       |      |          S         |         |");
-            System.out.println("|         |          2         |      |               |   |               |      |          2         |         |");
-            System.out.println("|         |                    |      |               |   |               |      |                    |         |");        
-            System.out.println("|         ----------------------      -----------------   -----------------      ----------------------         |");
-            System.out.println("|                                                                                                               |");
-            System.out.println("|         ----------------------       ---------------     ---------------       ----------------------         |");
-            System.out.println("|         |                    |       |             |     |             |       |                    |         |");        
-            System.out.println("|         |          P         |       |      P      |     |      P      |       |          P         |         |");
-            System.out.println("|         |          S         |       |      S      |     |      S      |       |          S         |         |");        
-            System.out.println("|         |          4         |       |      3      |     |      3      |       |          4         |         |");       
-            System.out.println("|         |                    |       |             |     |             |       |                    |         |");
-            System.out.println("|         ----------------------       ---------------     ---------------       ----------------------         |");        
-            System.out.println("|                                                                                                               |");     
-            System.out.println("|_______________________________________________________________________________________________________________|");
-        }
-         
-        //Create Venue Layout Plan Method (Stadium Bukit Jalil)
-        public static void displayVenue2() {
-            System.out.println("________________________________________________________________________________________________________________________________");
-            System.out.println("|                                                      | S  T  A  G  E  |                                                      |");        
-            System.out.println("|                                                      |________________|                                                      |");
-            System.out.println("|                                               ------  ------  ------  ------                                                 |");
-            System.out.println("|                                               | R  |  | R  |  | R  |  | R  |                                                 |");        
-            System.out.println("|                                    ------     | O  |  | O  |  | O  |  | O  |     ------                                      |");
-            System.out.println("|                                    | R  |     | C  |  | C  |  | C  |  | C  |     | R  |                                      |");
-            System.out.println("|                                    | O  |     | K  |  | K  |  | K  |  | K  |     | O  |                                      |");        
-            System.out.println("|                                    | C  |     |    |  |    |  |    |  |    |     | C  |                                      |");
-            System.out.println("|         ----------  ----------     | K  |     ------  ------  ------  ------     | K  |       ----------  ----------         |");
-            System.out.println("|         |  PS 4  |  |  PS 1  |     ------                                        ------       |  PS 1  |  |  PS 4  |         |");
-            System.out.println("|         |        |  |        |                ------  ------  ------  ------                  |        |  |        |         |");
-            System.out.println("|         ----------  ----------                | R  |  | R  |  | R  |  | R  |                  ----------  ----------         |");        
-            System.out.println("|         |  PS 4  |  |  PS 1  |     ------     | O  |  | O  |  | O  |  | O  |     ------       |  PS 1  |  |  PS 4  |         |");
-            System.out.println("|         |        |  |        |     | R  |     | C  |  | C  |  | C  |  | C  |     | R  |       |        |  |        |         |");
-            System.out.println("|         ----------  ----------     | O  |     | K  |  | K  |  | K  |  | K  |     | O  |       ----------  ----------         |");        
-            System.out.println("|         |  PS 4  |  |  PS 1  |     | C  |     |    |  |    |  |    |  |    |     | C  |       |  PS 1  |  |  PS 4  |         |");
-            System.out.println("|         |        |  |        |     | K  |     ------  ------  ------  ------     | K  |       |        |  |        |         |");
-            System.out.println("|         ----------  ----------     ------                                        ------       ----------  ----------         |");
-            System.out.println("|         |  PS 4  |  |  PS 2  |                    ------  ------  ------                      |  PS 2  |  |  PS 4  |         |");
-            System.out.println("|         |        |  |        |                    | V  |  | V  |  | V  |                      |        |  |        |         |");        
-            System.out.println("|         ----------  ----------     ------         | V  |  | V  |  | V  |         ------       ----------  ----------         |");
-            System.out.println("|         |  PS 5  |  |  PS 2  |     | V  |         | I  |  | I  |  | I  |         | V  |       |  PS 2  |  |  PS 5  |         |");
-            System.out.println("|         |        |  |        |     | V  |         | P  |  | P  |  | P  |         | V  |       |        |  |        |         |");        
-            System.out.println("|         ----------  ----------     | I  |         |    |  |    |  |    |         | I  |       ----------  ----------         |");
-            System.out.println("|         |  PS 5  |  |  PS 2  |     | P  |         ------  ------  ------         | P  |       |  PS 2  |  |  PS 5  |         |");
-            System.out.println("|         |        |  |        |     ------                                        ------       |        |  |        |         |");
-            System.out.println("|         ----------  ----------                                                                ----------  ----------         |");        
-            System.out.println("|         |  PS 5  |  |  PS 3  |                                                                |  PS 3  |  |  PS 5  |         |");
-            System.out.println("|         |        |  |        |                                                                |        |  |        |         |");        
-            System.out.println("|         ----------  ----------    ----------  ----------            ----------  ----------    ----------  ----------         |");       
-            System.out.println("|         |  PS 5  |  |  PS 3  |    |  PS 3  |  |  PS 3  |   E X I T  |  PS 3  |  |  PS 3  |    |  PS 3  |  |  PS 5  |         |");
-            System.out.println("|         |        |  |        |    |        |  |        |            |        |  |        |    |        |  |        |         |");        
-            System.out.println("|         ----------  ----------    ----------  ----------            ----------  ----------    ----------  ----------         |");     
-            System.out.println("|                                                                                                                              |");
-            System.out.println("|______________________________________________________________________________________________________________________________|");
-        }
-        
-        //Create Venue Layout Plan Method (Zapp Kuala Lumpur)
-        public static void displayVenue3() {
-            System.out.println("_________________________________________________________________________________________________________________");
-            System.out.println("|                                               | S  T  A  G  E  |                                              |");        
-            System.out.println("|                                               |________________|                                              |");
-            System.out.println("|                                                                                                               |");
-            System.out.println("|                                                                                                               |");
-            System.out.println("|                                     -------------------------------------                                     |");
-            System.out.println("|                                     |                                   |                                     |");        
-            System.out.println("|                                     |                                   |                                     |");
-            System.out.println("|                                     |               V I P               |                                     |");
-            System.out.println("|                                     |                                   |                                     |");        
-            System.out.println("|                                     |         R O C K   Z O N E         |                                     |");
-            System.out.println("|         ----------------------      |                                   |      ----------------------         |");
-            System.out.println("|         |                    |      |                                   |      |                    |         |");
-            System.out.println("|         |      C A T 2       |      -------------------------------------      |      C A T 2       |         |");
-            System.out.println("|         |   PREMIUM PADDED   |                                                 |   PREMIUM PADDED   |         |");        
-            System.out.println("|         |        SEATS       |      -------------------------------------      |        SEATS       |         |");
-            System.out.println("|         |                    |      |                                   |      |                    |         |");
-            System.out.println("|         ----------------------      |                                   |      ----------------------         |");        
-            System.out.println("|                                     |              C A T 1              |                                     |");
-            System.out.println("|         ----------------------      |                                   |      ----------------------         |");
-            System.out.println("|         |                    |      |         R O C K   Z O N E         |      |                    |         |");
-            System.out.println("|         |      C A T 2       |      |                                   |      |      C A T 2       |         |");
-            System.out.println("|         |   PREMIUM PADDED   |      |                                   |      |   PREMIUM PADDED   |         |");        
-            System.out.println("|         |        SEATS       |      -------------------------------------      |        SEATS       |         |");
-            System.out.println("|         |                    |                                                 |                    |         |");
-            System.out.println("|         ----------------------      -------------------------------------      ----------------------         |");        
-            System.out.println("|                                     |                                   |                                     |");
-            System.out.println("|         ----------------------      |                                   |      ----------------------         |");
-            System.out.println("|         |                    |      |              C A T 2              |      |                    |         |");
-            System.out.println("|         |      C A T 3       |      |                                   |      |      C A T 3       |         |");        
-            System.out.println("|         | NON-PREMIUM PADDED |      |         R O C K   Z O N E         |      | NON-PREMIUM PADDED |         |");
-            System.out.println("|         |        SEATS       |      |                                   |      |        SEATS       |         |");        
-            System.out.println("|         |                    |      |                                   |      |                    |         |");       
-            System.out.println("|         ----------------------      -------------------------------------      ----------------------         |");
-            System.out.println("|                                                                                                               |");           
-            System.out.println("|_______________________________________________________________________________________________________________|");
-        }
-         
+     
     public static Person[][] initializePerson() {
         int fileLineNumber = (int)countFileLineNumber("user.txt");
         Person[][] usersList = null;   // Person[0][] is Admin users, Person[1][] is Customer users
@@ -970,6 +849,129 @@ public class ConcertTicketingSystem {
     }
     
     // Buy Ticket Methods
+    public static void displayVenue(String venueName) {
+        
+    }
+    // Create Venue Layout Plan Method (Arena of Star)
+    public static void displayVenue1() {
+         System.out.println("_________________________________________________________________________________________________________________");
+        System.out.println("|                                               | S  T  A  G  E  |                                              |");        
+        System.out.println("|                                               |________________|                                              |");
+        System.out.println("|                                                                                                               |");
+        System.out.println("|         ----------------------                                                 ----------------------         |");
+        System.out.println("|         |                    |      -------- --------   -------- --------      |                    |         |");
+        System.out.println("|         |                    |      |      | |      |   |      | |      |      |                    |         |");        
+        System.out.println("|         |                    |      |      | |      |   |      | |      |      |                    |         |");
+        System.out.println("|         |                    |      |      | |      |   |      | |      |      |                    |         |");
+        System.out.println("|         |          P         |      |      | |      |   |      | |      |      |          P         |         |");        
+        System.out.println("|         |          S         |      |   V  | |   V  |   |  V   | |  V   |      |          S         |         |");
+        System.out.println("|         |          2         |      |   I  | |   I  |   |  I   | |  I   |      |          2         |         |");
+        System.out.println("|         |                    |      |   P  | |   P  |   |  P   | |  P   |      |                    |         |");
+        System.out.println("|         |                    |      |      | |      |   |      | |      |      |                    |         |");
+        System.out.println("|         |                    |      |      | |      |   |      | |      |      |                    |         |");        
+        System.out.println("|         |                    |      |      | |      |   |      | |      |      |                    |         |");
+        System.out.println("|         |                    |      |      | |      |   |      | |      |      |                    |         |");
+        System.out.println("|         ----------------------      -------- --------   -------- --------      ----------------------         |");        
+        System.out.println("|                                                                                                               |");
+        System.out.println("|         ----------------------      -----------------   -----------------      ----------------------         |");
+        System.out.println("|         |                    |      |               |   |               |      |                    |         |");
+        System.out.println("|         |                    |      |       P       |   |       P       |      |                    |         |");
+        System.out.println("|         |          P         |      |       S       |   |       S       |      |          P         |         |");        
+        System.out.println("|         |          S         |      |       1       |   |       1       |      |          S         |         |");
+        System.out.println("|         |          2         |      |               |   |               |      |          2         |         |");
+        System.out.println("|         |                    |      |               |   |               |      |                    |         |");        
+        System.out.println("|         ----------------------      -----------------   -----------------      ----------------------         |");
+        System.out.println("|                                                                                                               |");
+        System.out.println("|         ----------------------       ---------------     ---------------       ----------------------         |");
+        System.out.println("|         |                    |       |             |     |             |       |                    |         |");        
+        System.out.println("|         |          P         |       |      P      |     |      P      |       |          P         |         |");
+        System.out.println("|         |          S         |       |      S      |     |      S      |       |          S         |         |");        
+        System.out.println("|         |          4         |       |      3      |     |      3      |       |          4         |         |");       
+        System.out.println("|         |                    |       |             |     |             |       |                    |         |");
+        System.out.println("|         ----------------------       ---------------     ---------------       ----------------------         |");        
+        System.out.println("|                                                                                                               |");     
+        System.out.println("|_______________________________________________________________________________________________________________|");
+    }
+
+    // Create Venue Layout Plan Method (Stadium Bukit Jalil)
+    public static void displayVenue2() {
+        System.out.println("________________________________________________________________________________________________________________________________");
+        System.out.println("|                                                      | S  T  A  G  E  |                                                      |");        
+        System.out.println("|                                                      |________________|                                                      |");
+        System.out.println("|                                               ------  ------  ------  ------                                                 |");
+        System.out.println("|                                               | R  |  | R  |  | R  |  | R  |                                                 |");        
+        System.out.println("|                                    ------     | O  |  | O  |  | O  |  | O  |     ------                                      |");
+        System.out.println("|                                    | R  |     | C  |  | C  |  | C  |  | C  |     | R  |                                      |");
+        System.out.println("|                                    | O  |     | K  |  | K  |  | K  |  | K  |     | O  |                                      |");        
+        System.out.println("|                                    | C  |     |    |  |    |  |    |  |    |     | C  |                                      |");
+        System.out.println("|         ----------  ----------     | K  |     ------  ------  ------  ------     | K  |       ----------  ----------         |");
+        System.out.println("|         |  PS 4  |  |  PS 1  |     ------                                        ------       |  PS 1  |  |  PS 4  |         |");
+        System.out.println("|         |        |  |        |                ------  ------  ------  ------                  |        |  |        |         |");
+        System.out.println("|         ----------  ----------                | R  |  | R  |  | R  |  | R  |                  ----------  ----------         |");        
+        System.out.println("|         |  PS 4  |  |  PS 1  |     ------     | O  |  | O  |  | O  |  | O  |     ------       |  PS 1  |  |  PS 4  |         |");
+        System.out.println("|         |        |  |        |     | R  |     | C  |  | C  |  | C  |  | C  |     | R  |       |        |  |        |         |");
+        System.out.println("|         ----------  ----------     | O  |     | K  |  | K  |  | K  |  | K  |     | O  |       ----------  ----------         |");        
+        System.out.println("|         |  PS 4  |  |  PS 1  |     | C  |     |    |  |    |  |    |  |    |     | C  |       |  PS 1  |  |  PS 4  |         |");
+        System.out.println("|         |        |  |        |     | K  |     ------  ------  ------  ------     | K  |       |        |  |        |         |");
+        System.out.println("|         ----------  ----------     ------                                        ------       ----------  ----------         |");
+        System.out.println("|         |  PS 4  |  |  PS 2  |                    ------  ------  ------                      |  PS 2  |  |  PS 4  |         |");
+        System.out.println("|         |        |  |        |                    | V  |  | V  |  | V  |                      |        |  |        |         |");        
+        System.out.println("|         ----------  ----------     ------         | V  |  | V  |  | V  |         ------       ----------  ----------         |");
+        System.out.println("|         |  PS 5  |  |  PS 2  |     | V  |         | I  |  | I  |  | I  |         | V  |       |  PS 2  |  |  PS 5  |         |");
+        System.out.println("|         |        |  |        |     | V  |         | P  |  | P  |  | P  |         | V  |       |        |  |        |         |");        
+        System.out.println("|         ----------  ----------     | I  |         |    |  |    |  |    |         | I  |       ----------  ----------         |");
+        System.out.println("|         |  PS 5  |  |  PS 2  |     | P  |         ------  ------  ------         | P  |       |  PS 2  |  |  PS 5  |         |");
+        System.out.println("|         |        |  |        |     ------                                        ------       |        |  |        |         |");
+        System.out.println("|         ----------  ----------                                                                ----------  ----------         |");        
+        System.out.println("|         |  PS 5  |  |  PS 3  |                                                                |  PS 3  |  |  PS 5  |         |");
+        System.out.println("|         |        |  |        |                                                                |        |  |        |         |");        
+        System.out.println("|         ----------  ----------    ----------  ----------            ----------  ----------    ----------  ----------         |");       
+        System.out.println("|         |  PS 5  |  |  PS 3  |    |  PS 3  |  |  PS 3  |   E X I T  |  PS 3  |  |  PS 3  |    |  PS 3  |  |  PS 5  |         |");
+        System.out.println("|         |        |  |        |    |        |  |        |            |        |  |        |    |        |  |        |         |");        
+        System.out.println("|         ----------  ----------    ----------  ----------            ----------  ----------    ----------  ----------         |");     
+        System.out.println("|                                                                                                                              |");
+        System.out.println("|______________________________________________________________________________________________________________________________|");
+    }
+
+    // Create Venue Layout Plan Method (Zapp Kuala Lumpur)
+    public static void displayVenue3() {
+        System.out.println("_________________________________________________________________________________________________________________");
+        System.out.println("|                                               | S  T  A  G  E  |                                              |");        
+        System.out.println("|                                               |________________|                                              |");
+        System.out.println("|                                                                                                               |");
+        System.out.println("|                                                                                                               |");
+        System.out.println("|                                     -------------------------------------                                     |");
+        System.out.println("|                                     |                                   |                                     |");        
+        System.out.println("|                                     |                                   |                                     |");
+        System.out.println("|                                     |               V I P               |                                     |");
+        System.out.println("|                                     |                                   |                                     |");        
+        System.out.println("|                                     |         R O C K   Z O N E         |                                     |");
+        System.out.println("|         ----------------------      |                                   |      ----------------------         |");
+        System.out.println("|         |                    |      |                                   |      |                    |         |");
+        System.out.println("|         |      C A T 2       |      -------------------------------------      |      C A T 2       |         |");
+        System.out.println("|         |   PREMIUM PADDED   |                                                 |   PREMIUM PADDED   |         |");        
+        System.out.println("|         |        SEATS       |      -------------------------------------      |        SEATS       |         |");
+        System.out.println("|         |                    |      |                                   |      |                    |         |");
+        System.out.println("|         ----------------------      |                                   |      ----------------------         |");        
+        System.out.println("|                                     |              C A T 1              |                                     |");
+        System.out.println("|         ----------------------      |                                   |      ----------------------         |");
+        System.out.println("|         |                    |      |         R O C K   Z O N E         |      |                    |         |");
+        System.out.println("|         |      C A T 2       |      |                                   |      |      C A T 2       |         |");
+        System.out.println("|         |   PREMIUM PADDED   |      |                                   |      |   PREMIUM PADDED   |         |");        
+        System.out.println("|         |        SEATS       |      -------------------------------------      |        SEATS       |         |");
+        System.out.println("|         |                    |                                                 |                    |         |");
+        System.out.println("|         ----------------------      -------------------------------------      ----------------------         |");        
+        System.out.println("|                                     |                                   |                                     |");
+        System.out.println("|         ----------------------      |                                   |      ----------------------         |");
+        System.out.println("|         |                    |      |              C A T 2              |      |                    |         |");
+        System.out.println("|         |      C A T 3       |      |                                   |      |      C A T 3       |         |");        
+        System.out.println("|         | NON-PREMIUM PADDED |      |         R O C K   Z O N E         |      | NON-PREMIUM PADDED |         |");
+        System.out.println("|         |        SEATS       |      |                                   |      |        SEATS       |         |");        
+        System.out.println("|         |                    |      |                                   |      |                    |         |");       
+        System.out.println("|         ----------------------      -------------------------------------      ----------------------         |");
+        System.out.println("|                                                                                                               |");           
+        System.out.println("|_______________________________________________________________________________________________________________|");
+    }
     
     // General Methods
     public static void printCurrentDate() {
@@ -1007,10 +1009,6 @@ public class ConcertTicketingSystem {
 
         long lines = 0;
         try {
-
-            // much slower, this task better with sequence access
-            //lines = Files.lines(path).parallel().count();
-
             lines = Files.lines(path).count();
 
         } catch (IOException e) {
