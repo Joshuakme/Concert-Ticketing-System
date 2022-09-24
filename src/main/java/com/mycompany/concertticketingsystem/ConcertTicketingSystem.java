@@ -996,6 +996,11 @@ public class ConcertTicketingSystem {
                     
                     isValidDate = true;
                 }
+                else {
+                    System.out.println("");
+                    System.err.println("We couldn't find a match for \"" + searchConcertDate + "\", Do you want to try another search?");
+                    System.out.println("");
+                }  
             }
             else {
                 System.out.println("");
