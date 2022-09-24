@@ -28,10 +28,33 @@ public class Catalog implements Search {
     }
 
 
+
     // Getters
+    public LocalDate getLastUpdated() {
+        return lastUpdated;
+    }
+    
     public Map<String, Concert[]> getConcertLanguages() {
         return concertLanguages;
     }
+
+    public Map<String, Concert> getConcertTitles() {
+        return concertTitles;
+    }
+
+    public Map<String, Concert[]> getConcertArtists() {
+        return concertArtists;
+    }
+
+    public Map<String, Concert[]> getConcertDates() {
+        return concertDates;
+    }
+
+    public Map<String, Concert[]> getConcertVenues() {
+        return concertVenues;
+    }
+    
+    
 
     // Setters
     // Methods
@@ -66,8 +89,6 @@ public class Catalog implements Search {
 
     @Override
     public Concert[] searchByLanguage(String language) {
-        
-        
        return concertLanguages.get(language);
     }
     
