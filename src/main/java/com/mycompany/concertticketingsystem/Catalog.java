@@ -28,10 +28,35 @@ public class Catalog implements Search {
     }
 
 
+
     // Getters
+    public LocalDate getLastUpdated() {
+        return lastUpdated;
+    }
     
+    public Map<String, Concert[]> getConcertLanguages() {
+        return concertLanguages;
+    }
+
+    public Map<String, Concert> getConcertTitles() {
+        return concertTitles;
+    }
+
+    public Map<String, Concert[]> getConcertArtists() {
+        return concertArtists;
+    }
+
+    public Map<String, Concert[]> getConcertDates() {
+        return concertDates;
+    }
+
+    public Map<String, Concert[]> getConcertVenues() {
+        return concertVenues;
+    }
+    
+    
+
     // Setters
-    
     // Methods
     @Override
     public Concert[] searchByTitle(String title) {
@@ -49,30 +74,21 @@ public class Catalog implements Search {
         return matchedConcertList;
     }
     
-    public String[] getlanguageList() {
-        String[] languageList = new String[concertLanguages.entrySet().toArray().length];
+    public String[] getlanguageTitleList() {        
+        String[] languageTitleList = new String[concertLanguages.entrySet().toArray().length];
         int count = 0;
         
         for (Map.Entry pairEntry : concertLanguages.entrySet()) {
-            for(int i=0; i<languageList.length; i++) {
-                if(languageList[i] != null && pairEntry.getKey().toString().toUpperCase().equals(languageList[i].toUpperCase())) {
-                    
-                }
-                else {
-                    languageList[count] = (String) pairEntry.getKey();
+            languageTitleList[count] = (String)pairEntry.getKey();
 
-                    count++;
-                }
-            }
+            count++;
         }
         
-        return languageList;
+        return languageTitleList;
     }
 
     @Override
     public Concert[] searchByLanguage(String language) {
-        
-        
        return concertLanguages.get(language);
     }
     
