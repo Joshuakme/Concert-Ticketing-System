@@ -13,20 +13,30 @@ import java.util.Date;
 public class TicketCat {
     private String description;
     private double price;
-    private Date startDate;
-    private Date endDate;
-    private String area;
 
     // Constructor
-    public TicketCat(String description, double price, Date startDate, Date endDate, String area) {
+    public TicketCat(String description, double price) {
         this.description = description;
         this.price = price;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.area = area;
     }
 
     // Getters
-    
+    public String getDescription() {
+        return description;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
     // Setters
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+    
+    
 }
