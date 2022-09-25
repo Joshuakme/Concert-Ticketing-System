@@ -19,21 +19,22 @@ public class Concert {
     private LocalDateTime datetime;
     private String language;
     private Venue venue;
-    private boolean isTrending;
+    private boolean trending;
 
-    // Constructor  
-    public Concert(String name, Artist artist, LocalDateTime datetime, String language, Venue venue, boolean isTrending) {
+    // Constructor
+    public Concert(String name, Artist artist, LocalDateTime datetime, String language, Venue venue,
+            boolean isTrending) {
         this.id = formatId(count);
         this.name = name;
         this.artist = artist;
         this.datetime = datetime;
         this.language = language;
         this.venue = venue;
-        this.isTrending = isTrending;
-        
-        count++;   
+        this.trending = isTrending;
+
+        count++;
     }
-    
+
     // Getters
     public String getId() {
         return id;
@@ -59,35 +60,33 @@ public class Concert {
         return venue;
     }
 
-    public boolean isIsTrending() {
-        return isTrending;
+    public boolean isTrending() {
+        return trending;
     }
 
-    
-    
     // Setters
-    
+
     // Methods
     private String formatId(int count) {
-        if(count < 10) 
+        if (count < 10)
             return "C000" + count;
-        else if(count >= 10 && count < 100) 
+        else if (count >= 10 && count < 100)
             return "C00" + count;
-        else if(count >= 100 && count < 1000) 
+        else if (count >= 100 && count < 1000)
             return "C0" + count;
-        else if(count >= 1000 && count < 10000)
+        else if (count >= 1000 && count < 10000)
             return "C" + count;
         return "";
     }
-    
+
     public void getShow() {
         // Codes Here
     }
-    
+
     public void displayAllDetail() {
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd, hh:mm a");
         // DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("hh:mm a");
-        
+
         System.out.println("Name: " + this.name);
         System.out.println("Artist: " + this.artist.getName());
         System.out.println("Language: " + this.language);

@@ -22,6 +22,8 @@ import java.util.Scanner;
  * @author Joshua Koh Min En, Shia Chai Fen, Wong Wei Hao
  */
 public class ConcertTicketingSystem {
+    static Scanner sc = new Scanner(System.in);
+
     /*
      * Description:
      * The Concert Ticketing System is focus on music concert ticket selling which
@@ -29,7 +31,6 @@ public class ConcertTicketingSystem {
      * are "Concerts", "Tickets", "Customers and orders".
      */
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
 
         // Global States
         boolean isLoggedIn = false;
@@ -48,16 +49,16 @@ public class ConcertTicketingSystem {
         while (!exit) {
             displayMainMenu();
             int menuChoice = Character.getNumericValue(sc.next().charAt(0));
+            System.out.println("");
 
             switch (menuChoice) {
                 case 1: // Search Concert
                     searchConcert(artistList, venueList, concertList);
                     break;
-
                 case 2: // View Trending
-                    System.out.println("View Trending");
-                    break;
 
+                    viewTrending(concertList);
+                    break;
                 case 3: // Buy Ticket
                     boolean isConfirmed = false;
                     // Display Concert details in list table
@@ -141,7 +142,6 @@ public class ConcertTicketingSystem {
 
         // Select
 
-        sc.close(); // Close scanner
     }
 
     // Methods & Functions
@@ -417,7 +417,7 @@ public class ConcertTicketingSystem {
                     }
                 }
                 // Concert isTrending
-                concertIsTrendingList[counter] = Boolean.getBoolean(concertDetails[5]);
+                concertIsTrendingList[counter] = Boolean.parseBoolean(concertDetails[5]);
 
                 currentLine = fileScanner.nextLine();
                 counter++;
@@ -446,7 +446,7 @@ public class ConcertTicketingSystem {
                 }
             }
             // Concert isTrending
-            concertIsTrendingList[counter] = Boolean.getBoolean(concertDetails[5]);
+            concertIsTrendingList[counter] = Boolean.parseBoolean(concertDetails[5]);
 
             fileScanner.close();
 
@@ -557,54 +557,8 @@ public class ConcertTicketingSystem {
         return usersList;
     }
 
-    // Login Methods (Wei Hao)
-    public static boolean Login() {
-        Scanner sc = new Scanner(System.in);
-
-        // Ask user Login Information
-        System.out.println("");
-        System.out.printf("%12s\n%12s\n", " Login Page ", "------------");
-        System.out.print("Username: ");
-        String inputUsername = sc.nextLine().trim();
-        System.out.print("Password: ");
-        String inputPwd = sc.nextLine().trim();
-
-        // Check Credentials
-        boolean isLogged = checkCredential(inputUsername, inputPwd);
-
-        if (isLogged) {
-            System.out.println("Welcome! You are logged in!\n");
-            sc.close(); // Close scanner
-            return true;
-        } else {
-            System.out.println("Incorrect credentials, please try again!\n");
-            sc.close(); // Close scanner
-            return false;
-        }
-    }
-
-    public static boolean checkCredential(String inputUsername, String inputPwd) {
-        // Login Credentials
-        String[] usernameList = { "taruc", "admin" };
-        String[] pwdList = { "taruc", "0000" };
-        boolean isEqual = false;
-
-        // Check Empty inputs
-        if (inputUsername.equals("") || inputPwd.equals(""))
-            return false;
-
-        for (int i = 0; i < usernameList.length; i++) {
-            if (inputUsername.equals(usernameList[i]) && inputPwd.equals(pwdList[i]))
-                isEqual = true;
-        }
-
-        return isEqual;
-    }
-
-    // Search Concert Methods (Joshua)
+    // 1. Search Concert Methods (Joshua)
     public static void searchConcert(Artist[] artistList, Venue[] venueList, Concert[] concertList) {
-        Scanner sc = new Scanner(System.in);
-
         // Create catalog
         Catalog catalog = createCatalog(artistList, venueList, concertList);
 
@@ -686,12 +640,9 @@ public class ConcertTicketingSystem {
 
         if (!isEqual)
             System.err.println("Concert Not Found");
-
-        sc.close(); // Close scanner
     }
 
     public static void searchConcertName(Catalog catalog) {
-        Scanner sc = new Scanner(System.in);
         List<Concert> searchResult = new ArrayList<>();
 
         // Get Search Name (Concert)
@@ -746,11 +697,9 @@ public class ConcertTicketingSystem {
         // Press anything to continue
         blankInput();
         System.out.println("");
-        sc.close(); // Close scanner
     }
 
     public static void searchConcertLang(Catalog catalog) {
-        Scanner sc = new Scanner(System.in);
         List<Concert> searchResult = null;
 
         // Get Search Language (Concert)
@@ -793,11 +742,9 @@ public class ConcertTicketingSystem {
 
         // Press anything to continue
         blankInput();
-        sc.close(); // Close scanner
     }
 
     public static void searchConcertDate(Catalog catalog) {
-        Scanner sc = new Scanner(System.in);
         List<Concert> searchResult = new ArrayList<>();
 
         // Get user input for search language
@@ -834,7 +781,6 @@ public class ConcertTicketingSystem {
                 System.out.println("");
             }
         }
-        sc.close(); // Close scanner
     }
 
     public static void searchConcertArtist(Catalog catalog) {
@@ -879,15 +825,75 @@ public class ConcertTicketingSystem {
 
     public static void displayConcertTitle(List<Concert> concertList) {
         for (int i = 0; i < concertList.size(); i++) {
-            if (concertList.get(i) != null) {
-                System.out.print((i + 1) + ". ");
-                System.out.println(concertList.get(i).getName());
-                System.out.println("");
+            System.out.print((i + 1) + ". ");
+            System.out.println(concertList.get(i).getName());
+        }
+        System.out.println("");
+    }
+
+    // 2. View Trending Methods (Joshua)
+    public static void viewTrending(Concert[] concertList) {
+        System.out.println("View Trending");
+        List<Concert> featuredConcerts = getFeaturedConcert(concertList); // Load Featured Concerts
+        displayConcertTitle(featuredConcerts);
+
+        // Ask user to display detail or not
+        boolean isValidChoice = false;
+
+        if (featuredConcerts.size() != 0) {
+            while (!isValidChoice) {
+                System.out.print("Do you want to display detail of the concert?(Y/N): ");
+                char searchDisplayAllChoice = sc.next().toUpperCase().charAt(0);
+                // System.out.println("");
+
+                switch (searchDisplayAllChoice) {
+                    case 'Y':
+                        isValidChoice = true;
+
+                        boolean isValidNo = false;
+                        while (!isValidNo) {
+                            System.out.print("Enter Concert No.: ");
+                            int concertDetailChoice = Character.getNumericValue(sc.next().charAt(0));
+
+                            // Display selected concert
+                            if (concertDetailChoice > 0 && concertDetailChoice <= featuredConcerts.size()) {
+                                System.out.println("");
+                                System.out.println("*Concert Detail*");
+                                featuredConcerts.get(concertDetailChoice - 1).displayAllDetail();
+
+                                isValidNo = true;
+                            } else {
+                                System.err.println("Invalid number");
+                                System.out.println("");
+                            }
+                        }
+                        break;
+                    case 'N':
+                        isValidChoice = true;
+                        break;
+                    default:
+                        System.out.println("Invalid character!");
+                }
             }
+        } else {
+            System.err.println("Sorry, no featured concerts found.");
+            System.out.println("");
         }
     }
 
-    // Buy Ticket Method (Tiffany)
+    public static List<Concert> getFeaturedConcert(Concert[] concertList) {
+        List<Concert> featuredConcerts = new ArrayList<>();
+
+        // Get Featured Concerts List
+        for (int i = 0; i < concertList.length; i++) {
+            if (concertList[i].isTrending()) {
+                featuredConcerts.add(concertList[i]);
+            }
+        }
+        return featuredConcerts;
+    }
+
+    // 3. Buy Ticket Methods (Tiffany)
     public static void displayConcertList(Concert[] concertList) {
         // Display Concert List
         System.out.println(
@@ -934,6 +940,50 @@ public class ConcertTicketingSystem {
         }
     }
 
+    // 4. Login Methods (Wei Hao)
+    public static boolean Login() {
+        Scanner sc = new Scanner(System.in);
+
+        // Ask user Login Information
+        System.out.println("");
+        System.out.printf("%12s\n%12s\n", " Login Page ", "------------");
+        System.out.print("Username: ");
+        String inputUsername = sc.nextLine().trim();
+        System.out.print("Password: ");
+        String inputPwd = sc.nextLine().trim();
+
+        // Check Credentials
+        boolean isLogged = checkCredential(inputUsername, inputPwd);
+
+        if (isLogged) {
+            System.out.println("Welcome! You are logged in!\n");
+            sc.close(); // Close scanner
+            return true;
+        } else {
+            System.out.println("Incorrect credentials, please try again!\n");
+            sc.close(); // Close scanner
+            return false;
+        }
+    }
+
+    public static boolean checkCredential(String inputUsername, String inputPwd) {
+        // Login Credentials
+        String[] usernameList = { "taruc", "admin" };
+        String[] pwdList = { "taruc", "0000" };
+        boolean isEqual = false;
+
+        // Check Empty inputs
+        if (inputUsername.equals("") || inputPwd.equals(""))
+            return false;
+
+        for (int i = 0; i < usernameList.length; i++) {
+            if (inputUsername.equals(usernameList[i]) && inputPwd.equals(pwdList[i]))
+                isEqual = true;
+        }
+
+        return isEqual;
+    }
+
     // General Methods
     public static String formatDateTime(LocalDateTime datetime, String datetimeFormat) {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd kk:mm");
@@ -964,12 +1014,8 @@ public class ConcertTicketingSystem {
     }
 
     public static void blankInput() {
-        Scanner sc = new Scanner(System.in);
-
         System.out.print("Press any key to continue...");
         sc.nextLine();
-
-        sc.close(); // Close scanner
     }
 
     public static long countFileLineNumber(String fileName) {
