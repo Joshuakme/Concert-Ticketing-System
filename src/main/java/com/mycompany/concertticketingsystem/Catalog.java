@@ -1,6 +1,5 @@
 package com.mycompany.concertticketingsystem;
 
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +19,9 @@ public class Catalog implements Search {
     private Map<String, List<Concert>> concertVenues;
 
     // Constructor
-    public Catalog(LocalDate lastUpdated, Map<String, List<Concert>> concertTitles, Map<String, List<Concert>> concertArtists, Map<String, List<Concert>> concertLanguages, Map<String, List<Concert>> concertDates, Map<String, List<Concert>> concertVenues) {
+    public Catalog(LocalDate lastUpdated, Map<String, List<Concert>> concertTitles,
+            Map<String, List<Concert>> concertArtists, Map<String, List<Concert>> concertLanguages,
+            Map<String, List<Concert>> concertDates, Map<String, List<Concert>> concertVenues) {
         this.lastUpdated = lastUpdated;
         this.concertTitles = concertTitles;
         this.concertArtists = concertArtists;
@@ -28,9 +29,6 @@ public class Catalog implements Search {
         this.concertDates = concertDates;
         this.concertVenues = concertVenues;
     }
-
-
-
 
     // Getters
     public LocalDate getLastUpdated() {
@@ -57,7 +55,6 @@ public class Catalog implements Search {
         return concertVenues;
     }
 
-    
     // Setters
     public void setLastUpdated(LocalDate lastUpdated) {
         this.lastUpdated = lastUpdated;
@@ -83,33 +80,31 @@ public class Catalog implements Search {
         this.concertVenues = concertVenues;
     }
 
-
-    
     // Methods
     @Override
     public List<Concert> searchByTitle(String title) {
         List<Concert> matchedConcertList = new ArrayList<>();
-        
-        for (Map.Entry pairEntry : concertTitles.entrySet()) {
-            if(pairEntry.getKey().toString().toUpperCase().contains(title.toUpperCase())) {
+
+        for (Map.Entry<String, List<Concert>> pairEntry : concertTitles.entrySet()) {
+            if (pairEntry.getKey().toString().toUpperCase().contains(title.toUpperCase())) {
                 Concert concertList = (Concert) pairEntry.getValue();
                 matchedConcertList.add(concertList);
             }
         }
-        
+
         return matchedConcertList;
     }
-    
-    public String[] getlanguageTitleList() {        
+
+    public String[] getlanguageTitleList() {
         String[] languageTitleList = new String[concertLanguages.entrySet().toArray().length];
         int count = 0;
-        
-        for (Map.Entry pairEntry : concertLanguages.entrySet()) {
-            languageTitleList[count] = (String)pairEntry.getKey();
+
+        for (Map.Entry<String, List<Concert>> pairEntry : concertLanguages.entrySet()) {
+            languageTitleList[count] = (String) pairEntry.getKey();
 
             count++;
         }
-        
+
         return languageTitleList;
     }
 
@@ -132,13 +127,13 @@ public class Catalog implements Search {
     public List<Concert> searchByVenue(String venue) {
         return concertVenues.get(venue);
     }
- 
+
     @Override
     public String toString() {
         return this.concertDates + "\n" +
-               this.concertLanguages + "\n" + 
-               this.concertTitles + "\n" + 
-               this.concertVenues;
+                this.concertLanguages + "\n" +
+                this.concertTitles + "\n" +
+                this.concertVenues;
     }
 
 }
