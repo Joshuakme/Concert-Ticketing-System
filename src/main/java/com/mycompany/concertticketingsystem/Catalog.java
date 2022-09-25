@@ -1,7 +1,8 @@
 package com.mycompany.concertticketingsystem;
 
-
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -11,14 +12,16 @@ import java.util.Map;
 public class Catalog implements Search {
     // Map<key, value> variableName;
     private LocalDate lastUpdated;
-    private Map<String, Concert> concertTitles;
-    private Map<String, Concert[]> concertArtists;
-    private Map<String, Concert[]> concertLanguages;
-    private Map<String, Concert[]> concertDates;
-    private Map<String, Concert[]> concertVenues;
+    private Map<String, List<Concert>> concertTitles;
+    private Map<String, List<Concert>> concertArtists;
+    private Map<String, List<Concert>> concertLanguages;
+    private Map<String, List<Concert>> concertDates;
+    private Map<String, List<Concert>> concertVenues;
 
     // Constructor
-    public Catalog(LocalDate lastUpdated, Map<String, Concert> concertTitles, Map<String, Concert[]> concertArtists, Map<String, Concert[]> concertLanguages, Map<String, Concert[]> concertDates, Map<String, Concert[]> concertVenues) {
+    public Catalog(LocalDate lastUpdated, Map<String, List<Concert>> concertTitles,
+            Map<String, List<Concert>> concertArtists, Map<String, List<Concert>> concertLanguages,
+            Map<String, List<Concert>> concertDates, Map<String, List<Concert>> concertVenues) {
         this.lastUpdated = lastUpdated;
         this.concertTitles = concertTitles;
         this.concertArtists = concertArtists;
@@ -27,91 +30,110 @@ public class Catalog implements Search {
         this.concertVenues = concertVenues;
     }
 
-
-
     // Getters
     public LocalDate getLastUpdated() {
         return lastUpdated;
     }
-    
-    public Map<String, Concert[]> getConcertLanguages() {
-        return concertLanguages;
-    }
 
-    public Map<String, Concert> getConcertTitles() {
+    public Map<String, List<Concert>> getConcertTitles() {
         return concertTitles;
     }
 
-    public Map<String, Concert[]> getConcertArtists() {
+    public Map<String, List<Concert>> getConcertArtists() {
         return concertArtists;
     }
 
-    public Map<String, Concert[]> getConcertDates() {
+    public Map<String, List<Concert>> getConcertLanguages() {
+        return concertLanguages;
+    }
+
+    public Map<String, List<Concert>> getConcertDates() {
         return concertDates;
     }
 
-    public Map<String, Concert[]> getConcertVenues() {
+    public Map<String, List<Concert>> getConcertVenues() {
         return concertVenues;
     }
-    
-    
 
     // Setters
+    public void setLastUpdated(LocalDate lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
+
+    public void setConcertTitles(Map<String, List<Concert>> concertTitles) {
+        this.concertTitles = concertTitles;
+    }
+
+    public void setConcertArtists(Map<String, List<Concert>> concertArtists) {
+        this.concertArtists = concertArtists;
+    }
+
+    public void setConcertLanguages(Map<String, List<Concert>> concertLanguages) {
+        this.concertLanguages = concertLanguages;
+    }
+
+    public void setConcertDates(Map<String, List<Concert>> concertDates) {
+        this.concertDates = concertDates;
+    }
+
+    public void setConcertVenues(Map<String, List<Concert>> concertVenues) {
+        this.concertVenues = concertVenues;
+    }
+
     // Methods
     @Override
-    public Concert[] searchByTitle(String title) {
-        Concert[] matchedConcertList = new Concert[concertTitles.entrySet().toArray().length];
-        int count = 0;
-        
-        for (Map.Entry pairEntry : concertTitles.entrySet()) {
-            if(pairEntry.getKey().toString().toUpperCase().contains(title.toUpperCase())) {
-                matchedConcertList[count] = (Concert)pairEntry.getValue();
-                
-                count++;
+    public List<Concert> searchByTitle(String title) {
+        List<Concert> matchedConcertList = new ArrayList<>();
+
+        for (Map.Entry<String, List<Concert>> pairEntry : concertTitles.entrySet()) {
+            if (pairEntry.getKey().toString().toUpperCase().contains(title.toUpperCase())) {
+                Concert concertList = (Concert) pairEntry.getValue();
+                matchedConcertList.add(concertList);
             }
         }
-        
+
         return matchedConcertList;
     }
-    
-    public String[] getlanguageTitleList() {        
+
+    public String[] getlanguageTitleList() {
         String[] languageTitleList = new String[concertLanguages.entrySet().toArray().length];
         int count = 0;
-        
-        for (Map.Entry pairEntry : concertLanguages.entrySet()) {
-            languageTitleList[count] = (String)pairEntry.getKey();
+
+        for (Map.Entry<String, List<Concert>> pairEntry : concertLanguages.entrySet()) {
+            languageTitleList[count] = (String) pairEntry.getKey();
 
             count++;
         }
-        
+
         return languageTitleList;
     }
 
     @Override
-    public Concert[] searchByLanguage(String language) {
-       return concertLanguages.get(language);
-    }
-    
-    @Override
-    public Concert[] searchByDate(String date) {
-       return concertDates.get(date);
+    public List<Concert> searchByLanguage(String language) {
+        return concertLanguages.get(language);
     }
 
     @Override
-    public Concert[] searchByArtist(String artist) {
+    public List<Concert> searchByDate(String date) {
+        return concertDates.get(date);
+    }
+
+    @Override
+    public List<Concert> searchByArtist(String artist) {
         return concertArtists.get(artist);
     }
 
     @Override
-    public Concert[] searchByVenue(String venue) {
+    public List<Concert> searchByVenue(String venue) {
         return concertVenues.get(venue);
     }
-    
+
     @Override
     public String toString() {
         return this.concertDates + "\n" +
-               this.concertLanguages + "\n" + 
-               this.concertTitles + "\n" + 
-               this.concertVenues;
+                this.concertLanguages + "\n" +
+                this.concertTitles + "\n" +
+                this.concertVenues;
     }
+
 }
