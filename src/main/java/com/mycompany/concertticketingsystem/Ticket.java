@@ -7,10 +7,9 @@ import java.util.Date;
  * @author Joshua Koh
  */
 public class Ticket {
-    private String serielNo;
+    private String serialNo;
     private String concertId;
-    private TicketCat ticketCategory;
-    private String seat;
+    private ShowSeat seat;
     private Date purchaseDate;
 
     // Constructor

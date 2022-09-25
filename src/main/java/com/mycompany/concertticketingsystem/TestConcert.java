@@ -18,35 +18,15 @@ public class TestConcert {
     public static void main(String[] args) {
 //        // Object Initialization
 //        Artist[] artistList = initializeArtists();
-//        Venue[] venueList = initializeVenues();
+          Venue[] venueList = initializeVenues();
 //        Concert[] concertList = initializeConcerts(artistList, venueList);
 //        Person[][] userList = initializePerson();   // userList[0][] is Admin list, serList[1][] is Customer list
-//       
+        initializeCategory(venueList);
 //      
 //        // Create catalog
 //        Catalog catalog = createCatalog(artistList, venueList, concertList);
         
-        
-        // Try-Catch get data from artist.txt
-        try {
-            File mapFile = new File("Map(Arena of Stars).txt");
-            Scanner fileScanner = new Scanner(mapFile);
-            String currentLine = fileScanner.nextLine();
-            
-            while (fileScanner.hasNextLine()) {
-                System.out.println(currentLine);
-                
-                currentLine = fileScanner.nextLine();
-            }
-
-            System.out.println(currentLine);
-            
-            fileScanner.close();    // Close file
-            
-        } catch (FileNotFoundException ex) {
-            System.out.println("File does not exist!\n");
-        }
-
+ 
 
 
         
@@ -450,6 +430,143 @@ public class TestConcert {
         // Create Catalog Object
         catalog = new Catalog(now, concertTitles, concertArtists, concertLanguages, concertDates, concertVenues);
         
-        return catalog;
+        return catalog;  
     }
+    
+        public static ShowSeatCat[][] initializeCategory(Venue[] venueList){
+        int fileLineNumber = (int) countFileLineNumber("category_seat.txt");
+        String[] categorySeatList = new String[fileLineNumber];
+        String nameVenue = null;
+        int venueCount = 0;
+        int previousVenueIndex = 0;
+        ShowSeatCat[] catAOS = null;
+        ShowSeatCat[] catBJNS = null;
+        ShowSeatCat[] catZKL = null;
+        
+       // Try-Catch get data from artist.txt
+            try {
+            File concertCategoryFile = new File("category_seat.txt");
+            Scanner fileScanner = new Scanner(concertCategoryFile);
+            String currentLine = fileScanner.nextLine();
+
+            while (fileScanner.hasNextLine()) {
+                categorySeatList = currentLine.split(";");
+
+                nameVenue = categorySeatList[0];
+                for(int i=0;i<venueList.length;i++){
+                    
+                    if(nameVenue.equals(venueList[i].getName())){           //Compare with the Venue Name to find the vnenue count
+                        if(i != previousVenueIndex){                        //Check whether the venue is equal to the previous row
+                            if(nameVenue.equals("Arena of Stars"))
+                                catAOS = new ShowSeatCat[venueCount];
+                            else if(nameVenue.equals("Bukit Jalil National Stadium"))
+                                catBJNS = new ShowSeatCat[venueCount];
+                            else if (nameVenue.equals("Zepp Kuala Lumpur"))
+                                catZKL = new ShowSeatCat[venueCount];
+                            venueCount = 0;                                 //If there is not equal then reset the venue count
+                        }
+                        venueCount++;
+                        previousVenueIndex = i;
+                        break;
+                    }
+                }
+                currentLine = fileScanner.nextLine();
+            }
+            
+                 nameVenue = categorySeatList[0];
+                for(int i=0;i<venueList.length;i++){
+                    
+                    if(nameVenue.equals(venueList[i].getName())){           //Compare with the Venue Name to find the vnenue count
+                        if(i != previousVenueIndex){                        //Check whether the venue is equal to the previous row
+                            if(nameVenue.equals("Arena of Stars"))
+                                catAOS = new ShowSeatCat[venueCount];
+                            else if(nameVenue.equals("Bukit Jalil National Stadium"))
+                                catBJNS = new ShowSeatCat[venueCount];
+                            else if (nameVenue.equals("Zepp Kuala Lumpur"))
+                                catZKL = new ShowSeatCat[venueCount];
+                            venueCount = 0;                                 //If there is not equal then reset the venue count
+                        }
+                        venueCount++;
+                        previousVenueIndex = i;
+                        break;
+                    }
+                }
+                                
+            //Read Data to create ShowSeatCat Object
+            String[] catVenueNameList = new String[fileLineNumber];
+            String[] catDescpNameList = new String[fileLineNumber];
+            int[] catCapacityList = new int[fileLineNumber];
+            double[] catPriceList = new double[fileLineNumber];
+            int count = 0;
+            
+            // Try-Catch get data from artist.txt           
+            try {
+                concertCategoryFile = new File("category_seat.txt");
+                fileScanner = new Scanner(concertCategoryFile);
+                currentLine = fileScanner.nextLine();
+
+                while (fileScanner.hasNextLine()) {
+                    categorySeatList = currentLine.split(";");
+                
+                    catVenueNameList[count] = categorySeatList[0];
+                    catDescpNameList[count] = categorySeatList[1];
+                    catCapacityList[count] = Integer.valueOf(categorySeatList[2]);
+                    catPriceList[count] = Double.valueOf(categorySeatList[3]);
+                    count++;
+
+                    currentLine = fileScanner.nextLine();
+                }
+
+                categorySeatList = currentLine.split(";");
+
+                    catVenueNameList[count] = categorySeatList[0];
+                    catDescpNameList[count] = categorySeatList[1];
+                    catCapacityList[count] = Integer.valueOf(categorySeatList[2]);
+                    catPriceList[count] = Double.valueOf(categorySeatList[3]);   
+
+                fileScanner.close();
+            
+
+            }catch (FileNotFoundException ex) {
+            System.out.println("File does not exist!\n");
+            }
+            
+        } catch (FileNotFoundException ex) {
+            System.out.println("File does not exist!\n");
+        } 
+        
+        for(int i = 0; i<catVenueNameList.length;i++){
+
+        for(int j = 0; j<catDescpNameList.length;j++){
+            if(catVenueNameList[i].equals("Arena of Stars")){
+                 catAOS[j] = new ShowSeatCat(catDescpNameList[j], catCapacityList[j], catPriceList[j]);
+            }
+            else if(catVenueNameList[i].equals("Bukit Jalil NAtional Stadium")){
+                 catBJNS[j] = new ShowSeatCat(catDescpNameList[j], catCapacityList[j], catPriceList[j]);
+            }
+            else if(catVenueNameList[i].equals("Zepp Kuala Lumpur")){
+                 catZKL[j] = new ShowSeatCat(catDescpNameList[j], catCapacityList[j], catPriceList[j]);
+            }
+        }    
+    }
+            
+       ShowSeatCat[][] catList = {catAOS,catBJNS,catZKL};
+       return catList;
+//        
+//        
+//        
+//        
+//        
+//        
+//        
+//        // Variables
+//        String[] artistDetails;
+//        int counter = 0;
+//        String[] venueNameList = new String[fileLineNumber];
+//        String[] artistLanguageList = new String[fileLineNumber];
+//        String[] artistGenreList = new String[fileLineNumber];
+
+        
+        }
+
 }
