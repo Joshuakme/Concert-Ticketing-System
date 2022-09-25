@@ -36,7 +36,6 @@ public class TestConcert {
         for (int i = 0; i < concertList.length; i++) {
             System.out.println(concertList[i].isTrending());
         }
-
     }
 
     public static Catalog createCatalog(Artist[] artistList, Venue[] venueList, Concert[] concertList) {

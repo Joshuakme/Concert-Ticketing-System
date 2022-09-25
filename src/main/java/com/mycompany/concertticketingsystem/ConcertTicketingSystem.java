@@ -1,5 +1,6 @@
 package com.mycompany.concertticketingsystem;
 
+// Imports
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -18,18 +19,19 @@ import java.util.Map;
 import java.util.Scanner;
 
 /**
- *
  * @author Joshua Koh Min En, Shia Chai Fen, Wong Wei Hao
  */
-public class ConcertTicketingSystem {
-    static Scanner sc = new Scanner(System.in);
 
+public class ConcertTicketingSystem {
     /*
      * Description:
      * The Concert Ticketing System is focus on music concert ticket selling which
      * will be held in Malaysia, so it is basically divided into 3 main parts which
      * are "Concerts", "Tickets", "Customers and orders".
      */
+
+    static Scanner sc = new Scanner(System.in);
+
     public static void main(String[] args) {
 
         // Global States
@@ -56,7 +58,6 @@ public class ConcertTicketingSystem {
                     searchConcert(artistList, venueList, concertList);
                     break;
                 case 2: // View Trending
-
                     viewTrending(concertList);
                     break;
                 case 3: // Buy Ticket
@@ -77,7 +78,7 @@ public class ConcertTicketingSystem {
 
                         else if (choice > 0 && choice <= concertList.length) {
                             isConfirmed = true;
-                            System.out.println("Are you sure? (Y for yes, N for no): ");
+                            System.out.print("Are you sure? (Y for yes, N for no): ");
                             char confirmation = sc.next().toUpperCase().charAt(0);
                             if (confirmation == 'Y') {
                                 concertList[choice - 1].getVenue().getName();
@@ -93,10 +94,11 @@ public class ConcertTicketingSystem {
                     }
 
                     // Check Login Status
+                    // Jump to Login Section
                     if (!isLoggedIn) {
                         System.out.println("You are not signed in. Please sign in before buy ticket.");
 
-                        if (Login())
+                        if (login())
                             isLoggedIn = true;
 
                         // Get user detail (username, password, accStatus)
@@ -109,15 +111,8 @@ public class ConcertTicketingSystem {
                 case 4: // Login/Register
                     System.out.println("Login\n");
 
-                    // Remember to use userList[][] (Line 37) to check credentials
-
-                    // Login/Register
-
-                    // Menu
-
-                    // User input username & password
-
-                    //
+                    loginRegister(); // Login/Register
+                    break;
                 case 5: // Other
                     System.out.println("Other");
 
@@ -130,7 +125,7 @@ public class ConcertTicketingSystem {
                     // Cancel order
 
                     //
-
+                    break;
                 case 6: // Exit
                     exit = true;
                     System.out.println("Successfully Exited");
@@ -941,7 +936,30 @@ public class ConcertTicketingSystem {
     }
 
     // 4. Login Methods (Wei Hao)
-    public static boolean Login() {
+    public static void loginRegister() {
+        // Remember to use userList[][] (Line 37) to check credentials
+
+        // Menu
+
+        // LOGIN
+        // User input username & password
+        // Check if username & pwd correct or not
+        // isLoggedIn(Line 38) = true; (indicate user status is logged in)
+
+        // REGISTER
+        /*
+         * User input username & password
+         * Check if username & pwd exist in "user.txt" or not
+         */
+        // if exist, -> ask to retype
+        /*
+         * if not, -> register
+         * write into user.txt
+         * isLoggedIn(Line 38) = true; (indicate user status is logged in)
+         */
+    }
+
+    public static boolean login() {
         Scanner sc = new Scanner(System.in);
 
         // Ask user Login Information
