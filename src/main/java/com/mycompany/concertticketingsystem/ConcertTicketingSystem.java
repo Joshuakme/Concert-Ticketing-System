@@ -982,7 +982,7 @@ public class ConcertTicketingSystem {
             System.out.println("|----|---------------------------------------------|-------------|");
         }
         System.out.print("Please Enter Your Preference Seat (1 - " + catBJS.length+ "): ");
-        int catChoice1 = sc.nextInt();
+        int catChoice2 = sc.nextInt();
     }
 
     //Choose Category Seat at Venue 3
@@ -1003,7 +1003,7 @@ public class ConcertTicketingSystem {
             System.out.println("|----|---------------------------------------------|-------------|");
         }
         System.out.print("Please Enter Your Preference Seat (1 - " + catZKL.length+ "): ");
-        int catChoice1 = sc.nextInt();
+        int catChoice3 = sc.nextInt();
     }
 
     // 4. Login Methods (Wei Hao)
