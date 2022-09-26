@@ -4,24 +4,19 @@
  */
 package com.mycompany.concertticketingsystem;
 
-
-import java.util.Date;
-
 /**
  *
- * @author Joshua Koh
+ * @author Tiffany
  */
-public class TicketCat {
+public class VenueSeatCat {
     private String description;
-    private double price;
-
-    // Constructor
-    public TicketCat(String description, double price, Date startDate, Date endDate, String area) {
-        this.description = description;
-        this.price = price;
-    }
-
-    // Getters
+    private int catCapapcity;
     
-    // Setters
+
+    public VenueSeatCat(String description, int catCapapcity) {
+        this.description = description;
+        this.catCapapcity = catCapapcity;
+    }
+    
+    
 }
