@@ -9,8 +9,8 @@ import java.time.LocalDate;
 public class Admin extends Person {
     
     // Constructor   
-    public Admin(Account account, String firstName, String lastName, String address, String email, String phone, LocalDate joinedDate) {
-        super(account, firstName, lastName, address, email, phone, joinedDate);
+    public Admin(Account account, String firstName, String lastName, String address, String email, String phone) {
+        super(account, firstName, lastName, address, email, phone);
     }
    
     // Getters
