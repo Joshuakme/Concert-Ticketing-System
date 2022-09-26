@@ -20,34 +20,18 @@ public class TestConcert {
 //        Artist[] artistList = initializeArtists();
 //        Venue[] venueList = initializeVenues();
 //        Concert[] concertList = initializeConcerts(artistList, venueList);
-//        Person[][] userList = initializePerson();   // userList[0][] is Admin list, serList[1][] is Customer list
+       Person[][] userList = initializePerson();   // userList[0][] is Admin list, serList[1][] is Customer list
 //       
 //      
 //        // Create catalog
 //        Catalog catalog = createCatalog(artistList, venueList, concertList);
         
-        
-        // Try-Catch get data from artist.txt
-        try {
-            File mapFile = new File("Map(Arena of Stars).txt");
-            Scanner fileScanner = new Scanner(mapFile);
-            String currentLine = fileScanner.nextLine();
-            
-            while (fileScanner.hasNextLine()) {
-                System.out.println(currentLine);
-                
-                currentLine = fileScanner.nextLine();
-            }
-
-            System.out.println(currentLine);
-            
-            fileScanner.close();    // Close file
-            
-        } catch (FileNotFoundException ex) {
-            System.out.println("File does not exist!\n");
-        }
-
-
+        System.out.print(userList[1][1].getFirstName());
+//        for(int i = 0; i < userList.length; i++){           
+//            for(int j=0; j < userList[i].length;j++){
+//                System.out.print(userList[i][j]);}
+//
+//        }
 
         
     }

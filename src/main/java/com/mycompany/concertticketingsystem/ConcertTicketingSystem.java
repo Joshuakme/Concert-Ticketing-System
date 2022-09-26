@@ -45,7 +45,7 @@ public class ConcertTicketingSystem {
         boolean exit = false;
         while(!exit) {
             displayMenu();
-            int menuChoice = Character.getNumericValue(sc.next().charAt(0));
+            int menuChoice = Character.getNumericValue(sc.nextLine().charAt(0));
             
             switch(menuChoice) {
                 case 1: // Search Concert
@@ -103,7 +103,64 @@ public class ConcertTicketingSystem {
                         // Ask for detail (no, ticketCat, etc.)
                            
                 case 4: // Login/Register
-                    System.out.println("Login\n");
+                    System.out.println("---------");
+                    System.out.println("| Login |");
+                    System.out.println("---------\n");
+                    Person user = null;
+                    
+                    System.out.println("Are you a new user?(Y/N)");
+                    char isNewUser = Character.valueOf(sc.nextLine().charAt(0));
+                    
+                    if(isNewUser == 'n' || isNewUser == 'N'){
+                        System.out.println("Login\n");
+                        System.out.print("Enter your username: ");
+                        String username = sc.nextLine();
+                        System.out.print("Enter your password: ");
+                        String password = sc.nextLine();
+
+                        for(int i = 0; i < userList.length; i++)                      
+                            for(int j=0; j < userList[i].length;j++){
+                                System.out.print(userList[i][j]);
+                                if(username.equals(userList[i][j].getAccount().getUsername()))
+                                    if(password.equals( userList[i][j].getAccount().getPassword()))
+                                        if (i == 0)
+                                            {user = (Admin)userList[i][j];
+                                            System.out.println("Login succesfully as an admin");
+                                            isLoggedIn = true;}                                   
+                                        else if (i == 1)
+                                            {user = (Customer)userList[i][j];
+                                            System.out.println("Login succesfully as a customer");
+                                            isLoggedIn = true;}
+                                        break;
+                                        }
+                    }
+                    
+                    else if(isNewUser == 'y' || isNewUser == 'Y'){
+                        System.out.println("-----------");
+                        System.out.println("| Register |");
+                        System.out.println("-----------\n");
+                        System.out.print("Enter your first name: ");
+                        String firstName = sc.nextLine();
+                        System.out.print("Enter your last name: ");
+                        String lastName = sc.nextLine();
+                        System.out.print("Enter your prefered username: ");
+                        String newUsername = sc.nextLine();
+                        System.out.print("Enter your prefered password: ");
+                        String newPassword = sc.nextLine();
+                        System.out.print("Enter your phone number: ");
+                        String phone = sc.nextLine();
+                        System.out.print("Enter your email: ");
+                        String email = sc.nextLine();
+
+                        Customer newUser = new Customer(new Account(newUsername, newPassword, AccountStatus.ACTIVE),firstName, lastName, "", phone, email);
+                        isLoggedIn = true;
+                        
+                        System.out.println("Welcome: " + newUser.getAccount().getUsername());
+                    }
+                    
+                    else
+                        System.out.println("Invalid character, only Y/N is acceptable\n");
+                    break;
                     
                     // Remember to use userList[][] (Line 37) to check credentials
                     
@@ -550,7 +607,7 @@ public class ConcertTicketingSystem {
                     for (int j = 0; j < accStatusLength; j++) {
                         if (accStatus[i].toUpperCase().equals(AccountStatus.values()[j].toString())) {
                             accountStatus = AccountStatus.valueOf(accStatus[i].toUpperCase());
-                            customerList[i] = new Customer(new Account(username[i], password[i], accountStatus), userFirstName[i], userLastName[i], userAddress[i], userEmail[i], userPhoneNum[i], userJoinedDate[i]);
+                            customerList[i] = new Customer(new Account(username[i], password[i], accountStatus), userFirstName[i], userLastName[i], userAddress[i], userEmail[i], userPhoneNum[i]);
                         }
                     }
                 }

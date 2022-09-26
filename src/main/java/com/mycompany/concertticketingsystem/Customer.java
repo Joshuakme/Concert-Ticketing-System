@@ -10,22 +10,13 @@ import java.time.LocalDate;
 public class Customer extends Person {
     
     // Constructor
-    public Customer(Account account, String firstName, String lastName, String address, String email, String phone, LocalDate joinedDate) {
-        super(account, firstName, lastName, address, email, phone, joinedDate);
+    public Customer(Account account, String firstName, String lastName, String address, String email, String phone) {
+        super(account, firstName, lastName, address, email, phone);
     }
-        
-    
 
     // Getters
-    
     // Setters
-    
     // Methods
-    private LocalDate getCurrentDate() {
-        LocalDate now = LocalDate.now();
-        
-        return now;
-    }
     
     private boolean buyTicket() {
         boolean isSuccessful = false;
