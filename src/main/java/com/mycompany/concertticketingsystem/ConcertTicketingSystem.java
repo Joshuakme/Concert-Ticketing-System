@@ -107,29 +107,108 @@ public class ConcertTicketingSystem {
                     // Ask for detail (no, ticketCat, etc.)
 
                 case 4: // Login/Register
-                    System.out.println("Login\n");
+                    System.out.println("---------");
+                    System.out.println("| Login |");
+                    System.out.println("---------\n");
+                    Person user = null;
 
-                    // Remember to use userList[][] (Line 37) to check credentials
+                    System.out.println("Are you a new user?(Y/N)");
+                    char isNewUser = Character.valueOf(sc.nextLine().charAt(0));
 
-                    // Login/Register
+                    if (isNewUser == 'n' || isNewUser == 'N') {
+                        System.out.println("Login\n");
+                        System.out.print("Enter your username: ");
+                        String username = sc.nextLine();
+                        System.out.print("Enter your password: ");
+                        String password = sc.nextLine();
 
-                    // Menu
+                        for (int i = 0; i < userList.length; i++)
+                            for (int j = 0; j < userList[i].length; j++) {
+                                System.out.print(userList[i][j]);
+                                if (username.equals(userList[i][j].getAccount().getUsername()))
+                                    if (password.equals(userList[i][j].getAccount().getPassword()))
+                                        if (i == 0) {
+                                            user = (Admin) userList[i][j];
+                                            System.out.println("Login succesfully as an admin");
+                                            isLoggedIn = true;
+                                        } else if (i == 1) {
+                                            user = (Customer) userList[i][j];
+                                            System.out.println("Login succesfully as a customer");
+                                            isLoggedIn = true;
+                                        }
+                                break;
+                            }
+                    }
 
-                    // User input username & password
+                    else if (isNewUser == 'y' || isNewUser == 'Y') {
+                        System.out.println("-----------");
+                        System.out.println("| Register |");
+                        System.out.println("-----------\n");
+                        System.out.print("Enter your first name: ");
+                        String firstName = sc.nextLine();
+                        System.out.print("Enter your last name: ");
+                        String lastName = sc.nextLine();
+                        System.out.print("Enter your prefered username: ");
+                        String newUsername = sc.nextLine();
+                        System.out.print("Enter your prefered password: ");
+                        String newPassword = sc.nextLine();
+                        System.out.print("Enter your phone number: ");
+                        String phone = sc.nextLine();
+                        System.out.print("Enter your email: ");
+                        String email = sc.nextLine();
 
-                    //
+                        Customer newUser = new Customer(new Account(newUsername, newPassword, AccountStatus.ACTIVE),
+                                firstName, lastName, "", phone, email);
+                        isLoggedIn = true;
+
+                        System.out.println("Welcome: " + newUser.getAccount().getUsername());
+                    }
+
+                    else
+                        System.out.println("Invalid character, only Y/N is acceptable\n");
+                    break;
+
+                // Remember to use userList[][] (Line 37) to check credentials
+
+                // Login/Register
+
+                // Menu
+
+                // User input username & password
+
+                //
                 case 5: // Other
-                    System.out.println("Other");
+                    Order order = new Order("O001", 2, LocalDate.now(), OrderStatus.PENDING,
+                            new Ticket("T001", "C001", "S001", LocalDate.now()));
 
-                    // Code Here
+                    System.out.println("---------");
+                    System.out.println("| Other |");
+                    System.out.println("---------");
+                    boolean quit = false;
+                    while (!quit) {
+                        System.out.println("1.Change Order");
+                        System.out.println("2.View Order");
+                        System.out.println("3.Cancel Order");
+                        System.out.println("4.Exit");
+                        System.out.println("Select your option:(1/2/3/4)");
 
-                    // Change Order
+                        int otherChoice = sc.nextInt();
+                        System.out.println("");
 
-                    // View Order
-
-                    // Cancel order
-
-                    //
+                        if (otherChoice == 1) {
+                            // Change Order
+                        } else if (otherChoice == 2) {
+                            // View Order
+                            order.displayOrder();
+                        } else if (otherChoice == 3) {
+                            // Cancel order
+                            order.cancelOrder();
+                        } else if (otherChoice == 4) {
+                            // exit
+                            quit = true;
+                        } else
+                            System.out.println("Invalid option");
+                    }
 
                 case 6: // Exit
                     exit = true;
@@ -540,8 +619,7 @@ public class ConcertTicketingSystem {
                         if (accStatus[i].toUpperCase().equals(AccountStatus.values()[j].toString())) {
                             accountStatus = AccountStatus.valueOf(accStatus[i].toUpperCase());
                             customerList[i] = new Customer(new Account(username[i], password[i], accountStatus),
-                                    userFirstName[i], userLastName[i], userAddress[i], userEmail[i], userPhoneNum[i],
-                                    userJoinedDate[i]);
+                                    userFirstName[i], userLastName[i], userAddress[i], userEmail[i], userPhoneNum[i]);
                         }
                     }
                 }
@@ -650,7 +728,7 @@ public class ConcertTicketingSystem {
         String searchConcertName = sc.nextLine();
         System.out.println("");
 
-//        searchResult = catalog.searchByTitle(searchConcertName);
+        // searchResult = catalog.searchByTitle(searchConcertName);
 
         // Display the Concerts
         if (searchResult != null) {
@@ -735,7 +813,7 @@ public class ConcertTicketingSystem {
             }
         }
 
-//        searchResult = catalog.searchByLanguage(searchConcertLanguage);
+        // searchResult = catalog.searchByLanguage(searchConcertLanguage);
 
         // Display the Concerts
         displayConcert(searchResult);
@@ -759,7 +837,7 @@ public class ConcertTicketingSystem {
 
             if (checkValidDate(searchConcertDate)) {
                 // Get search result from Catalog
-//                searchResult = catalog.searchByDate(searchConcertDate);
+                searchResult = catalog.searchByDate(searchConcertDate);
 
                 if (searchResult != null) {
                     // Display the Concerts
@@ -880,18 +958,18 @@ public class ConcertTicketingSystem {
             System.out.println("");
         }
     }
-//
-//    public static List<Concert> getFeaturedConcert(Concert[] concertList) {
-//        List<Concert> featuredConcerts = new ArrayList<>();
-//
-//        // Get Featured Concerts List
-//        for (int i = 0; i < concertList.length; i++) {
-//            if (concertList[i].isTrending()) {
-//                featuredConcerts.add(concertList[i]);
-//            }
-//        }
-//        return featuredConcerts;
-//    }
+
+    public static List<Concert> getFeaturedConcert(Concert[] concertList) {
+        List<Concert> featuredConcerts = new ArrayList<>();
+
+        // Get Featured Concerts List
+        for (int i = 0; i < concertList.length; i++) {
+            if (concertList[i].isTrending()) {
+                featuredConcerts.add(concertList[i]);
+            }
+        }
+        return featuredConcerts;
+    }
 
     // 3. Buy Ticket Methods (Tiffany)
     public static void displayConcertList(Concert[] concertList) {
@@ -940,82 +1018,88 @@ public class ConcertTicketingSystem {
         }
     }
 
-//    //Choose Category Seat at Venue 1
-//    public static void PriceVenue1(){
-//        ShowSeat[] catAOS = {
-//            new ShowSeat(" VIP ", 888.00),
-//            new ShowSeat(" PS 1 ", 788.00),
-//            new ShowSeat(" PS 2 ", 588.00),
-//            new ShowSeat(" PS 3 ", 488.00),
-//            new ShowSeat(" PS 4 ", 588.00),
-//        };
-//        
-//        System.out.println("------------------------------------------------------------------");
-//        System.out.println("| NO |                 CATEGORY                    |    PRICE    |");
-//        System.out.println("|----|---------------------------------------------|-------------|");
-//        for(int i =0; i<catAOS.length;i++){
-//            System.out.printf("| %2d | %10s | %10s |\n", (i+1), centerString(10,catAOS[i].getDescription()),centerString(10,Double.toString(catAOS[i].getPrice())));
-//            System.out.println("|----|---------------------------------------------|-------------|");
-//        }
-//        System.out.print("Please Enter Your Preference Seat (1 - " + catAOS.length+ "): ");
-//        int catChoice1 = sc.nextInt();
-//    }
-//    
-//    //Choose Category Seat at Venue 2
-//    public static void PriceVenue2(){
-//        Scanner sc = new Scanner(System.in);
-//        ShowSeat[] catBJS = {
-//            new ShowSeat(" Rock Zone ", 1088.00),
-//            new ShowSeat(" VVIP ", 988.00),
-//            new ShowSeat(" PS 1 ", 888.00),
-//            new ShowSeat(" PS 2 ", 788.00),
-//            new ShowSeat(" PS 3 ", 688.00),
-//            new ShowSeat(" PS 4 (LV.2) ", 588.00),
-//            new ShowSeat(" PS 5 (LV.2) ", 388.00)
-//        };
-//        
-//        System.out.println("-----------------------------------------------------------------------");
-//        System.out.println("| NO |                 CATEGORY                         |    PRICE    |");
-//        System.out.println("|----|--------------------------------------------------|-------------|");
-//        for(int i =0; i<catBJS.length;i++){
-//            System.out.printf("| %2d | %11s | %10s |\n", (i+1), centerString(11,catBJS[i].getDescription()),centerString(10,Double.toString(catBJS[i].getPrice())));
-//            System.out.println("|----|---------------------------------------------|-------------|");
-//        }
-//        System.out.print("Please Enter Your Preference Seat (1 - " + catBJS.length+ "): ");
-//        int catChoice2 = sc.nextInt();
-//    }
-//
-//    //Choose Category Seat at Venue 3
-//    public static void PriceVenue3(){
-//        Scanner sc = new Scanner(System.in);
-//        ShowSeatCat[] catZKL = {
-//            new ShowSeatCat(" VIP (Rock Zone) ", 1028.00),
-//            new TicketCat(" CAT 1 (Rock Zone) ", 968.00),
-//            new TicketCat(" CAT 2 (Rock Zone) ", 888.00),
-//            new TicketCat(" CAT 2 (Premium Padded Seat) ", 788.00),
-//            new TicketCat(" CAT 3 (Non-Premium Padded Seat) ", 488.00)
-//        };
-//        System.out.println("---------------------------------------------------------------------------------");
-//        System.out.println("| NO |                      CATEGORY                              |    PRICE    |");
-//        System.out.println("|----|------------------------------------------------------------|-------------|");
-//        for(int i =0; i<catZKL.length;i++){
-//            System.out.printf("| %2d | %32s | %10s |\n", (i+1), centerString(32,catZKL[i].getDescription()),centerString(10,Double.toString(catZKL[i].getPrice())));
-//            System.out.println("|----|---------------------------------------------|-------------|");
-//        }
-//        System.out.print("Please Enter Your Preference Seat (1 - " + catZKL.length+ "): ");
-//        int catChoice3 = sc.nextInt();
-//    }
-//    
-    //Initialize Category
-    public static ShowSeatCat initializeCategory(Venue[] venueList){
+    // //Choose Category Seat at Venue 1
+    // public static void PriceVenue1(){
+    // ShowSeat[] catAOS = {
+    // new ShowSeat(" VIP ", 888.00),
+    // new ShowSeat(" PS 1 ", 788.00),
+    // new ShowSeat(" PS 2 ", 588.00),
+    // new ShowSeat(" PS 3 ", 488.00),
+    // new ShowSeat(" PS 4 ", 588.00),
+    // };
+    //
+    // System.out.println("------------------------------------------------------------------");
+    // System.out.println("| NO | CATEGORY | PRICE |");
+    // System.out.println("|----|---------------------------------------------|-------------|");
+    // for(int i =0; i<catAOS.length;i++){
+    // System.out.printf("| %2d | %10s | %10s |\n", (i+1),
+    // centerString(10,catAOS[i].getDescription()),centerString(10,Double.toString(catAOS[i].getPrice())));
+    // System.out.println("|----|---------------------------------------------|-------------|");
+    // }
+    // System.out.print("Please Enter Your Preference Seat (1 - " + catAOS.length+
+    // "): ");
+    // int catChoice1 = sc.nextInt();
+    // }
+    //
+    // //Choose Category Seat at Venue 2
+    // public static void PriceVenue2(){
+    // Scanner sc = new Scanner(System.in);
+    // ShowSeat[] catBJS = {
+    // new ShowSeat(" Rock Zone ", 1088.00),
+    // new ShowSeat(" VVIP ", 988.00),
+    // new ShowSeat(" PS 1 ", 888.00),
+    // new ShowSeat(" PS 2 ", 788.00),
+    // new ShowSeat(" PS 3 ", 688.00),
+    // new ShowSeat(" PS 4 (LV.2) ", 588.00),
+    // new ShowSeat(" PS 5 (LV.2) ", 388.00)
+    // };
+    //
+    // System.out.println("-----------------------------------------------------------------------");
+    // System.out.println("| NO | CATEGORY | PRICE |");
+    // System.out.println("|----|--------------------------------------------------|-------------|");
+    // for(int i =0; i<catBJS.length;i++){
+    // System.out.printf("| %2d | %11s | %10s |\n", (i+1),
+    // centerString(11,catBJS[i].getDescription()),centerString(10,Double.toString(catBJS[i].getPrice())));
+    // System.out.println("|----|---------------------------------------------|-------------|");
+    // }
+    // System.out.print("Please Enter Your Preference Seat (1 - " + catBJS.length+
+    // "): ");
+    // int catChoice2 = sc.nextInt();
+    // }
+    //
+    // //Choose Category Seat at Venue 3
+    // public static void PriceVenue3(){
+    // Scanner sc = new Scanner(System.in);
+    // ShowSeatCat[] catZKL = {
+    // new ShowSeatCat(" VIP (Rock Zone) ", 1028.00),
+    // new TicketCat(" CAT 1 (Rock Zone) ", 968.00),
+    // new TicketCat(" CAT 2 (Rock Zone) ", 888.00),
+    // new TicketCat(" CAT 2 (Premium Padded Seat) ", 788.00),
+    // new TicketCat(" CAT 3 (Non-Premium Padded Seat) ", 488.00)
+    // };
+    // System.out.println("---------------------------------------------------------------------------------");
+    // System.out.println("| NO | CATEGORY | PRICE |");
+    // System.out.println("|----|------------------------------------------------------------|-------------|");
+    // for(int i =0; i<catZKL.length;i++){
+    // System.out.printf("| %2d | %32s | %10s |\n", (i+1),
+    // centerString(32,catZKL[i].getDescription()),centerString(10,Double.toString(catZKL[i].getPrice())));
+    // System.out.println("|----|---------------------------------------------|-------------|");
+    // }
+    // System.out.print("Please Enter Your Preference Seat (1 - " + catZKL.length+
+    // "): ");
+    // int catChoice3 = sc.nextInt();
+    // }
+    //
+    // Initialize Category
+    public static void initializeCategory(Venue[] venueList) { // return ShowSeatCat
         int fileLineNumber = (int) countFileLineNumber("category_seat.txt");
         String[] categorySeatList = new String[fileLineNumber];
         String nameVenue = null;
         int venueCount = 0;
         int currentVenueIndex = 0;
-        
-       // Try-Catch get data from artist.txt
-            try {
+
+        // Try-Catch get data from artist.txt
+        try {
             File concertCategoryFile = new File("category_seat.txt");
             Scanner fileScanner = new Scanner(concertCategoryFile);
             String currentLine = fileScanner.nextLine();
@@ -1024,49 +1108,48 @@ public class ConcertTicketingSystem {
                 categorySeatList = currentLine.split(";");
 
                 nameVenue = categorySeatList[0];
-                for(int i=0;i<venueList.length;i++){
-                    if(currentVenueIndex != i){
+                for (int i = 0; i < venueList.length; i++) {
+                    if (currentVenueIndex != i) {
                         System.out.println(venueCount);
                         venueCount = 0;
                     }
-                    if(nameVenue.equals(venueList[i].getName())){
+                    if (nameVenue.equals(venueList[i].getName())) {
                         venueCount++;
                         currentVenueIndex = i;
                     }
                 }
-        
+
                 currentLine = fileScanner.nextLine();
             }
 
-//            artistDetails = currentLine.split("\t");
-//
-//            artistNameList[counter] = artistDetails[0];
-//            artistLanguageList[counter] = artistDetails[1];
-//            artistGenreList[counter] = artistDetails[2];
-//
+            // artistDetails = currentLine.split("\t");
+            //
+            // artistNameList[counter] = artistDetails[0];
+            // artistLanguageList[counter] = artistDetails[1];
+            // artistGenreList[counter] = artistDetails[2];
+            //
             fileScanner.close();
-//
+            //
         } catch (FileNotFoundException ex) {
             System.out.println("File does not exist!\n");
-        } 
-//        
-//        
-//        
-//        
-//        
-//        
-//        
-//        
-//        // Variables
-//        String[] artistDetails;
-//        int counter = 0;
-//        String[] venueNameList = new String[fileLineNumber];
-//        String[] artistLanguageList = new String[fileLineNumber];
-//        String[] artistGenreList = new String[fileLineNumber];
+        }
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        // // Variables
+        // String[] artistDetails;
+        // int counter = 0;
+        // String[] venueNameList = new String[fileLineNumber];
+        // String[] artistLanguageList = new String[fileLineNumber];
+        // String[] artistGenreList = new String[fileLineNumber];
 
-        
     }
-    
+
     // 4. Login Methods (Wei Hao)
     public static boolean Login() {
         Scanner sc = new Scanner(System.in);
