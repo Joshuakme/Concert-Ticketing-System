@@ -86,13 +86,35 @@ public class Order  {
     }
 
     public void displayOrder() {
-        System.out.println("----------------------------------");
-        System.out.println("Your Order Number: "+ orderNumber );
-        System.out.println("Seats booked: " + numberOfSeats);
-        System.out.println("Date purchased: " + createdOn );
-        System.out.println("Current tickets status: " + status );
-        System.out.println("----------------------------------");
-        
+        if (status != OrderStatus.CANCELED){
+            System.out.println("Order Details");
+            System.out.println("----------------------------------");
+            System.out.println();
+            System.out.println("Your Order Number: "+ orderNumber );
+            System.out.println("Seats booked: " + numberOfSeats);
+            System.out.println("Date purchased: " + createdOn );
+            System.out.println("Current tickets status: " + status );
+            System.out.println();
+            System.out.println("----------------------------------");
+            System.out.println("");
+            System.out.println("Concert Details");
+            System.out.println("----------------------------------");
+            System.out.println();
+            ticket.concert.displayAllDetail();
+            System.out.println("----------------------------------");
+        }
+        else{
+            System.out.println("Order Details");
+            System.out.println("----------------------------------");
+            System.out.println();
+            System.out.println("Your Order Number: "+ orderNumber );
+            System.out.println("Seats booked: " + numberOfSeats);
+            System.out.println("Date purchased: " + createdOn );
+            System.out.println("Current tickets status: " + status );
+            System.out.println();
+            System.out.println("----------------------------------");
+        }
+            
     }
     
     

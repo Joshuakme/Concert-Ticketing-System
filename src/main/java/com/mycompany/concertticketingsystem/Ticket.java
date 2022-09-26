@@ -8,22 +8,20 @@ import java.time.LocalDate;
  */
 public class Ticket {
     private String serialNo;
-    private String concertId;
+    public Concert concert;
     private ShowSeat seat;
     private LocalDate purchaseDate;
 
     // Constructor
-    public Ticket(String serialNo, String concertId, ShowSeat seat, LocalDate purchaseDate) {
+    public Ticket(String serialNo, Concert concert, ShowSeat seat, LocalDate purchaseDate) {
         this.serialNo = serialNo;
-        this.concertId = concertId;
+        this.concert = concert;
         this.seat = seat;
         this.purchaseDate = purchaseDate;
     }
-    
+
     // Getters
 
     // Setters
-
-
 
 }
