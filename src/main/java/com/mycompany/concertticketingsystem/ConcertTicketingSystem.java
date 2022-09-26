@@ -179,7 +179,7 @@ public class ConcertTicketingSystem {
                 //
                 case 5: // Other
                     Order order = new Order("O001", 2, LocalDate.now(), OrderStatus.PENDING,
-                            new Ticket("T001", "C001", "S001", LocalDate.now()));
+                            new Ticket("T001", "C001", new ShowSeat(new VenueSeatCat("VIP", 100), 2, 'A', "B1"), LocalDate.now()));
 
                     System.out.println("---------");
                     System.out.println("| Other |");
@@ -610,8 +610,7 @@ public class ConcertTicketingSystem {
                         if (accStatus[i].toUpperCase().equals(AccountStatus.values()[j].toString())) {
                             accountStatus = AccountStatus.valueOf(accStatus[i].toUpperCase());
                             adminList[i] = new Admin(new Account(username[i], password[i], accountStatus),
-                                    userFirstName[i], userLastName[i], userAddress[i], userEmail[i], userPhoneNum[i],
-                                    userJoinedDate[i]);
+                                    userFirstName[i], userLastName[i], userAddress[i], userEmail[i], userPhoneNum[i]);
                         }
                     }
                 } else if (userType[counter].equals("customer")) {
