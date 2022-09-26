@@ -22,20 +22,34 @@ public class TestConcert {
         Artist[] artistList = initializeArtists();
         Venue[] venueList = initializeVenues();
         Concert[] concertList = initializeConcerts(artistList, venueList);
-        // Person[][] userList = initializePerson(); // userList[0][] is Admin list,
+        Person[][] userList = initializePerson(); // userList[0][] is Admin list,
         // serList[1][] is Customer list
         //
         //
         // Create catalog
         Catalog catalog = createCatalog(artistList, venueList, concertList);
 
+        System.out.println("userList: " + userList.length);
+
+        for (int i = 0; i < userList.length; i++) {
+
+            System.out.println("userList[]: " + userList[i].length);
+
+            for (int j = 0; j < userList[i].length; j++) {
+                if (userList[i][j] != null) {
+                    if (i == 0) {
+                        System.out.print("Admin: ");
+                    } else
+                        System.out.print("Customer: ");
+                    System.out.println(userList[i][j].getFirstName());
+                }
+            }
+        }
+
         // for(int i=0; i<catalog.getlanguageTitleList().length; i++) {
         // System.out.println(catalog.searchByTitle("JJ"));
         // }
 
-        for (int i = 0; i < concertList.length; i++) {
-            System.out.println(concertList[i].isTrending());
-        }
     }
 
     public static Catalog createCatalog(Artist[] artistList, Venue[] venueList, Concert[] concertList) {
@@ -342,5 +356,98 @@ public class TestConcert {
         }
 
         return concertList;
+    }
+
+    public static List<Person>[] initializePerson() {
+        int fileLineNumber = (int) countFileLineNumber("user.txt");
+        List<Person>[] usersList = new List[2]; // Person[0][] is Admin users, Person[1][] is Customer users
+        List<Admin> adminList = new ArrayList<>();
+        List<Customer> customerList = new ArrayList<>();
+
+        String[] userDetails;
+        int counter = 0;
+        String[] userType = new String[fileLineNumber];
+        String[] username = new String[fileLineNumber];
+        String[] password = new String[fileLineNumber];
+        String[] accStatus = new String[fileLineNumber];
+        String[] userFirstName = new String[fileLineNumber];
+        String[] userLastName = new String[fileLineNumber];
+        String[] userAddress = new String[fileLineNumber];
+        String[] userEmail = new String[fileLineNumber];
+        String[] userPhoneNum = new String[fileLineNumber];
+        LocalDate[] userJoinedDate = new LocalDate[fileLineNumber];
+
+        // Try-Catch get data from venue.txt
+        try {
+            File userFile = new File("user.txt");
+            Scanner fileScanner = new Scanner(userFile);
+            String currentLine = fileScanner.nextLine();
+
+            while (fileScanner.hasNextLine()) {
+                userDetails = currentLine.split(";");
+
+                userType[counter] = userDetails[0];
+                username[counter] = userDetails[1];
+                password[counter] = userDetails[2];
+                accStatus[counter] = userDetails[3];
+                userFirstName[counter] = userDetails[4];
+                userLastName[counter] = userDetails[5];
+                userAddress[counter] = userDetails[6];
+                userEmail[counter] = userDetails[7];
+                userPhoneNum[counter] = userDetails[8];
+                userJoinedDate[counter] = LocalDate.parse(userDetails[9]);
+
+                currentLine = fileScanner.nextLine();
+                counter++;
+            }
+
+            userDetails = currentLine.split(";");
+            userType[counter] = userDetails[0];
+            username[counter] = userDetails[1];
+            password[counter] = userDetails[2];
+            accStatus[counter] = userDetails[3];
+            userFirstName[counter] = userDetails[4];
+            userLastName[counter] = userDetails[5];
+            userAddress[counter] = userDetails[6];
+            userEmail[counter] = userDetails[7];
+            userPhoneNum[counter] = userDetails[8];
+            userJoinedDate[counter] = LocalDate.parse(userDetails[9]);
+
+            fileScanner.close();
+
+            // Create Admin object & Customer object
+            int accStatusLength = AccountStatus.values().length;
+            AccountStatus accountStatus;
+            for (int i = 0; i < fileLineNumber; i++) {
+                System.out.println("i: " + i);
+                if (userType[i].equalsIgnoreCase("admin")) {
+                    for (int j = 0; j < accStatusLength; j++) {
+                        if (accStatus[i].toUpperCase().equals(AccountStatus.values()[j].toString())) {
+                            accountStatus = AccountStatus.valueOf(accStatus[i].toUpperCase());
+                            adminList.add((Person) new Admin(new Account(username[i], password[i], accountStatus),
+                                    userFirstName[i], userLastName[i], userAddress[i], userEmail[i], userPhoneNum[i],
+                                    userJoinedDate[i]));
+                        }
+                    }
+                } else if (userType[i].equalsIgnoreCase("customer")) {
+                    for (int j = 0; j < accStatusLength; j++) {
+                        if (accStatus[i].toUpperCase().equals(AccountStatus.values()[j].toString())) {
+                            accountStatus = AccountStatus.valueOf(accStatus[i].toUpperCase());
+                            customerList.add(new Customer(new Account(username[i], password[i], accountStatus),
+                                    userFirstName[i], userLastName[i], userAddress[i], userEmail[i], userPhoneNum[i],
+                                    userJoinedDate[i]));
+                        }
+                    }
+                }
+            }
+
+        } catch (FileNotFoundException ex) {
+            System.out.println("File does not exist!\n");
+        }
+
+        usersList[0] = (Person) adminList;
+        usersList[1] = (Person) customerList;
+
+        return usersList;
     }
 }
