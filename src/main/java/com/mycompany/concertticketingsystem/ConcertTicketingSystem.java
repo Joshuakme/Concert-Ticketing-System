@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -172,19 +173,41 @@ public class ConcertTicketingSystem {
                     
                     //            
                 case 5: // Other
-                    System.out.println("Other");
+                    Order order = new Order("O001", 2, LocalDate.now(), OrderStatus.PENDING, new Ticket("T001","C001","S001",LocalDate.now()));
                     
-                    // Code Here
+                    System.out.println("---------");
+                    System.out.println("| Other |");
+                    System.out.println("---------");
+                    boolean quit = false;
+                    while(!quit){
+                        System.out.println("1.Change Order");
+                        System.out.println("2.View Order");
+                        System.out.println("3.Cancel Order");
+                        System.out.println("4.Exit");
+                        System.out.println("Select your option:(1/2/3/4)");
+                        
+                        int otherChoice = sc.nextInt();
+                        System.out.println("");
+                        
+                        if (otherChoice == 1){
+                            // Change Order
+                        }
+                        else if (otherChoice == 2){
+                            // View Order
+                            order.displayOrder();
+                        }
+                        else if(otherChoice == 3){
+                            // Cancel order
+                            order.cancelOrder();
+                        }
+                        else if(otherChoice == 4){
+                            // exit
+                            quit = true;
+                        }
+                        else
+                            System.out.println("Invalid option");
+                    }
                     
-                    // Change Order
-                    
-                    // View Order
-                    
-                    // Cancel order
-                    
-                    // 
-                    
-
                 case 6: // Exit
                     exit = true;
                     System.out.println("Successfully Exited");
