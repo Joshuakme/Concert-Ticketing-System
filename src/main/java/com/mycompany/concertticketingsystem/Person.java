@@ -31,10 +31,40 @@ public class Person {
     
     
     // Getters
+    public Account getAccount() {
+        return account;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public LocalDate getJoinedDate() {
+        return joinedDate;
+    }
+    
 
     // Setters
     
     // Methods
+
+
 
 
 }

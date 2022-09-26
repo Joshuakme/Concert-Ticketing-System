@@ -116,8 +116,6 @@ public class ConcertTicketingSystem {
                 case 5: // Other
                     System.out.println("Other");
 
-                    // Code Here
-
                     // Change Order
 
                     // View Order

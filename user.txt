@@ -1,4 +1,4 @@
-admin;taruc;taruc;active;John;Smith;9 Jln 6/118C, Desa Tun Razak, Kuala Lumpur, 56000 Wilayah Persekutuan;johnsmith234@gmail.com;0113456789;2021-04-12
+admin;taruc;taruc;active;TAR;UC;9 Jln 6/118C, Desa Tun Razak, Kuala Lumpur, 56000 Wilayah Persekutuan;johnsmith234@gmail.com;0113456789;2021-04-12
 admin;jkme;jkjk1234;active;Joshua;Koh;PV13, Platinum Lake Condominium, Danau Kota, Setapak, Kuala Lumpur, 55300 Wilayah Persekutuan;joshuakme-wm21@student.tarc.edu.my;0123456780;2020-06-23
 admin;tscf;scfscf88;active;Chai Fen;Shia;TAR UC Hostel, xxx, Setapak, Kuala Lumpur;shiacf@student.tarc.edu.my;0125678490;2020-09-10
 admin;wwh;wwhwwh55;active;Wei Hao;Wong;PV13, Platinium Lake Condominium, Danau Kota, Setapak, Kuala Lumpur, 53300 Wilayah Persekutuan;wongwh@student.tarc.edu.my;0178953334;2020-12-31
