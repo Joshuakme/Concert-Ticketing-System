@@ -19,23 +19,22 @@ import java.util.Scanner;
 public class TestConcert {
     public static void main(String[] args) {
         // // Object Initialization
-        Artist[] artistList = initializeArtists();
-        Venue[] venueList = initializeVenues();
-        Concert[] concertList = initializeConcerts(artistList, venueList);
+        // Artist[] artistList = initializeArtists();
+        // Venue[] venueList = initializeVenues();
+        // Concert[] concertList = initializeConcerts(artistList, venueList);
         // Person[][] userList = initializePerson(); // userList[0][] is Admin list,
         // serList[1][] is Customer list
         //
         //
-        // Create catalog
-        Catalog catalog = createCatalog(artistList, venueList, concertList);
+        // // Create catalog
+        // Catalog catalog = createCatalog(artistList, venueList, concertList);
 
-        // for(int i=0; i<catalog.getlanguageTitleList().length; i++) {
-        // System.out.println(catalog.searchByTitle("JJ"));
+        // System.out.print(userList[1][1].getFirstName());
+        // for(int i = 0; i < userList.length; i++){
+        // for(int j=0; j < userList[i].length;j++){
+        // System.out.print(userList[i][j]);}
+        //
         // }
-
-        for (int i = 0; i < concertList.length; i++) {
-            System.out.println(concertList[i].isTrending());
-        }
 
     }
 

@@ -4,6 +4,7 @@
  */
 package com.mycompany.concertticketingsystem;
 
+
 import java.util.Date;
 
 /**
@@ -13,17 +14,11 @@ import java.util.Date;
 public class TicketCat {
     private String description;
     private double price;
-    private Date startDate;
-    private Date endDate;
-    private String area;
 
     // Constructor
     public TicketCat(String description, double price, Date startDate, Date endDate, String area) {
         this.description = description;
         this.price = price;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.area = area;
     }
 
     // Getters

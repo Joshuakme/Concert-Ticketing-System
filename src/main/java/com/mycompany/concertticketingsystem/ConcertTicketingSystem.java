@@ -107,29 +107,108 @@ public class ConcertTicketingSystem {
                     // Ask for detail (no, ticketCat, etc.)
 
                 case 4: // Login/Register
-                    System.out.println("Login\n");
+                    System.out.println("---------");
+                    System.out.println("| Login |");
+                    System.out.println("---------\n");
+                    Person user = null;
 
-                    // Remember to use userList[][] (Line 37) to check credentials
+                    System.out.println("Are you a new user?(Y/N)");
+                    char isNewUser = Character.valueOf(sc.nextLine().charAt(0));
 
-                    // Login/Register
+                    if (isNewUser == 'n' || isNewUser == 'N') {
+                        System.out.println("Login\n");
+                        System.out.print("Enter your username: ");
+                        String username = sc.nextLine();
+                        System.out.print("Enter your password: ");
+                        String password = sc.nextLine();
 
-                    // Menu
+                        for (int i = 0; i < userList.length; i++)
+                            for (int j = 0; j < userList[i].length; j++) {
+                                System.out.print(userList[i][j]);
+                                if (username.equals(userList[i][j].getAccount().getUsername()))
+                                    if (password.equals(userList[i][j].getAccount().getPassword()))
+                                        if (i == 0) {
+                                            user = (Admin) userList[i][j];
+                                            System.out.println("Login succesfully as an admin");
+                                            isLoggedIn = true;
+                                        } else if (i == 1) {
+                                            user = (Customer) userList[i][j];
+                                            System.out.println("Login succesfully as a customer");
+                                            isLoggedIn = true;
+                                        }
+                                break;
+                            }
+                    }
 
-                    // User input username & password
+                    else if (isNewUser == 'y' || isNewUser == 'Y') {
+                        System.out.println("-----------");
+                        System.out.println("| Register |");
+                        System.out.println("-----------\n");
+                        System.out.print("Enter your first name: ");
+                        String firstName = sc.nextLine();
+                        System.out.print("Enter your last name: ");
+                        String lastName = sc.nextLine();
+                        System.out.print("Enter your prefered username: ");
+                        String newUsername = sc.nextLine();
+                        System.out.print("Enter your prefered password: ");
+                        String newPassword = sc.nextLine();
+                        System.out.print("Enter your phone number: ");
+                        String phone = sc.nextLine();
+                        System.out.print("Enter your email: ");
+                        String email = sc.nextLine();
 
-                    //
+                        Customer newUser = new Customer(new Account(newUsername, newPassword, AccountStatus.ACTIVE),
+                                firstName, lastName, "", phone, email);
+                        isLoggedIn = true;
+
+                        System.out.println("Welcome: " + newUser.getAccount().getUsername());
+                    }
+
+                    else
+                        System.out.println("Invalid character, only Y/N is acceptable\n");
+                    break;
+
+                // Remember to use userList[][] (Line 37) to check credentials
+
+                // Login/Register
+
+                // Menu
+
+                // User input username & password
+
+                //
                 case 5: // Other
-                    System.out.println("Other");
+                    Order order = new Order("O001", 2, LocalDate.now(), OrderStatus.PENDING,
+                            new Ticket("T001", "C001", "S001", LocalDate.now()));
 
-                    // Code Here
+                    System.out.println("---------");
+                    System.out.println("| Other |");
+                    System.out.println("---------");
+                    boolean quit = false;
+                    while (!quit) {
+                        System.out.println("1.Change Order");
+                        System.out.println("2.View Order");
+                        System.out.println("3.Cancel Order");
+                        System.out.println("4.Exit");
+                        System.out.println("Select your option:(1/2/3/4)");
 
-                    // Change Order
+                        int otherChoice = sc.nextInt();
+                        System.out.println("");
 
-                    // View Order
-
-                    // Cancel order
-
-                    //
+                        if (otherChoice == 1) {
+                            // Change Order
+                        } else if (otherChoice == 2) {
+                            // View Order
+                            order.displayOrder();
+                        } else if (otherChoice == 3) {
+                            // Cancel order
+                            order.cancelOrder();
+                        } else if (otherChoice == 4) {
+                            // exit
+                            quit = true;
+                        } else
+                            System.out.println("Invalid option");
+                    }
 
                 case 6: // Exit
                     exit = true;
@@ -540,8 +619,7 @@ public class ConcertTicketingSystem {
                         if (accStatus[i].toUpperCase().equals(AccountStatus.values()[j].toString())) {
                             accountStatus = AccountStatus.valueOf(accStatus[i].toUpperCase());
                             customerList[i] = new Customer(new Account(username[i], password[i], accountStatus),
-                                    userFirstName[i], userLastName[i], userAddress[i], userEmail[i], userPhoneNum[i],
-                                    userJoinedDate[i]);
+                                    userFirstName[i], userLastName[i], userAddress[i], userEmail[i], userPhoneNum[i]);
                         }
                     }
                 }
