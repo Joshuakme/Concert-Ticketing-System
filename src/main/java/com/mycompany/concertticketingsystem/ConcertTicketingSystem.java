@@ -179,31 +179,29 @@ public class ConcertTicketingSystem {
                 //
                 case 5: // Other
                     Order order = new Order("O001", 2, LocalDate.now(), OrderStatus.PENDING,
-                            new Ticket("T001", "C001", new ShowSeat(new VenueSeatCat("VIP", 100), 2, 'A', "B1"), LocalDate.now()));
+                            new Ticket("T001", concertList[0], new ShowSeat(new VenueSeatCat("VIP", 100), 2, 'A', "B1"), LocalDate.now()));
 
                     System.out.println("---------");
                     System.out.println("| Other |");
                     System.out.println("---------");
                     boolean quit = false;
-                    while (!quit) {
-                        System.out.println("1.Change Order");
-                        System.out.println("2.View Order");
-                        System.out.println("3.Cancel Order");
-                        System.out.println("4.Exit");
-                        System.out.println("Select your option:(1/2/3/4)");
+                    while (!quit) {                      
+                        System.out.println("1.View Order");
+                        System.out.println("2.Cancel Order");
+                        System.out.println("3.Exit");
+                        System.out.println("Select your option:(1/2/3)");
 
                         int otherChoice = sc.nextInt();
                         System.out.println("");
 
+                        
                         if (otherChoice == 1) {
-                            // Change Order
-                        } else if (otherChoice == 2) {
                             // View Order
                             order.displayOrder();
-                        } else if (otherChoice == 3) {
+                        } else if (otherChoice == 2) {
                             // Cancel order
                             order.cancelOrder();
-                        } else if (otherChoice == 4) {
+                        } else if (otherChoice == 3) {
                             // exit
                             quit = true;
                         } else
