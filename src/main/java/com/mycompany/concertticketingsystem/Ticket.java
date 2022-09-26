@@ -1,22 +1,29 @@
 package com.mycompany.concertticketingsystem;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  *
  * @author Joshua Koh
  */
 public class Ticket {
-    private String serielNo;
+    private String serialNo;
     private String concertId;
-    private TicketCat ticketCategory;
-    private String seat;
-    private Date purchaseDate;
+    private ShowSeat seat;
+    private LocalDate purchaseDate;
 
     // Constructor
-
+    public Ticket(String serialNo, String concertId, ShowSeat seat, LocalDate purchaseDate) {
+        this.serialNo = serialNo;
+        this.concertId = concertId;
+        this.seat = seat;
+        this.purchaseDate = purchaseDate;
+    }
     
     // Getters
-    
+
     // Setters
+
+
+
 }
