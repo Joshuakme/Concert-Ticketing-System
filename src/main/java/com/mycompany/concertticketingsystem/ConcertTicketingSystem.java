@@ -35,12 +35,13 @@ public class ConcertTicketingSystem {
         // Global States
         boolean isLoggedIn = false;
 
-        // Object Initialization
-        Guest guest = new Guest();
+        // Object Initialization (Database)
         Artist[] artistList = initializeArtists();
         Venue[] venueList = initializeVenues();
         Concert[] concertList = initializeConcerts(artistList, venueList);
         Person[][] userList = initializePerson(); // userList[0][] is Admin list, userList[1][] is Customer list
+
+        Person currentUser = null;
 
         // Welcome User
         startScreen();
@@ -94,107 +95,42 @@ public class ConcertTicketingSystem {
 
                     // Check Login Status
                     if (!isLoggedIn) {
-                        System.out.println("You are not signed in. Please sign in before buy ticket.");
-
-                        if (Login())
-                            isLoggedIn = true;
-
-                        // Get user detail (username, password, accStatus)
-                        // guest.registerAccount("username", "password", "accStatus");
+                        currentUser = loginRegister(userList); // Login/Register
                     }
 
                     // Display seat status(booked / empty) [table maybe]
                     // Ask for detail (no, ticketCat, etc.)
 
-                case 4: // Login/Register
-                    System.out.println("---------");
-                    System.out.println("| Login |");
-                    System.out.println("---------\n");
-                    Person user = null;
-
-                    System.out.println("Are you a new user?(Y/N)");
-                    char isNewUser = Character.valueOf(sc.nextLine().charAt(0));
-
-                    if (isNewUser == 'n' || isNewUser == 'N') {
-                        System.out.println("Login\n");
-                        System.out.print("Enter your username: ");
-                        String username = sc.nextLine();
-                        System.out.print("Enter your password: ");
-                        String password = sc.nextLine();
-
-                        for (int i = 0; i < userList.length; i++)
-                            for (int j = 0; j < userList[i].length; j++) {
-                                System.out.print(userList[i][j]);
-                                if (username.equals(userList[i][j].getAccount().getUsername()))
-                                    if (password.equals(userList[i][j].getAccount().getPassword()))
-                                        if (i == 0) {
-                                            user = (Admin) userList[i][j];
-                                            System.out.println("Login succesfully as an admin");
-                                            isLoggedIn = true;
-                                        } else if (i == 1) {
-                                            user = (Customer) userList[i][j];
-                                            System.out.println("Login succesfully as a customer");
-                                            isLoggedIn = true;
-                                        }
-                                break;
-                            }
-                    }
-
-                    else if (isNewUser == 'y' || isNewUser == 'Y') {
-                        System.out.println("-----------");
-                        System.out.println("| Register |");
-                        System.out.println("-----------\n");
-                        System.out.print("Enter your first name: ");
-                        String firstName = sc.nextLine();
-                        System.out.print("Enter your last name: ");
-                        String lastName = sc.nextLine();
-                        System.out.print("Enter your prefered username: ");
-                        String newUsername = sc.nextLine();
-                        System.out.print("Enter your prefered password: ");
-                        String newPassword = sc.nextLine();
-                        System.out.print("Enter your phone number: ");
-                        String phone = sc.nextLine();
-                        System.out.print("Enter your email: ");
-                        String email = sc.nextLine();
-
-                        Customer newUser = new Customer(new Account(newUsername, newPassword, AccountStatus.ACTIVE),
-                                firstName, lastName, "", phone, email);
-                        isLoggedIn = true;
-
-                        System.out.println("Welcome: " + newUser.getAccount().getUsername());
-                    }
-
-                    else
-                        System.out.println("Invalid character, only Y/N is acceptable\n");
                     break;
+                case 4: // Login/Register
+                    if (currentUser == null) { // Check if user is loggedIn
+                        currentUser = loginRegister(userList); // Login/Register
 
-                // Remember to use userList[][] (Line 37) to check credentials
-
-                // Login/Register
-
-                // Menu
-
-                // User input username & password
-
-                //
+                        if (currentUser != null) {
+                            isLoggedIn = true;
+                        }
+                    } else {
+                        System.out.println("You are already logged in!");
+                    }
+                    break;
                 case 5: // Other
                     Order order = new Order("O001", 2, LocalDate.now(), OrderStatus.PENDING,
-                            new Ticket("T001", concertList[0], new ShowSeat(new VenueSeatCat("VIP", 100), 2, 'A', "B1"), LocalDate.now()));
+                            new Ticket("T001", concertList[0], new ShowSeat(new VenueSeatCat("VIP", 100), 2, 'A', "B1"),
+                                    LocalDate.now()));
 
                     System.out.println("---------");
                     System.out.println("| Other |");
                     System.out.println("---------");
                     boolean quit = false;
-                    while (!quit) {                      
+                    while (!quit) {
                         System.out.println("1.View Order");
                         System.out.println("2.Cancel Order");
                         System.out.println("3.Exit");
-                        System.out.println("Select your option:(1/2/3)");
+                        System.out.print("Select your option(1/2/3): ");
 
                         int otherChoice = sc.nextInt();
                         System.out.println("");
 
-                        
                         if (otherChoice == 1) {
                             // View Order
                             order.displayOrder();
@@ -207,8 +143,12 @@ public class ConcertTicketingSystem {
                         } else
                             System.out.println("Invalid option");
                     }
-
-                case 6: // Exit
+                    break;
+                case 6: // Sign Out
+                    signOut();
+                    currentUser = null;
+                    break;
+                case 7: // Exit
                     exit = true;
                     System.out.println("Successfully Exited");
                     break;
@@ -216,9 +156,6 @@ public class ConcertTicketingSystem {
                     System.out.println("\nError!\n");
             }
         }
-
-        // Select
-
     }
 
     // Methods & Functions
@@ -227,7 +164,8 @@ public class ConcertTicketingSystem {
     }
 
     public static void displayMainMenu() {
-        String[] custMenu = { "Search Concert", "View Trending", "Buy Ticket", "Login/Register", "Other", "Exit" };
+        String[] custMenu = { "Search Concert", "View Trending", "Buy Ticket", "Login/Register", "Other", "Sign out",
+                "Exit" };
         System.out.println("Menu: ");
 
         for (int i = 0; i < custMenu.length; i++) {
@@ -1148,29 +1086,77 @@ public class ConcertTicketingSystem {
     }
 
     // 4. Login Methods (Wei Hao)
-    public static boolean Login() {
-        Scanner sc = new Scanner(System.in);
+    public static Person loginRegister(Person[][] userList) {
+        Person currentUser = null;
 
-        // Ask user Login Information
-        System.out.println("");
-        System.out.printf("%12s\n%12s\n", " Login Page ", "------------");
-        System.out.print("Username: ");
-        String inputUsername = sc.nextLine().trim();
-        System.out.print("Password: ");
-        String inputPwd = sc.nextLine().trim();
+        System.out.println("---------");
+        System.out.println("| Login |");
+        System.out.println("---------\n");
 
-        // Check Credentials
-        boolean isLogged = checkCredential(inputUsername, inputPwd);
+        System.out.print("Are you a new user?(Y/N): ");
+        char isNewUser = Character.valueOf(sc.next().charAt(0));
+        sc.nextLine();
 
-        if (isLogged) {
-            System.out.println("Welcome! You are logged in!\n");
-            sc.close(); // Close scanner
-            return true;
-        } else {
-            System.out.println("Incorrect credentials, please try again!\n");
-            sc.close(); // Close scanner
-            return false;
+        if (isNewUser == 'n' || isNewUser == 'N') {
+            System.out.println("Login\n"); // Header
+
+            System.out.print("Enter your username: "); // User input username
+            String username = sc.nextLine();
+            System.out.print("Enter your password: "); // User input password
+            String password = sc.nextLine();
+
+            for (int i = 0; i < userList.length; i++)
+                for (int j = 0; j < userList[i].length; j++) {
+                    if (username.equals(userList[i][j].getAccount().getUsername())) { // Check username
+                        if (password.equals(userList[i][j].getAccount().getPassword())) { // Check password
+                            if (i == 0) { // admin
+                                currentUser = (Admin) userList[i][j];
+                                System.out.println("Login succesfully as an admin");
+                                break;
+                            } else if (i == 1) { // customer
+                                currentUser = (Customer) userList[i][j];
+                                System.out.println("Login succesfully as a customer");
+                                break;
+                            }
+                        } else {
+                            System.out.println("Incorrect credentials, please try again!\n");
+                        }
+                    } else {
+                        System.out.println("Incorrect credentials, please try again!\n");
+                    }
+                }
         }
+
+        else if (isNewUser == 'y' || isNewUser == 'Y') {
+            // Register Header
+            System.out.println("-----------");
+            System.out.println("| Register |");
+            System.out.println("-----------\n");
+
+            System.out.print("Enter your first name: "); // Check char length >= ? AND <= ?
+            String firstName = sc.nextLine();
+            System.out.print("Enter your last name: "); // Check char length >= ? AND <= ?
+            String lastName = sc.nextLine();
+            System.out.print("Enter your prefered username: "); // Check length >= 4 AND <= 20
+            String newUsername = sc.nextLine();
+            System.out.print("Enter your prefered password: "); // Check if pwd is >= 8 AND < 18
+            String newPassword = sc.nextLine();
+            System.out.print("Enter your phone number: "); // Check if number of digit = 10/11
+            String phone = sc.nextLine();
+            System.out.print("Enter your email: "); // Check email format
+            String email = sc.nextLine();
+
+            Customer newUser = new Customer(new Account(newUsername, newPassword, AccountStatus.ACTIVE),
+                    firstName, lastName, "", phone, email);
+
+            System.out.println("Registered Successfully!");
+            System.out.println("Welcome: " + newUser.getAccount().getUsername());
+        }
+
+        else
+            System.out.println("Invalid character, only Y/N is acceptable\n");
+
+        return currentUser;
     }
 
     public static boolean checkCredential(String inputUsername, String inputPwd) {
@@ -1189,6 +1175,12 @@ public class ConcertTicketingSystem {
         }
 
         return isEqual;
+    }
+
+    // Sign Out Methods
+    public static void signOut() {
+        System.out.println("Sign Out Successfully!\n");
+        clearScreen(); // Clear Screen (Start a new screen)
     }
 
     // General Methods
