@@ -15,11 +15,20 @@ public class Account {
         this.password = password;
         this.acountStatus = acountStatus;
     }
-    
+    public String getUsername() {    
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
     // Getters
-    
+    public AccountStatus getAcountStatus() {    
+        return acountStatus;
+    }
+
     // Setters
-    
     // Methods
     public boolean resetPassword() {
         boolean isSuccessful = false;

@@ -19,35 +19,21 @@ import java.util.Scanner;
 public class TestConcert {
     public static void main(String[] args) {
         // // Object Initialization
-        Artist[] artistList = initializeArtists();
-        Venue[] venueList = initializeVenues();
-        Concert[] concertList = initializeConcerts(artistList, venueList);
-        Person[][] userList = initializePerson(); // userList[0][] is Admin list,
+        // Artist[] artistList = initializeArtists();
+        // Venue[] venueList = initializeVenues();
+        // Concert[] concertList = initializeConcerts(artistList, venueList);
+        // Person[][] userList = initializePerson(); // userList[0][] is Admin list,
         // serList[1][] is Customer list
         //
         //
-        // Create catalog
-        Catalog catalog = createCatalog(artistList, venueList, concertList);
+        // // Create catalog
+        // Catalog catalog = createCatalog(artistList, venueList, concertList);
 
-        System.out.println("userList: " + userList.length);
-
-        for (int i = 0; i < userList.length; i++) {
-
-            System.out.println("userList[]: " + userList[i].length);
-
-            for (int j = 0; j < userList[i].length; j++) {
-                if (userList[i][j] != null) {
-                    if (i == 0) {
-                        System.out.print("Admin: ");
-                    } else
-                        System.out.print("Customer: ");
-                    System.out.println(userList[i][j].getFirstName());
-                }
-            }
-        }
-
-        // for(int i=0; i<catalog.getlanguageTitleList().length; i++) {
-        // System.out.println(catalog.searchByTitle("JJ"));
+        // System.out.print(userList[1][1].getFirstName());
+        // for(int i = 0; i < userList.length; i++){
+        // for(int j=0; j < userList[i].length;j++){
+        // System.out.print(userList[i][j]);}
+        //
         // }
 
     }

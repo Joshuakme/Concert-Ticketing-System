@@ -2,6 +2,7 @@ package com.mycompany.concertticketingsystem;
 
 // Imports
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -18,15 +19,23 @@ public class Person {
     private LocalDate joinedDate;
 
     // Constructor    
-    public Person(Account account, String firstName, String lastName, String address, String email, String phone, LocalDate joinedDate) {
+    public Person(Account account, String firstName, String lastName, String address, String email, String phone) {
         this.account = account;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
         this.email = email;
         this.phone = phone;
-        this.joinedDate = joinedDate;
+        this.joinedDate = getCurrentDate();
     }
+    
+    public static LocalDate getCurrentDate() {
+        LocalDate today = LocalDate.now();
+        return today;
+    }
+    
+    
+    
 
     
     
@@ -63,6 +72,34 @@ public class Person {
     // Setters
     
     // Methods
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public LocalDate getJoinedDate() {
+        return joinedDate;
+    }
 
 
 
