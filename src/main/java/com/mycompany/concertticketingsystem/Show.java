@@ -8,7 +8,7 @@ import java.sql.Time;
  * @author Joshua Koh
  */
 public class Show {
-    private Date craetedOn;
+    private Date createdOn;
     private Time startTime;
     private Time endTime;
 }

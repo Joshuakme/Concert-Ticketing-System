@@ -9,6 +9,7 @@ import java.util.Scanner;
  * @author Joshua Koh
  */
 public class Order {
+    private static int count = 0;
     private String orderNumber;
     private int numberOfSeats;
     private LocalDate createdOn;
@@ -16,17 +17,17 @@ public class Order {
     private Ticket ticket;
 
     // constructor
-    public Order(String orderNumber, int numberOfSeats, LocalDate createdOn, OrderStatus status, Ticket ticket) {
-        this.orderNumber = orderNumber;
+    public Order(int numberOfSeats, LocalDate createdOn, Ticket ticket) {
+        this.orderNumber = formatId(count);
         this.numberOfSeats = numberOfSeats;
         this.createdOn = createdOn;
-        this.status = status;
+        this.status = OrderStatus.PENDING;
         this.ticket = ticket;
     }
 
     Scanner sc = new Scanner(System.in);
 
-    // getter
+    // Getter
     public String getOrderNumber() {
         return orderNumber;
     }
@@ -69,6 +70,20 @@ public class Order {
     }
 
     // Methods
+    private String formatId(int count) {
+        if (count < 10)
+            return "OD000" + count;
+        else if (count >= 10 && count < 100)
+            return "OD00" + count;
+        else if (count >= 100 && count < 1000)
+            return "OD0" + count;
+        else if (count >= 1000 && count < 10000)
+            return "OD" + count;
+        else {
+            return "OD" + count;
+        }
+    }
+
     public void cancelOrder() {
         System.out.println("Are you sure you want to cancel your order? (Y/N)");
         char choice = Character.valueOf(sc.nextLine().charAt(0));

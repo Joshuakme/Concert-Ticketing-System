@@ -8,14 +8,24 @@ package com.mycompany.concertticketingsystem;
  *
  * @author Tiffany
  */
-public class ShowSeatCat extends VenueSeatCat{
+public class ShowSeatCat extends VenueSeatCat {
     private int remainingSeat;
     private double seatPrice;
 
+    // Constructor
     public ShowSeatCat(String description, int catCapacity, double seatPrice) {
         super(description, catCapacity);
         this.remainingSeat = catCapacity;
         this.seatPrice = seatPrice;
     }
-    
+
+    // Getters
+    public int getRemainingSeat() {
+        return remainingSeat;
+    }
+
+    public double getSeatPrice() {
+        return seatPrice;
+    }
+
 }
