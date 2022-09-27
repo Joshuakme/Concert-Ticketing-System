@@ -13,11 +13,23 @@ public class VenueSeatCat {
     private String description;
     private int catCapapcity;
     
-
+    // Constructor
     public VenueSeatCat(String description, int catCapapcity) {
         this.description = description;
         this.catCapapcity = catCapapcity;
     }
     
+    // Getters
+    public Venue getVenue() {
+        return venue;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getCatCapapcity() {
+        return catCapapcity;
+    }
     
 }
