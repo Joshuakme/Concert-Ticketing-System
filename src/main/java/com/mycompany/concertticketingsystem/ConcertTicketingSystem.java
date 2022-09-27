@@ -105,7 +105,7 @@ public class ConcertTicketingSystem {
 
                     break;
                 case 4: // Login/Register
-                    if (currentUser == null) { // Check if user is loggedIn
+                    if (currentUser == null || !isLoggedIn) { // Check if user is loggedIn
                         currentUser = loginRegister(userList); // Login/Register
 
                         if (currentUser != null) {
@@ -1036,7 +1036,7 @@ public class ConcertTicketingSystem {
         int venueCount = 0;
         int currentVenueIndex = 0;
 
-        // Try-Catch get data from artist.txt
+        // Try-Catch get data from category_seat.txt
         try {
             File concertCategoryFile = new File("category_seat.txt");
             Scanner fileScanner = new Scanner(concertCategoryFile);
@@ -1060,32 +1060,11 @@ public class ConcertTicketingSystem {
                 currentLine = fileScanner.nextLine();
             }
 
-            // artistDetails = currentLine.split("\t");
-            //
-            // artistNameList[counter] = artistDetails[0];
-            // artistLanguageList[counter] = artistDetails[1];
-            // artistGenreList[counter] = artistDetails[2];
-            //
             fileScanner.close();
             //
         } catch (FileNotFoundException ex) {
             System.out.println("File does not exist!\n");
         }
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        // // Variables
-        // String[] artistDetails;
-        // int counter = 0;
-        // String[] venueNameList = new String[fileLineNumber];
-        // String[] artistLanguageList = new String[fileLineNumber];
-        // String[] artistGenreList = new String[fileLineNumber];
-
     }
 
     // 4. Login Methods (Wei Hao)
@@ -1168,12 +1147,16 @@ public class ConcertTicketingSystem {
                     newUser.getAccount().getUsername() + ";" +
                     newUser.getAccount().getPassword() + ";" +
                     "active" + ";" +
+                    newUser.getFirstName() + ";" +
+                    newUser.getLastName() + ";" +
                     newUser.getAddress() + ";" +
                     newUser.getEmail() + ";" +
                     newUser.getPhone() + ";" +
                     newUser.getJoinedDate().format(DateTimeFormatter.ISO_DATE);
 
             if (saveData("user.txt", newUserData)) {
+                currentUser = newUser;
+
                 System.out.println();
                 System.out.println("Registered Successfully!");
                 System.out.println("Welcome: " + newUser.getAccount().getUsername());
@@ -1188,24 +1171,6 @@ public class ConcertTicketingSystem {
             System.out.println("Invalid character, only Y/N is acceptable\n");
 
         return currentUser;
-    }
-
-    public static boolean checkCredential(String inputUsername, String inputPwd) {
-        // Login Credentials
-        String[] usernameList = { "taruc", "admin" };
-        String[] pwdList = { "taruc", "0000" };
-        boolean isEqual = false;
-
-        // Check Empty inputs
-        if (inputUsername.equals("") || inputPwd.equals(""))
-            return false;
-
-        for (int i = 0; i < usernameList.length; i++) {
-            if (inputUsername.equals(usernameList[i]) && inputPwd.equals(pwdList[i]))
-                isEqual = true;
-        }
-
-        return isEqual;
     }
 
     // Sign Out Methods
@@ -1246,6 +1211,21 @@ public class ConcertTicketingSystem {
     public static void blankInput() {
         System.out.print("Press any key to continue...");
         sc.nextLine();
+    }
+
+    public static boolean checkValidDate(String dateStr) {
+        DateTimeFormatter datetimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        try {
+            LocalDate.parse(dateStr, datetimeFormatter);
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+        return true;
+    }
+
+    public static String centerString(int width, String s) {
+        return String.format("%-" + width + "s", String.format("%" + (s.length() + (width - s.length()) / 2) + "s", s));
     }
 
     // File-Related Methods
@@ -1296,18 +1276,4 @@ public class ConcertTicketingSystem {
         return lines;
     }
 
-    public static boolean checkValidDate(String dateStr) {
-        DateTimeFormatter datetimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-        try {
-            LocalDate.parse(dateStr, datetimeFormatter);
-        } catch (DateTimeParseException e) {
-            return false;
-        }
-        return true;
-    }
-
-    public static String centerString(int width, String s) {
-        return String.format("%-" + width + "s", String.format("%" + (s.length() + (width - s.length()) / 2) + "s", s));
-    }
 }
