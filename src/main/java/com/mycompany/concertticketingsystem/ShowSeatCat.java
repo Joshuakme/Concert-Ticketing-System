@@ -17,5 +17,4 @@ public class ShowSeatCat extends VenueSeatCat{
         this.remainingSeat = catCapacity;
         this.seatPrice = seatPrice;
     }
-    
 }
