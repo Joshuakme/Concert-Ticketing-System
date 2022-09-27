@@ -3,6 +3,7 @@ package com.mycompany.concertticketingsystem;
 import static com.mycompany.concertticketingsystem.ConcertTicketingSystem.countFileLineNumber;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,19 +23,26 @@ public class TestConcert {
         // Artist[] artistList = initializeArtists();
         // Venue[] venueList = initializeVenues();
         // Concert[] concertList = initializeConcerts(artistList, venueList);
-        // Person[][] userList = initializePerson(); // userList[0][] is Admin list,
+        List<Person>[] userList = initializePerson(); // userList[0][] is Admin list,
         // serList[1][] is Customer list
         //
         //
         // // Create catalog
         // Catalog catalog = createCatalog(artistList, venueList, concertList);
 
-        // System.out.print(userList[1][1].getFirstName());
-        // for(int i = 0; i < userList.length; i++){
-        // for(int j=0; j < userList[i].length;j++){
-        // System.out.print(userList[i][j]);}
-        //
-        // }
+        // System.out.println(userList[1].get(1).getLastName());
+        String fileName = "haha";
+
+        try {
+            File fileObj = new File(fileName + ".txt");
+            if (fileObj.createNewFile()) {
+                System.out.println("Huh");
+            } else {
+                System.out.println("File already exists.");
+            }
+        } catch (IOException e) {
+            System.out.println("File does not exist!\n");
+        }
 
     }
 
@@ -347,8 +355,8 @@ public class TestConcert {
     public static List<Person>[] initializePerson() {
         int fileLineNumber = (int) countFileLineNumber("user.txt");
         List<Person>[] usersList = new List[2]; // Person[0][] is Admin users, Person[1][] is Customer users
-        List<Admin> adminList = new ArrayList<>();
-        List<Customer> customerList = new ArrayList<>();
+        List<Person> adminList = new ArrayList<>();
+        List<Person> customerList = new ArrayList<>();
 
         String[] userDetails;
         int counter = 0;
@@ -388,6 +396,7 @@ public class TestConcert {
             }
 
             userDetails = currentLine.split(";");
+
             userType[counter] = userDetails[0];
             username[counter] = userDetails[1];
             password[counter] = userDetails[2];
@@ -405,13 +414,12 @@ public class TestConcert {
             int accStatusLength = AccountStatus.values().length;
             AccountStatus accountStatus;
             for (int i = 0; i < fileLineNumber; i++) {
-                System.out.println("i: " + i);
                 if (userType[i].equalsIgnoreCase("admin")) {
                     for (int j = 0; j < accStatusLength; j++) {
                         if (accStatus[i].toUpperCase().equals(AccountStatus.values()[j].toString())) {
                             accountStatus = AccountStatus.valueOf(accStatus[i].toUpperCase());
-                            adminList.add((Person) new Admin(new Account(username[i], password[i], accountStatus),
-                                    userFirstName[i], userLastName[i], userAddress[i], userEmail[i], userPhoneNum[i]);
+                            adminList.add(new Admin(new Account(username[i], password[i], accountStatus),
+                                    userFirstName[i], userLastName[i], userAddress[i], userEmail[i], userPhoneNum[i]));
                         }
                     }
                 } else if (userType[i].equalsIgnoreCase("customer")) {
@@ -419,18 +427,18 @@ public class TestConcert {
                         if (accStatus[i].toUpperCase().equals(AccountStatus.values()[j].toString())) {
                             accountStatus = AccountStatus.valueOf(accStatus[i].toUpperCase());
                             customerList.add(new Customer(new Account(username[i], password[i], accountStatus),
-                                    userFirstName[i], userLastName[i], userAddress[i], userEmail[i], userPhoneNum[i]);
+                                    userFirstName[i], userLastName[i], userAddress[i], userEmail[i], userPhoneNum[i]));
                         }
                     }
                 }
             }
 
         } catch (FileNotFoundException ex) {
-            System.out.println("File does not exist!\n");
+            System.err.println("File does not exist!\n");
         }
 
-        usersList[0] = (Person) adminList;
-        usersList[1] = (Person) customerList;
+        usersList[0] = adminList;
+        usersList[1] = customerList;
 
         return usersList;
     }
