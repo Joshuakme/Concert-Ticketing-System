@@ -3,6 +3,7 @@ package com.mycompany.concertticketingsystem;
 import static com.mycompany.concertticketingsystem.ConcertTicketingSystem.countFileLineNumber;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,6 +23,7 @@ public class TestConcert {
         // Artist[] artistList = initializeArtists();
         Venue[] venueList = initializeVenues();
         // Concert[] concertList = initializeConcerts(artistList, venueList);
+<<<<<<< HEAD
         // Person[][] userList = initializePerson();
         List<ShowSeatCat>[] showSeatCatList = initializeSeatCategory(venueList);
 
@@ -37,17 +39,28 @@ public class TestConcert {
 
         }
 
+=======
+        List<Person>[] userList = initializePerson(); // userList[0][] is Admin list,
+        // serList[1][] is Customer list
+>>>>>>> f9730d9854703bbf1edaf33ac29e7eff0535d31c
         //
         //
         // // Create catalog
         // Catalog catalog = createCatalog(artistList, venueList, concertList);
 
-        // System.out.print(userList[1][1].getFirstName());
-        // for(int i = 0; i < userList.length; i++){
-        // for(int j=0; j < userList[i].length;j++){
-        // System.out.print(userList[i][j]);}
-        //
-        // }
+        // System.out.println(userList[1].get(1).getLastName());
+        String fileName = "haha";
+
+        try {
+            File fileObj = new File(fileName + ".txt");
+            if (fileObj.createNewFile()) {
+                System.out.println("Huh");
+            } else {
+                System.out.println("File already exists.");
+            }
+        } catch (IOException e) {
+            System.out.println("File does not exist!\n");
+        }
 
     }
 
