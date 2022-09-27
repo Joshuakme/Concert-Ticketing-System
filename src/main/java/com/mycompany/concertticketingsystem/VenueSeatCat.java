@@ -9,6 +9,7 @@ package com.mycompany.concertticketingsystem;
  * @author Tiffany
  */
 public class VenueSeatCat {
+    private Venue venue;
     private String description;
     private int catCapapcity;
     
