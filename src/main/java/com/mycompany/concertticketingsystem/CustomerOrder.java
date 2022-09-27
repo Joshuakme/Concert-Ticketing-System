@@ -12,7 +12,6 @@ import java.util.Date;
  */
 public class CustomerOrder {
     private Date orderTime;
-    private String deliveryAddress;
     private String deliveryEmail;
     private Date preferredDeliveryTime;
     private Date timePaid;
@@ -22,9 +21,8 @@ public class CustomerOrder {
     private double discount;
 
     // Constructor
-    public CustomerOrder(Date orderTime, String deliveryAddress, String deliveryEmail, Date preferredDeliveryTime, Date timePaid, Date timeSent, int ticketQty, double totalPrice, double discount) {
+    public CustomerOrder(Date orderTime, String deliveryEmail, Date preferredDeliveryTime, Date timePaid, Date timeSent, int ticketQty, double totalPrice, double discount) {
         this.orderTime = orderTime;
-        this.deliveryAddress = deliveryAddress;
         this.deliveryEmail = deliveryEmail;
         this.preferredDeliveryTime = preferredDeliveryTime;
         this.timePaid = timePaid;

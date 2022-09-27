@@ -5,17 +5,41 @@ package com.mycompany.concertticketingsystem;
  * @author Joshua Koh
  */
 public class ShowSeat extends VenueSeat {
-    private boolean isReserved = false;
+    private static int count = 0;
+    private ShowSeatCat showSeatCat;
+    private boolean reserved;
 
-    public ShowSeat(VenueSeatCat category, int seatNumber, char row, String section) {
+    // Constructor
+
+    public ShowSeat(ShowSeatCat showSeatCat, VenueSeatCat category, String section, char row, int seatNumber) {
         super(category, seatNumber, row, section);
+        this.showSeatCat = showSeatCat;
+        this.reserved = false;
     }
 
-    public boolean isIsReserved() {
-        return isReserved;
+    // Getter
+    public static int getCount() {
+        return count;
     }
 
-    public void setIsReserved(boolean isReserved) {
-        this.isReserved = isReserved;
+    public ShowSeatCat getShowSeatCat() {
+        return showSeatCat;
+    }
+
+    public boolean isReserved() {
+        return reserved;
+    }
+
+    public void setReserved(boolean isReserved) {
+        this.reserved = isReserved;
+    }
+
+    public String assignSection() {
+        String section = "A";
+        if (count > 200) {
+            section = "A";
+        }
+
+        return section;
     }
 }
