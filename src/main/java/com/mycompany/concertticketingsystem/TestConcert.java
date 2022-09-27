@@ -23,7 +23,6 @@ public class TestConcert {
         // Artist[] artistList = initializeArtists();
         Venue[] venueList = initializeVenues();
         // Concert[] concertList = initializeConcerts(artistList, venueList);
-<<<<<<< HEAD
         // Person[][] userList = initializePerson();
         List<ShowSeatCat>[] showSeatCatList = initializeSeatCategory(venueList);
 
@@ -39,10 +38,6 @@ public class TestConcert {
 
         }
 
-=======
-        List<Person>[] userList = initializePerson(); // userList[0][] is Admin list,
-        // serList[1][] is Customer list
->>>>>>> f9730d9854703bbf1edaf33ac29e7eff0535d31c
         //
         //
         // // Create catalog
