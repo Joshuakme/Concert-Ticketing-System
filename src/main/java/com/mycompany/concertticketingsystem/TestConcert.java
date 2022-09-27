@@ -411,8 +411,7 @@ public class TestConcert {
                         if (accStatus[i].toUpperCase().equals(AccountStatus.values()[j].toString())) {
                             accountStatus = AccountStatus.valueOf(accStatus[i].toUpperCase());
                             adminList.add((Person) new Admin(new Account(username[i], password[i], accountStatus),
-                                    userFirstName[i], userLastName[i], userAddress[i], userEmail[i], userPhoneNum[i],
-                                    userJoinedDate[i]));
+                                    userFirstName[i], userLastName[i], userAddress[i], userEmail[i], userPhoneNum[i]);
                         }
                     }
                 } else if (userType[i].equalsIgnoreCase("customer")) {
@@ -420,8 +419,7 @@ public class TestConcert {
                         if (accStatus[i].toUpperCase().equals(AccountStatus.values()[j].toString())) {
                             accountStatus = AccountStatus.valueOf(accStatus[i].toUpperCase());
                             customerList.add(new Customer(new Account(username[i], password[i], accountStatus),
-                                    userFirstName[i], userLastName[i], userAddress[i], userEmail[i], userPhoneNum[i],
-                                    userJoinedDate[i]));
+                                    userFirstName[i], userLastName[i], userAddress[i], userEmail[i], userPhoneNum[i]);
                         }
                     }
                 }
