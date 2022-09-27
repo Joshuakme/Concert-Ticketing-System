@@ -37,13 +37,12 @@ public class ConcertTicketingSystem {
         // Global States
         boolean isLoggedIn = false;
 
-        // Object Initialization (Database)
+        // Object Initialization
+        Guest guest = new Guest();
         Artist[] artistList = initializeArtists();
         Venue[] venueList = initializeVenues();
         Concert[] concertList = initializeConcerts(artistList, venueList);
         Person[][] userList = initializePerson(); // userList[0][] is Admin list, userList[1][] is Customer list
-
-        Person currentUser = null;
 
         // Welcome User
         startScreen();
@@ -97,7 +96,6 @@ public class ConcertTicketingSystem {
                     // Check Login Status
                     // Jump to Login Section
                     if (!isLoggedIn) {
-<<<<<<< HEAD
                         System.out.println("You are not signed in. Please sign in before buy ticket.");
 
                         if (login())
@@ -105,78 +103,28 @@ public class ConcertTicketingSystem {
 
                         // Get user detail (username, password, accStatus)
                         // guest.registerAccount("username", "password", "accStatus");
-=======
-                        currentUser = loginRegister(userList); // Login/Register
->>>>>>> main
                     }
 
                     // Display seat status(booked / empty) [table maybe]
                     // Ask for detail (no, ticketCat, etc.)
 
-                    break;
                 case 4: // Login/Register
-                    if (currentUser == null) { // Check if user is loggedIn
-                        currentUser = loginRegister(userList); // Login/Register
+                    System.out.println("Login\n");
 
-<<<<<<< HEAD
                     loginRegister(); // Login/Register
-=======
-                        if (currentUser != null) {
-                            isLoggedIn = true;
-                        }
-                    } else {
-                        System.out.println("You are already logged in!");
-                    }
->>>>>>> main
                     break;
                 case 5: // Other
-                    Order order = new Order("O001", 2, LocalDate.now(), OrderStatus.PENDING,
-                            new Ticket("T001", concertList[0], new ShowSeat(new VenueSeatCat("VIP", 100), 2, 'A', "B1"),
-                                    LocalDate.now()));
+                    System.out.println("Other");
 
-<<<<<<< HEAD
                     // Change Order
 
-                    // View Order
+                    // View Order·
 
                     // Cancel order
 
                     //
                     break;
                 case 6: // Exit
-=======
-                    System.out.println("---------");
-                    System.out.println("| Other |");
-                    System.out.println("---------");
-                    boolean quit = false;
-                    while (!quit) {
-                        System.out.println("1.View Order");
-                        System.out.println("2.Cancel Order");
-                        System.out.println("3.Exit");
-                        System.out.print("Select your option(1/2/3): ");
-
-                        int otherChoice = sc.nextInt();
-                        System.out.println("");
-
-                        if (otherChoice == 1) {
-                            // View Order
-                            order.displayOrder();
-                        } else if (otherChoice == 2) {
-                            // Cancel order
-                            order.cancelOrder();
-                        } else if (otherChoice == 3) {
-                            // exit
-                            quit = true;
-                        } else
-                            System.out.println("Invalid option");
-                    }
-                    break;
-                case 6: // Sign Out
-                    signOut();
-                    currentUser = null;
-                    break;
-                case 7: // Exit
->>>>>>> main
                     exit = true;
                     System.out.println("Successfully Exited");
                     break;
@@ -184,6 +132,9 @@ public class ConcertTicketingSystem {
                     System.out.println("\nError!\n");
             }
         }
+
+        // Select
+
     }
 
     // Methods & Functions
@@ -192,8 +143,7 @@ public class ConcertTicketingSystem {
     }
 
     public static void displayMainMenu() {
-        String[] custMenu = { "Search Concert", "View Trending", "Buy Ticket", "Login/Register", "Other", "Sign out",
-                "Exit" };
+        String[] custMenu = { "Search Concert", "View Trending", "Buy Ticket", "Login/Register", "Other", "Exit" };
         System.out.println("Menu: ");
 
         for (int i = 0; i < custMenu.length; i++) {
@@ -691,7 +641,7 @@ public class ConcertTicketingSystem {
         String searchConcertName = sc.nextLine();
         System.out.println("");
 
-        // searchResult = catalog.searchByTitle(searchConcertName);
+        searchResult = catalog.searchByTitle(searchConcertName);
 
         // Display the Concerts
         if (searchResult != null) {
@@ -776,7 +726,7 @@ public class ConcertTicketingSystem {
             }
         }
 
-        // searchResult = catalog.searchByLanguage(searchConcertLanguage);
+        searchResult = catalog.searchByLanguage(searchConcertLanguage);
 
         // Display the Concerts
         displayConcert(searchResult);
@@ -981,7 +931,6 @@ public class ConcertTicketingSystem {
         }
     }
 
-<<<<<<< HEAD
     // 4. Login Methods (Wei Hao)
     public static void loginRegister() {
         // Remember to use userList[][] (Line 37) to check credentials
@@ -1008,212 +957,27 @@ public class ConcertTicketingSystem {
 
     public static boolean login() {
         Scanner sc = new Scanner(System.in);
-=======
-    // //Choose Category Seat at Venue 1
-    // public static void PriceVenue1(){
-    // ShowSeat[] catAOS = {
-    // new ShowSeat(" VIP ", 888.00),
-    // new ShowSeat(" PS 1 ", 788.00),
-    // new ShowSeat(" PS 2 ", 588.00),
-    // new ShowSeat(" PS 3 ", 488.00),
-    // new ShowSeat(" PS 4 ", 588.00),
-    // };
-    //
-    // System.out.println("------------------------------------------------------------------");
-    // System.out.println("| NO | CATEGORY | PRICE |");
-    // System.out.println("|----|---------------------------------------------|-------------|");
-    // for(int i =0; i<catAOS.length;i++){
-    // System.out.printf("| %2d | %10s | %10s |\n", (i+1),
-    // centerString(10,catAOS[i].getDescription()),centerString(10,Double.toString(catAOS[i].getPrice())));
-    // System.out.println("|----|---------------------------------------------|-------------|");
-    // }
-    // System.out.print("Please Enter Your Preference Seat (1 - " + catAOS.length+
-    // "): ");
-    // int catChoice1 = sc.nextInt();
-    // }
-    //
-    // //Choose Category Seat at Venue 2
-    // public static void PriceVenue2(){
-    // Scanner sc = new Scanner(System.in);
-    // ShowSeat[] catBJS = {
-    // new ShowSeat(" Rock Zone ", 1088.00),
-    // new ShowSeat(" VVIP ", 988.00),
-    // new ShowSeat(" PS 1 ", 888.00),
-    // new ShowSeat(" PS 2 ", 788.00),
-    // new ShowSeat(" PS 3 ", 688.00),
-    // new ShowSeat(" PS 4 (LV.2) ", 588.00),
-    // new ShowSeat(" PS 5 (LV.2) ", 388.00)
-    // };
-    //
-    // System.out.println("-----------------------------------------------------------------------");
-    // System.out.println("| NO | CATEGORY | PRICE |");
-    // System.out.println("|----|--------------------------------------------------|-------------|");
-    // for(int i =0; i<catBJS.length;i++){
-    // System.out.printf("| %2d | %11s | %10s |\n", (i+1),
-    // centerString(11,catBJS[i].getDescription()),centerString(10,Double.toString(catBJS[i].getPrice())));
-    // System.out.println("|----|---------------------------------------------|-------------|");
-    // }
-    // System.out.print("Please Enter Your Preference Seat (1 - " + catBJS.length+
-    // "): ");
-    // int catChoice2 = sc.nextInt();
-    // }
-    //
-    // //Choose Category Seat at Venue 3
-    // public static void PriceVenue3(){
-    // Scanner sc = new Scanner(System.in);
-    // ShowSeatCat[] catZKL = {
-    // new ShowSeatCat(" VIP (Rock Zone) ", 1028.00),
-    // new TicketCat(" CAT 1 (Rock Zone) ", 968.00),
-    // new TicketCat(" CAT 2 (Rock Zone) ", 888.00),
-    // new TicketCat(" CAT 2 (Premium Padded Seat) ", 788.00),
-    // new TicketCat(" CAT 3 (Non-Premium Padded Seat) ", 488.00)
-    // };
-    // System.out.println("---------------------------------------------------------------------------------");
-    // System.out.println("| NO | CATEGORY | PRICE |");
-    // System.out.println("|----|------------------------------------------------------------|-------------|");
-    // for(int i =0; i<catZKL.length;i++){
-    // System.out.printf("| %2d | %32s | %10s |\n", (i+1),
-    // centerString(32,catZKL[i].getDescription()),centerString(10,Double.toString(catZKL[i].getPrice())));
-    // System.out.println("|----|---------------------------------------------|-------------|");
-    // }
-    // System.out.print("Please Enter Your Preference Seat (1 - " + catZKL.length+
-    // "): ");
-    // int catChoice3 = sc.nextInt();
-    // }
-    //
-    // Initialize Category
-    public static void initializeCategory(Venue[] venueList) { // return ShowSeatCat
-        int fileLineNumber = (int) countFileLineNumber("category_seat.txt");
-        String[] categorySeatList = new String[fileLineNumber];
-        String nameVenue = null;
-        int venueCount = 0;
-        int currentVenueIndex = 0;
->>>>>>> main
 
-        // Try-Catch get data from artist.txt
-        try {
-            File concertCategoryFile = new File("category_seat.txt");
-            Scanner fileScanner = new Scanner(concertCategoryFile);
-            String currentLine = fileScanner.nextLine();
+        // Ask user Login Information
+        System.out.println("");
+        System.out.printf("%12s\n%12s\n", " Login Page ", "------------");
+        System.out.print("Username: ");
+        String inputUsername = sc.nextLine().trim();
+        System.out.print("Password: ");
+        String inputPwd = sc.nextLine().trim();
 
-            while (fileScanner.hasNextLine()) {
-                categorySeatList = currentLine.split(";");
+        // Check Credentials
+        boolean isLogged = checkCredential(inputUsername, inputPwd);
 
-                nameVenue = categorySeatList[0];
-                for (int i = 0; i < venueList.length; i++) {
-                    if (currentVenueIndex != i) {
-                        System.out.println(venueCount);
-                        venueCount = 0;
-                    }
-                    if (nameVenue.equals(venueList[i].getName())) {
-                        venueCount++;
-                        currentVenueIndex = i;
-                    }
-                }
-
-                currentLine = fileScanner.nextLine();
-            }
-
-            // artistDetails = currentLine.split("\t");
-            //
-            // artistNameList[counter] = artistDetails[0];
-            // artistLanguageList[counter] = artistDetails[1];
-            // artistGenreList[counter] = artistDetails[2];
-            //
-            fileScanner.close();
-            //
-        } catch (FileNotFoundException ex) {
-            System.out.println("File does not exist!\n");
+        if (isLogged) {
+            System.out.println("Welcome! You are logged in!\n");
+            sc.close(); // Close scanner
+            return true;
+        } else {
+            System.out.println("Incorrect credentials, please try again!\n");
+            sc.close(); // Close scanner
+            return false;
         }
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        // // Variables
-        // String[] artistDetails;
-        // int counter = 0;
-        // String[] venueNameList = new String[fileLineNumber];
-        // String[] artistLanguageList = new String[fileLineNumber];
-        // String[] artistGenreList = new String[fileLineNumber];
-
-    }
-
-    // 4. Login Methods (Wei Hao)
-    public static Person loginRegister(Person[][] userList) {
-        Person currentUser = null;
-
-        System.out.println("---------");
-        System.out.println("| Login |");
-        System.out.println("---------\n");
-
-        System.out.print("Are you a new user?(Y/N): ");
-        char isNewUser = Character.valueOf(sc.next().charAt(0));
-        sc.nextLine();
-
-        if (isNewUser == 'n' || isNewUser == 'N') {
-            System.out.println("Login\n"); // Header
-
-            System.out.print("Enter your username: "); // User input username
-            String username = sc.nextLine();
-            System.out.print("Enter your password: "); // User input password
-            String password = sc.nextLine();
-
-            for (int i = 0; i < userList.length; i++)
-                for (int j = 0; j < userList[i].length; j++) {
-                    if (username.equals(userList[i][j].getAccount().getUsername())) { // Check username
-                        if (password.equals(userList[i][j].getAccount().getPassword())) { // Check password
-                            if (i == 0) { // admin
-                                currentUser = (Admin) userList[i][j];
-                                System.out.println("Login succesfully as an admin");
-                                break;
-                            } else if (i == 1) { // customer
-                                currentUser = (Customer) userList[i][j];
-                                System.out.println("Login succesfully as a customer");
-                                break;
-                            }
-                        } else {
-                            System.out.println("Incorrect credentials, please try again!\n");
-                        }
-                    } else {
-                        System.out.println("Incorrect credentials, please try again!\n");
-                    }
-                }
-        }
-
-        else if (isNewUser == 'y' || isNewUser == 'Y') {
-            // Register Header
-            System.out.println("-----------");
-            System.out.println("| Register |");
-            System.out.println("-----------\n");
-
-            System.out.print("Enter your first name: "); // Check char length >= ? AND <= ?
-            String firstName = sc.nextLine();
-            System.out.print("Enter your last name: "); // Check char length >= ? AND <= ?
-            String lastName = sc.nextLine();
-            System.out.print("Enter your prefered username: "); // Check length >= 4 AND <= 20
-            String newUsername = sc.nextLine();
-            System.out.print("Enter your prefered password: "); // Check if pwd is >= 8 AND < 18
-            String newPassword = sc.nextLine();
-            System.out.print("Enter your phone number: "); // Check if number of digit = 10/11
-            String phone = sc.nextLine();
-            System.out.print("Enter your email: "); // Check email format
-            String email = sc.nextLine();
-
-            Customer newUser = new Customer(new Account(newUsername, newPassword, AccountStatus.ACTIVE),
-                    firstName, lastName, "", phone, email);
-
-            System.out.println("Registered Successfully!");
-            System.out.println("Welcome: " + newUser.getAccount().getUsername());
-        }
-
-        else
-            System.out.println("Invalid character, only Y/N is acceptable\n");
-
-        return currentUser;
     }
 
     public static boolean checkCredential(String inputUsername, String inputPwd) {
@@ -1232,12 +996,6 @@ public class ConcertTicketingSystem {
         }
 
         return isEqual;
-    }
-
-    // Sign Out Methods
-    public static void signOut() {
-        System.out.println("Sign Out Successfully!\n");
-        clearScreen(); // Clear Screen (Start a new screen)
     }
 
     // General Methods
