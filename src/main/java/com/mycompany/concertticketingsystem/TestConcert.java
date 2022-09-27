@@ -21,10 +21,23 @@ public class TestConcert {
     public static void main(String[] args) {
         // // Object Initialization
         // Artist[] artistList = initializeArtists();
-        // Venue[] venueList = initializeVenues();
+        Venue[] venueList = initializeVenues();
         // Concert[] concertList = initializeConcerts(artistList, venueList);
-        List<Person>[] userList = initializePerson(); // userList[0][] is Admin list,
-        // serList[1][] is Customer list
+        // Person[][] userList = initializePerson();
+        List<ShowSeatCat>[] showSeatCatList = initializeSeatCategory(venueList);
+
+        int count = 0;
+        for (int i = 0; i < showSeatCatList.length; i++) {
+            for (int j = 0; j < showSeatCatList[i].size(); j++) {
+                System.out
+                        .println(showSeatCatList[i].get(j).getDescription() + " : "
+                                + showSeatCatList[i].get(j).getSeatPrice());
+                count++;
+                System.out.println(count);
+            }
+
+        }
+
         //
         //
         // // Create catalog
@@ -352,94 +365,61 @@ public class TestConcert {
         return concertList;
     }
 
-    public static List<Person>[] initializePerson() {
-        int fileLineNumber = (int) countFileLineNumber("user.txt");
-        List<Person>[] usersList = new List[2]; // Person[0][] is Admin users, Person[1][] is Customer users
-        List<Person> adminList = new ArrayList<>();
-        List<Person> customerList = new ArrayList<>();
+    public static List<ShowSeatCat>[] initializeSeatCategory(Venue[] venueList) { // return ShowSeatCat
+        int fileLineNumber = (int) countFileLineNumber("category_seat.txt");
 
-        String[] userDetails;
-        int counter = 0;
-        String[] userType = new String[fileLineNumber];
-        String[] username = new String[fileLineNumber];
-        String[] password = new String[fileLineNumber];
-        String[] accStatus = new String[fileLineNumber];
-        String[] userFirstName = new String[fileLineNumber];
-        String[] userLastName = new String[fileLineNumber];
-        String[] userAddress = new String[fileLineNumber];
-        String[] userEmail = new String[fileLineNumber];
-        String[] userPhoneNum = new String[fileLineNumber];
-        LocalDate[] userJoinedDate = new LocalDate[fileLineNumber];
+        List<ShowSeatCat>[] venueSeatCategory = new List[venueList.length];
+        String[] categorySeatList = new String[fileLineNumber];
+        String nameVenue = null;
+        String catDesc = null;
+        int catCapacity = 0;
+        double catPrice = 0;
 
-        // Try-Catch get data from venue.txt
+        for (int i = 0; i < venueSeatCategory.length; i++) {
+            venueSeatCategory[i] = new ArrayList<>();
+        }
+
+        // Try-Catch get data from artist.txt
         try {
-            File userFile = new File("user.txt");
-            Scanner fileScanner = new Scanner(userFile);
+            File concertCategoryFile = new File("category_seat.txt");
+            Scanner fileScanner = new Scanner(concertCategoryFile);
             String currentLine = fileScanner.nextLine();
 
             while (fileScanner.hasNextLine()) {
-                userDetails = currentLine.split(";");
+                categorySeatList = currentLine.split(";");
 
-                userType[counter] = userDetails[0];
-                username[counter] = userDetails[1];
-                password[counter] = userDetails[2];
-                accStatus[counter] = userDetails[3];
-                userFirstName[counter] = userDetails[4];
-                userLastName[counter] = userDetails[5];
-                userAddress[counter] = userDetails[6];
-                userEmail[counter] = userDetails[7];
-                userPhoneNum[counter] = userDetails[8];
-                userJoinedDate[counter] = LocalDate.parse(userDetails[9]);
+                nameVenue = categorySeatList[0];
+                catDesc = categorySeatList[1];
+                catCapacity = Integer.valueOf(categorySeatList[2]);
+                catPrice = Double.valueOf(categorySeatList[3]);
+
+                for (int i = 0; i < venueList.length; i++) {
+                    if (nameVenue.equals(venueList[i].getName())) {
+                        venueSeatCategory[i].add(new ShowSeatCat(catDesc, catCapacity, catPrice));
+                    }
+                }
 
                 currentLine = fileScanner.nextLine();
-                counter++;
             }
 
-            userDetails = currentLine.split(";");
+            categorySeatList = currentLine.split(";");
 
-            userType[counter] = userDetails[0];
-            username[counter] = userDetails[1];
-            password[counter] = userDetails[2];
-            accStatus[counter] = userDetails[3];
-            userFirstName[counter] = userDetails[4];
-            userLastName[counter] = userDetails[5];
-            userAddress[counter] = userDetails[6];
-            userEmail[counter] = userDetails[7];
-            userPhoneNum[counter] = userDetails[8];
-            userJoinedDate[counter] = LocalDate.parse(userDetails[9]);
+            nameVenue = categorySeatList[0];
+            catDesc = categorySeatList[1];
+            catCapacity = Integer.valueOf(categorySeatList[2]);
+            catPrice = Double.valueOf(categorySeatList[3]);
 
-            fileScanner.close();
-
-            // Create Admin object & Customer object
-            int accStatusLength = AccountStatus.values().length;
-            AccountStatus accountStatus;
-            for (int i = 0; i < fileLineNumber; i++) {
-                if (userType[i].equalsIgnoreCase("admin")) {
-                    for (int j = 0; j < accStatusLength; j++) {
-                        if (accStatus[i].toUpperCase().equals(AccountStatus.values()[j].toString())) {
-                            accountStatus = AccountStatus.valueOf(accStatus[i].toUpperCase());
-                            adminList.add(new Admin(new Account(username[i], password[i], accountStatus),
-                                    userFirstName[i], userLastName[i], userAddress[i], userEmail[i], userPhoneNum[i]));
-                        }
-                    }
-                } else if (userType[i].equalsIgnoreCase("customer")) {
-                    for (int j = 0; j < accStatusLength; j++) {
-                        if (accStatus[i].toUpperCase().equals(AccountStatus.values()[j].toString())) {
-                            accountStatus = AccountStatus.valueOf(accStatus[i].toUpperCase());
-                            customerList.add(new Customer(new Account(username[i], password[i], accountStatus),
-                                    userFirstName[i], userLastName[i], userAddress[i], userEmail[i], userPhoneNum[i]));
-                        }
-                    }
+            for (int i = 0; i < venueList.length; i++) {
+                if (nameVenue.equals(venueList[i].getName())) {
+                    venueSeatCategory[i].add(new ShowSeatCat(catDesc, catCapacity, catPrice));
                 }
             }
 
+            fileScanner.close();
         } catch (FileNotFoundException ex) {
-            System.err.println("File does not exist!\n");
+            System.out.println("File does not exist!\n");
         }
 
-        usersList[0] = adminList;
-        usersList[1] = customerList;
-
-        return usersList;
+        return venueSeatCategory;
     }
 }
