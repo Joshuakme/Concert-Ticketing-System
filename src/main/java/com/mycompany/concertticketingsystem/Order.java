@@ -8,14 +8,14 @@ import java.util.Scanner;
  *
  * @author Joshua Koh
  */
-public class Order  {
+public class Order {
     private String orderNumber;
     private int numberOfSeats;
     private LocalDate createdOn;
     private OrderStatus status;
     private Ticket ticket;
-    
-    //constructor
+
+    // constructor
     public Order(String orderNumber, int numberOfSeats, LocalDate createdOn, OrderStatus status, Ticket ticket) {
         this.orderNumber = orderNumber;
         this.numberOfSeats = numberOfSeats;
@@ -23,11 +23,11 @@ public class Order  {
         this.status = status;
         this.ticket = ticket;
     }
-    
+
     Scanner sc = new Scanner(System.in);
-    
-    //getter
-    public String getOrderNumber() {    
+
+    // getter
+    public String getOrderNumber() {
         return orderNumber;
     }
 
@@ -39,14 +39,13 @@ public class Order  {
         return createdOn;
     }
 
-    public OrderStatus getStatus() {    
+    public OrderStatus getStatus() {
         return status;
     }
 
     public Ticket getTicket() {
         return ticket;
     }
-    
 
     // Setters
     public void setOrderNumber(String orderNumber) {
@@ -68,32 +67,30 @@ public class Order  {
     public void setTicket(Ticket ticket) {
         this.ticket = ticket;
     }
-    
-    
+
     // Methods
     public void cancelOrder() {
         System.out.println("Are you sure you want to cancel your order? (Y/N)");
         char choice = Character.valueOf(sc.nextLine().charAt(0));
-        
-        if (choice == 'y' || choice == 'Y'){
+
+        if (choice == 'y' || choice == 'Y') {
             System.out.println("Your order is cancelled successfully");
             status = OrderStatus.CANCELED;
             displayOrder();
-        }
-        else if (choice == 'n' || choice == 'N'){
+        } else if (choice == 'n' || choice == 'N') {
             System.out.println("Order cancellation is aborted");
         }
     }
 
     public void displayOrder() {
-        if (status != OrderStatus.CANCELED){
+        if (status != OrderStatus.CANCELED) {
             System.out.println("Order Details");
             System.out.println("----------------------------------");
             System.out.println();
-            System.out.println("Your Order Number: "+ orderNumber );
+            System.out.println("Your Order Number: " + orderNumber);
             System.out.println("Seats booked: " + numberOfSeats);
-            System.out.println("Date purchased: " + createdOn );
-            System.out.println("Current tickets status: " + status );
+            System.out.println("Date purchased: " + createdOn);
+            System.out.println("Current tickets status: " + status);
             System.out.println();
             System.out.println("----------------------------------");
             System.out.println("");
@@ -102,20 +99,18 @@ public class Order  {
             System.out.println();
             ticket.concert.displayAllDetail();
             System.out.println("----------------------------------");
-        }
-        else{
+        } else {
             System.out.println("Order Details");
             System.out.println("----------------------------------");
             System.out.println();
-            System.out.println("Your Order Number: "+ orderNumber );
+            System.out.println("Your Order Number: " + orderNumber);
             System.out.println("Seats booked: " + numberOfSeats);
-            System.out.println("Date purchased: " + createdOn );
-            System.out.println("Current tickets status: " + status );
+            System.out.println("Date purchased: " + createdOn);
+            System.out.println("Current tickets status: " + status);
             System.out.println();
             System.out.println("----------------------------------");
         }
-            
+
     }
-    
-    
+
 }

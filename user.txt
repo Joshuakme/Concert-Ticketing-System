@@ -3,4 +3,4 @@ admin;jkme;jkjk1234;active;Joshua;Koh;PV13, Platinum Lake Condominium, Danau Kot
 admin;tscf;scfscf88;active;Chai Fen;Shia;TAR UC Hostel, xxx, Setapak, Kuala Lumpur;shiacf@student.tarc.edu.my;0125678490;2020-09-10
 admin;wwh;wwhwwh55;active;Wei Hao;Wong;PV13, Platinium Lake Condominium, Danau Kota, Setapak, Kuala Lumpur, 53300 Wilayah Persekutuan;wongwh@student.tarc.edu.my;0178953334;2020-12-31
 customer;debby;deb34;active;Debby;Chan;77, Jln Bt 16 Gerai Mps Batu 16 Rawang, Rawang, Ipoh, 48000 Perak;debbychan@gmail.com;0160933185;2021-11-03
-customer;samantha;sam2@34;Samantha;active;Chia;531, Jln Tuanku Abdul Rahman, Kuala Lumpur, 50100 Wilayah Persekutuan;samantha@gmail.com;012692-4815;2021-12-24
+customer;samantha;sam2@34;active;Samantha;Chia;531, Jln Tuanku Abdul Rahman, Kuala Lumpur, 50100 Wilayah Persekutuan;samantha@gmail.com;012692-4815;2021-12-24

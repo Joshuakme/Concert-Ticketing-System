@@ -3,6 +3,7 @@ package com.mycompany.concertticketingsystem;
 import static com.mycompany.concertticketingsystem.ConcertTicketingSystem.countFileLineNumber;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,19 +23,26 @@ public class TestConcert {
         // Artist[] artistList = initializeArtists();
         // Venue[] venueList = initializeVenues();
         // Concert[] concertList = initializeConcerts(artistList, venueList);
-        // Person[][] userList = initializePerson(); // userList[0][] is Admin list,
+        List<Person>[] userList = initializePerson(); // userList[0][] is Admin list,
         // serList[1][] is Customer list
         //
         //
         // // Create catalog
         // Catalog catalog = createCatalog(artistList, venueList, concertList);
 
-        // System.out.print(userList[1][1].getFirstName());
-        // for(int i = 0; i < userList.length; i++){
-        // for(int j=0; j < userList[i].length;j++){
-        // System.out.print(userList[i][j]);}
-        //
-        // }
+        // System.out.println(userList[1].get(1).getLastName());
+        String fileName = "haha";
+
+        try {
+            File fileObj = new File(fileName + ".txt");
+            if (fileObj.createNewFile()) {
+                System.out.println("Huh");
+            } else {
+                System.out.println("File already exists.");
+            }
+        } catch (IOException e) {
+            System.out.println("File does not exist!\n");
+        }
 
     }
 
@@ -342,5 +350,96 @@ public class TestConcert {
         }
 
         return concertList;
+    }
+
+    public static List<Person>[] initializePerson() {
+        int fileLineNumber = (int) countFileLineNumber("user.txt");
+        List<Person>[] usersList = new List[2]; // Person[0][] is Admin users, Person[1][] is Customer users
+        List<Person> adminList = new ArrayList<>();
+        List<Person> customerList = new ArrayList<>();
+
+        String[] userDetails;
+        int counter = 0;
+        String[] userType = new String[fileLineNumber];
+        String[] username = new String[fileLineNumber];
+        String[] password = new String[fileLineNumber];
+        String[] accStatus = new String[fileLineNumber];
+        String[] userFirstName = new String[fileLineNumber];
+        String[] userLastName = new String[fileLineNumber];
+        String[] userAddress = new String[fileLineNumber];
+        String[] userEmail = new String[fileLineNumber];
+        String[] userPhoneNum = new String[fileLineNumber];
+        LocalDate[] userJoinedDate = new LocalDate[fileLineNumber];
+
+        // Try-Catch get data from venue.txt
+        try {
+            File userFile = new File("user.txt");
+            Scanner fileScanner = new Scanner(userFile);
+            String currentLine = fileScanner.nextLine();
+
+            while (fileScanner.hasNextLine()) {
+                userDetails = currentLine.split(";");
+
+                userType[counter] = userDetails[0];
+                username[counter] = userDetails[1];
+                password[counter] = userDetails[2];
+                accStatus[counter] = userDetails[3];
+                userFirstName[counter] = userDetails[4];
+                userLastName[counter] = userDetails[5];
+                userAddress[counter] = userDetails[6];
+                userEmail[counter] = userDetails[7];
+                userPhoneNum[counter] = userDetails[8];
+                userJoinedDate[counter] = LocalDate.parse(userDetails[9]);
+
+                currentLine = fileScanner.nextLine();
+                counter++;
+            }
+
+            userDetails = currentLine.split(";");
+
+            userType[counter] = userDetails[0];
+            username[counter] = userDetails[1];
+            password[counter] = userDetails[2];
+            accStatus[counter] = userDetails[3];
+            userFirstName[counter] = userDetails[4];
+            userLastName[counter] = userDetails[5];
+            userAddress[counter] = userDetails[6];
+            userEmail[counter] = userDetails[7];
+            userPhoneNum[counter] = userDetails[8];
+            userJoinedDate[counter] = LocalDate.parse(userDetails[9]);
+
+            fileScanner.close();
+
+            // Create Admin object & Customer object
+            int accStatusLength = AccountStatus.values().length;
+            AccountStatus accountStatus;
+            for (int i = 0; i < fileLineNumber; i++) {
+                if (userType[i].equalsIgnoreCase("admin")) {
+                    for (int j = 0; j < accStatusLength; j++) {
+                        if (accStatus[i].toUpperCase().equals(AccountStatus.values()[j].toString())) {
+                            accountStatus = AccountStatus.valueOf(accStatus[i].toUpperCase());
+                            adminList.add(new Admin(new Account(username[i], password[i], accountStatus),
+                                    userFirstName[i], userLastName[i], userAddress[i], userEmail[i], userPhoneNum[i]));
+                        }
+                    }
+                } else if (userType[i].equalsIgnoreCase("customer")) {
+                    for (int j = 0; j < accStatusLength; j++) {
+                        if (accStatus[i].toUpperCase().equals(AccountStatus.values()[j].toString())) {
+                            accountStatus = AccountStatus.valueOf(accStatus[i].toUpperCase());
+                            customerList.add(new Customer(new Account(username[i], password[i], accountStatus),
+                                    userFirstName[i], userLastName[i], userAddress[i], userEmail[i], userPhoneNum[i]));
+                        }
+                    }
+                }
+            }
+
+        } catch (FileNotFoundException ex) {
+            System.err.println("File does not exist!\n");
+        }
+
+        usersList[0] = adminList;
+        usersList[1] = customerList;
+
+        return usersList;
     }
 }

@@ -18,7 +18,7 @@ public class Person {
     private String phone;
     private LocalDate joinedDate;
 
-    // Constructor    
+    // Constructor
     public Person(Account account, String firstName, String lastName, String address, String email, String phone) {
         this.account = account;
         this.firstName = firstName;
@@ -28,23 +28,13 @@ public class Person {
         this.phone = phone;
         this.joinedDate = getCurrentDate();
     }
-    
+
     public static LocalDate getCurrentDate() {
         LocalDate today = LocalDate.now();
         return today;
     }
-    
-    
-    
 
-    
-    
     // Getters
-
-    // Setters
-    
-    // Methods
-
     public Account getAccount() {
         return account;
     }
@@ -73,5 +63,8 @@ public class Person {
         return joinedDate;
     }
 
+    // Setters
+
+    // Methods
 
 }

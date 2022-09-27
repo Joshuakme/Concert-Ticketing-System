@@ -1,7 +1,9 @@
 package com.mycompany.concertticketingsystem;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -39,7 +41,7 @@ public class ConcertTicketingSystem {
         Artist[] artistList = initializeArtists();
         Venue[] venueList = initializeVenues();
         Concert[] concertList = initializeConcerts(artistList, venueList);
-        Person[][] userList = initializePerson(); // userList[0][] is Admin list, userList[1][] is Customer list
+        List<Person>[] userList = initializePerson(); // userList[0][] is Admin list, userList[1][] is Customer list
 
         Person currentUser = null;
 
@@ -121,6 +123,7 @@ public class ConcertTicketingSystem {
                     System.out.println("---------");
                     System.out.println("| Other |");
                     System.out.println("---------");
+
                     boolean quit = false;
                     while (!quit) {
                         System.out.println("1.View Order");
@@ -479,11 +482,11 @@ public class ConcertTicketingSystem {
         return concertList;
     }
 
-    public static Person[][] initializePerson() {
+    public static List<Person>[] initializePerson() {
         int fileLineNumber = (int) countFileLineNumber("user.txt");
-        Person[][] usersList = new Person[2][]; // Person[0][] is Admin users, Person[1][] is Customer users
-        Admin[] adminList = new Admin[fileLineNumber];
-        Customer[] customerList = new Customer[fileLineNumber];
+        List<Person>[] usersList = new List[2]; // Person[0][] is Admin users, Person[1][] is Customer users
+        List<Person> adminList = new ArrayList<>();
+        List<Person> customerList = new ArrayList<>();
 
         String[] userDetails;
         int counter = 0;
@@ -498,7 +501,7 @@ public class ConcertTicketingSystem {
         String[] userPhoneNum = new String[fileLineNumber];
         LocalDate[] userJoinedDate = new LocalDate[fileLineNumber];
 
-        // Try-Catch get data from venue.txt
+        // Try-Catch get data from user.txt
         try {
             File userFile = new File("user.txt");
             Scanner fileScanner = new Scanner(userFile);
@@ -523,6 +526,7 @@ public class ConcertTicketingSystem {
             }
 
             userDetails = currentLine.split(";");
+
             userType[counter] = userDetails[0];
             username[counter] = userDetails[1];
             password[counter] = userDetails[2];
@@ -539,29 +543,28 @@ public class ConcertTicketingSystem {
             // Create Admin object & Customer object
             int accStatusLength = AccountStatus.values().length;
             AccountStatus accountStatus;
-            for (int i = 0; i < counter; i++) {
-
-                if (userType[counter].equals("admin")) {
+            for (int i = 0; i < fileLineNumber; i++) {
+                if (userType[i].equalsIgnoreCase("admin")) {
                     for (int j = 0; j < accStatusLength; j++) {
                         if (accStatus[i].toUpperCase().equals(AccountStatus.values()[j].toString())) {
                             accountStatus = AccountStatus.valueOf(accStatus[i].toUpperCase());
-                            adminList[i] = new Admin(new Account(username[i], password[i], accountStatus),
-                                    userFirstName[i], userLastName[i], userAddress[i], userEmail[i], userPhoneNum[i]);
+                            adminList.add(new Admin(new Account(username[i], password[i], accountStatus),
+                                    userFirstName[i], userLastName[i], userAddress[i], userEmail[i], userPhoneNum[i]));
                         }
                     }
-                } else if (userType[counter].equals("customer")) {
+                } else if (userType[i].equalsIgnoreCase("customer")) {
                     for (int j = 0; j < accStatusLength; j++) {
                         if (accStatus[i].toUpperCase().equals(AccountStatus.values()[j].toString())) {
                             accountStatus = AccountStatus.valueOf(accStatus[i].toUpperCase());
-                            customerList[i] = new Customer(new Account(username[i], password[i], accountStatus),
-                                    userFirstName[i], userLastName[i], userAddress[i], userEmail[i], userPhoneNum[i]);
+                            customerList.add(new Customer(new Account(username[i], password[i], accountStatus),
+                                    userFirstName[i], userLastName[i], userAddress[i], userEmail[i], userPhoneNum[i]));
                         }
                     }
                 }
             }
 
         } catch (FileNotFoundException ex) {
-            System.out.println("File does not exist!\n");
+            System.err.println("File does not exist!\n");
         }
 
         usersList[0] = adminList;
@@ -1086,53 +1089,61 @@ public class ConcertTicketingSystem {
     }
 
     // 4. Login Methods (Wei Hao)
-    public static Person loginRegister(Person[][] userList) {
+    public static Person loginRegister(List<Person>[] userList) {
         Person currentUser = null;
-
-        System.out.println("---------");
-        System.out.println("| Login |");
-        System.out.println("---------\n");
 
         System.out.print("Are you a new user?(Y/N): ");
         char isNewUser = Character.valueOf(sc.next().charAt(0));
         sc.nextLine();
 
-        if (isNewUser == 'n' || isNewUser == 'N') {
-            System.out.println("Login\n"); // Header
+        if (isNewUser == 'n' || isNewUser == 'N') { // Login
+            System.out.println("---------"); // Header
+            System.out.println("| Login |");
+            System.out.println("---------\n");
 
             System.out.print("Enter your username: "); // User input username
             String username = sc.nextLine();
             System.out.print("Enter your password: "); // User input password
             String password = sc.nextLine();
+            System.out.println(); // Blank row
 
-            for (int i = 0; i < userList.length; i++)
-                for (int j = 0; j < userList[i].length; j++) {
-                    if (username.equals(userList[i][j].getAccount().getUsername())) { // Check username
-                        if (password.equals(userList[i][j].getAccount().getPassword())) { // Check password
+            for (int i = 0; i < userList.length; i++) {
+                for (int j = 0; j < userList[i].size(); j++) {
+                    if (username.equals(userList[i].get(j).getAccount().getUsername())) { // Check username
+                        if (password.equals(userList[i].get(j).getAccount().getPassword())) { // Check password
                             if (i == 0) { // admin
-                                currentUser = (Admin) userList[i][j];
-                                System.out.println("Login succesfully as an admin");
+                                currentUser = (Admin) userList[i].get(j);
+                                System.out.println("Login succesfully as an Admin");
                                 break;
                             } else if (i == 1) { // customer
-                                currentUser = (Customer) userList[i][j];
-                                System.out.println("Login succesfully as a customer");
+                                currentUser = (Customer) userList[i].get(j);
+                                System.out.println("Login succesfully as a Customer");
                                 break;
                             }
-                        } else {
-                            System.out.println("Incorrect credentials, please try again!\n");
                         }
-                    } else {
-                        System.out.println("Incorrect credentials, please try again!\n");
                     }
                 }
+
+                if (currentUser != null) {
+                    System.out.println("Welcome back! " + currentUser.getFirstName());
+                    System.out.println("\n"); // Space 2 rows
+                    break;
+                }
+            }
+
+            if (currentUser == null) {
+                System.out.println("Incorrect credentials, please try again!\n");
+            }
+
         }
 
-        else if (isNewUser == 'y' || isNewUser == 'Y') {
+        else if (isNewUser == 'y' || isNewUser == 'Y') { // Register
             // Register Header
             System.out.println("-----------");
             System.out.println("| Register |");
             System.out.println("-----------\n");
 
+            // Ask user details
             System.out.print("Enter your first name: "); // Check char length >= ? AND <= ?
             String firstName = sc.nextLine();
             System.out.print("Enter your last name: "); // Check char length >= ? AND <= ?
@@ -1149,8 +1160,28 @@ public class ConcertTicketingSystem {
             Customer newUser = new Customer(new Account(newUsername, newPassword, AccountStatus.ACTIVE),
                     firstName, lastName, "", phone, email);
 
-            System.out.println("Registered Successfully!");
-            System.out.println("Welcome: " + newUser.getAccount().getUsername());
+            // Compare newuser exist in userList(Customer) or not
+            // If exist, then reject registration --> retry register
+
+            // Save data to user.txt
+            String newUserData = "customer" + ";" +
+                    newUser.getAccount().getUsername() + ";" +
+                    newUser.getAccount().getPassword() + ";" +
+                    "active" + ";" +
+                    newUser.getAddress() + ";" +
+                    newUser.getEmail() + ";" +
+                    newUser.getPhone() + ";" +
+                    newUser.getJoinedDate().format(DateTimeFormatter.ISO_DATE);
+
+            if (saveData("user.txt", newUserData)) {
+                System.out.println();
+                System.out.println("Registered Successfully!");
+                System.out.println("Welcome: " + newUser.getAccount().getUsername());
+                System.out.println();
+            } else {
+                System.err.println("Fail to register");
+            }
+
         }
 
         else
@@ -1215,6 +1246,40 @@ public class ConcertTicketingSystem {
     public static void blankInput() {
         System.out.print("Press any key to continue...");
         sc.nextLine();
+    }
+
+    // File-Related Methods
+    public static void loadFile(String fileName) {
+        try {
+            File fileObj = new File(fileName);
+            if (fileObj.createNewFile()) {
+            } else {
+                // System.out.println("File already exists.");
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+        }
+    }
+
+    public static boolean saveData(String fileName, String data) {
+        boolean succesful = false;
+
+        loadFile(fileName);
+
+        // Write data to file
+        try {
+            BufferedWriter myWriter = new BufferedWriter(new FileWriter(fileName, true));
+            myWriter.newLine();
+            myWriter.write(data);
+            myWriter.close();
+
+            succesful = true;
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+
+        return succesful;
     }
 
     public static long countFileLineNumber(String fileName) {
