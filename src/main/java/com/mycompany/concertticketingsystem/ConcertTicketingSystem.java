@@ -1115,6 +1115,8 @@ public class ConcertTicketingSystem {
                         "S", 'A', 1),
                 LocalDate.now()));
 
+        // Write Into order.txt
+
         // Print Ticket(s)
         printTicket(newOrder);
 
