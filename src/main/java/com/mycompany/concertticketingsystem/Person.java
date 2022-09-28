@@ -16,6 +16,7 @@ public class Person {
     private String address;
     private String email;
     private String phone;
+    private Payment payment;
     private LocalDate joinedDate;
 
     // Constructor
@@ -66,5 +67,7 @@ public class Person {
     // Setters
 
     // Methods
-
+    public boolean pay() {
+        return false;
+    }
 }

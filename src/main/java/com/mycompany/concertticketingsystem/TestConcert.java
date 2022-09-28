@@ -366,7 +366,7 @@ public class TestConcert {
 
                 for (int i = 0; i < venueList.length; i++) {
                     if (nameVenue.equals(venueList[i].getName())) {
-                        venueSeatCategory[i].add(new ShowSeatCat(catDesc, catCapacity, catPrice));
+                        venueSeatCategory[i].add(new ShowSeatCat(venueList[i], catDesc, catCapacity, catPrice));
                     }
                 }
 
@@ -382,7 +382,63 @@ public class TestConcert {
 
             for (int i = 0; i < venueList.length; i++) {
                 if (nameVenue.equals(venueList[i].getName())) {
-                    venueSeatCategory[i].add(new ShowSeatCat(catDesc, catCapacity, catPrice));
+                    venueSeatCategory[i].add(new ShowSeatCat(venueList[i], catDesc, catCapacity, catPrice));
+                }
+            }
+
+            fileScanner.close();
+        } catch (FileNotFoundException ex) {
+            System.out.println("File does not exist!\n");
+        }
+
+        return venueSeatCategory;
+    }
+
+    public static List<VenueSeatCat>[] initializeVenueSeatCat(Venue[] venueList) {
+        int fileLineNumber = (int) countFileLineNumber("venueSeatCat.txt");
+
+        // Variables
+        List<VenueSeatCat>[] venueSeatCategory = new List[venueList.length];
+        String[] seatCatDetails = new String[fileLineNumber];
+        String nameVenue = null;
+        String catDesc = null;
+        int catCapacity = 0;
+
+        for (int i = 0; i < venueSeatCategory.length; i++) {
+            venueSeatCategory[i] = new ArrayList<>();
+        }
+
+        // Try-Catch get data from artist.txt
+        try {
+            File concertCategoryFile = new File("venueSeatCat.txt");
+            Scanner fileScanner = new Scanner(concertCategoryFile);
+            String currentLine = fileScanner.nextLine();
+
+            while (fileScanner.hasNextLine()) {
+                seatCatDetails = currentLine.split(";");
+
+                nameVenue = seatCatDetails[0];
+                catDesc = seatCatDetails[1];
+                catCapacity = Integer.valueOf(seatCatDetails[2]);
+
+                for (int i = 0; i < venueList.length; i++) {
+                    if (nameVenue.equals(venueList[i].getName())) {
+                        venueSeatCategory[i].add(new VenueSeatCat(venueList[i], catDesc, catCapacity));
+                    }
+                }
+
+                currentLine = fileScanner.nextLine();
+            }
+
+            seatCatDetails = currentLine.split(";");
+
+            nameVenue = seatCatDetails[0];
+            catDesc = seatCatDetails[1];
+            catCapacity = Integer.valueOf(seatCatDetails[2]);
+
+            for (int i = 0; i < venueList.length; i++) {
+                if (nameVenue.equals(venueList[i].getName())) {
+                    venueSeatCategory[i].add(new VenueSeatCat(venueList[i], catDesc, catCapacity));
                 }
             }
 

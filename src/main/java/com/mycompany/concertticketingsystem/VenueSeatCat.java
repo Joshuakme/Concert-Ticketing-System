@@ -14,10 +14,12 @@ public class VenueSeatCat {
     private int catCapapcity;
     
     // Constructor
-    public VenueSeatCat(String description, int catCapapcity) {
+    public VenueSeatCat(Venue venue, String description, int catCapapcity) {
+        this.venue = venue;
         this.description = description;
         this.catCapapcity = catCapapcity;
     }
+
     
     // Getters
     public Venue getVenue() {

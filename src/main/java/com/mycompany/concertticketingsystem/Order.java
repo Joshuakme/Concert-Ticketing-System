@@ -15,14 +15,16 @@ public class Order {
     private LocalDate createdOn;
     private OrderStatus status;
     private Ticket ticket;
+    double payAmount;
 
     // constructor
-    public Order(int numberOfSeats, LocalDate createdOn, Ticket ticket) {
+    public Order(int numberOfSeats, LocalDate createdOn, Ticket ticket, double payAmount) {
         this.orderNumber = formatId(count);
         this.numberOfSeats = numberOfSeats;
         this.createdOn = createdOn;
         this.status = OrderStatus.PENDING;
         this.ticket = ticket;
+        this.payAmount = payAmount;
     }
 
     Scanner sc = new Scanner(System.in);
@@ -48,6 +50,10 @@ public class Order {
         return ticket;
     }
 
+    public double getPayAmount() {
+        return payAmount;
+    }
+
     // Setters
     public void setOrderNumber(String orderNumber) {
         this.orderNumber = orderNumber;
@@ -67,6 +73,10 @@ public class Order {
 
     public void setTicket(Ticket ticket) {
         this.ticket = ticket;
+    }
+
+    public void setPayAmount(double payAmount) {
+        this.payAmount = payAmount;
     }
 
     // Methods

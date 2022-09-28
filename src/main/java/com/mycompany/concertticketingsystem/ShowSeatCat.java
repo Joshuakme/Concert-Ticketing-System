@@ -13,8 +13,8 @@ public class ShowSeatCat extends VenueSeatCat {
     private double seatPrice;
 
     // Constructor
-    public ShowSeatCat(String description, int catCapacity, double seatPrice) {
-        super(description, catCapacity);
+    public ShowSeatCat(Venue venue, String description, int catCapacity, double seatPrice) {
+        super(venue, description, catCapacity);
         this.remainingSeat = catCapacity;
         this.seatPrice = seatPrice;
     }
