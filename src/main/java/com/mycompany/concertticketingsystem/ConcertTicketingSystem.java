@@ -1254,24 +1254,6 @@ public class ConcertTicketingSystem {
         return currentUser;
     }
 
-    public static boolean checkCredential(String inputUsername, String inputPwd) {
-        // Login Credentials
-        String[] usernameList = { "taruc", "admin" };
-        String[] pwdList = { "taruc", "0000" };
-        boolean isEqual = false;
-
-        // Check Empty inputs
-        if (inputUsername.equals("") || inputPwd.equals(""))
-            return false;
-
-        for (int i = 0; i < usernameList.length; i++) {
-            if (inputUsername.equals(usernameList[i]) && inputPwd.equals(pwdList[i]))
-                isEqual = true;
-        }
-
-        return isEqual;
-    }
-
     // Sign Out Methods
     public static void signOut() {
         System.out.println("Sign Out successfully!\n");
@@ -1310,6 +1292,21 @@ public class ConcertTicketingSystem {
     public static void blankInput() {
         System.out.print("Press any key to continue...");
         sc.nextLine();
+    }
+
+    public static boolean checkValidDate(String dateStr) {
+        DateTimeFormatter datetimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        try {
+            LocalDate.parse(dateStr, datetimeFormatter);
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+        return true;
+    }
+
+    public static String centerString(int width, String s) {
+        return String.format("%-" + width + "s", String.format("%" + (s.length() + (width - s.length()) / 2) + "s", s));
     }
 
     // File-Related Methods
@@ -1360,18 +1357,4 @@ public class ConcertTicketingSystem {
         return lines;
     }
 
-    public static boolean checkValidDate(String dateStr) {
-        DateTimeFormatter datetimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-        try {
-            LocalDate.parse(dateStr, datetimeFormatter);
-        } catch (DateTimeParseException e) {
-            return false;
-        }
-        return true;
-    }
-
-    public static String centerString(int width, String s) {
-        return String.format("%-" + width + "s", String.format("%" + (s.length() + (width - s.length()) / 2) + "s", s));
-    }
 }
