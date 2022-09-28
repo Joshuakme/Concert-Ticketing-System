@@ -3,6 +3,7 @@ package com.mycompany.concertticketingsystem;
 import static com.mycompany.concertticketingsystem.ConcertTicketingSystem.countFileLineNumber;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -20,21 +21,41 @@ public class TestConcert {
     public static void main(String[] args) {
         // // Object Initialization
         // Artist[] artistList = initializeArtists();
-        // Venue[] venueList = initializeVenues();
+        Venue[] venueList = initializeVenues();
         // Concert[] concertList = initializeConcerts(artistList, venueList);
-        // Person[][] userList = initializePerson(); // userList[0][] is Admin list,
-        // serList[1][] is Customer list
+        // Person[][] userList = initializePerson();
+        List<ShowSeatCat>[] showSeatCatList = initializeSeatCategory(venueList);
+
+        int count = 0;
+        for (int i = 0; i < showSeatCatList.length; i++) {
+            for (int j = 0; j < showSeatCatList[i].size(); j++) {
+                System.out
+                        .println(showSeatCatList[i].get(j).getDescription() + " : "
+                                + showSeatCatList[i].get(j).getSeatPrice());
+                count++;
+                System.out.println(count);
+            }
+
+        }
+
         //
         //
         // // Create catalog
         // Catalog catalog = createCatalog(artistList, venueList, concertList);
 
-        // System.out.print(userList[1][1].getFirstName());
-        // for(int i = 0; i < userList.length; i++){
-        // for(int j=0; j < userList[i].length;j++){
-        // System.out.print(userList[i][j]);}
-        //
-        // }
+        // System.out.println(userList[1].get(1).getLastName());
+        String fileName = "haha";
+
+        try {
+            File fileObj = new File(fileName + ".txt");
+            if (fileObj.createNewFile()) {
+                System.out.println("Huh");
+            } else {
+                System.out.println("File already exists.");
+            }
+        } catch (IOException e) {
+            System.out.println("File does not exist!\n");
+        }
 
     }
 
@@ -342,5 +363,63 @@ public class TestConcert {
         }
 
         return concertList;
+    }
+
+    public static List<ShowSeatCat>[] initializeSeatCategory(Venue[] venueList) { // return ShowSeatCat
+        int fileLineNumber = (int) countFileLineNumber("category_seat.txt");
+
+        List<ShowSeatCat>[] venueSeatCategory = new List[venueList.length];
+        String[] categorySeatList = new String[fileLineNumber];
+        String nameVenue = null;
+        String catDesc = null;
+        int catCapacity = 0;
+        double catPrice = 0;
+
+        for (int i = 0; i < venueSeatCategory.length; i++) {
+            venueSeatCategory[i] = new ArrayList<>();
+        }
+
+        // Try-Catch get data from artist.txt
+        try {
+            File concertCategoryFile = new File("category_seat.txt");
+            Scanner fileScanner = new Scanner(concertCategoryFile);
+            String currentLine = fileScanner.nextLine();
+
+            while (fileScanner.hasNextLine()) {
+                categorySeatList = currentLine.split(";");
+
+                nameVenue = categorySeatList[0];
+                catDesc = categorySeatList[1];
+                catCapacity = Integer.valueOf(categorySeatList[2]);
+                catPrice = Double.valueOf(categorySeatList[3]);
+
+                for (int i = 0; i < venueList.length; i++) {
+                    if (nameVenue.equals(venueList[i].getName())) {
+                        venueSeatCategory[i].add(new ShowSeatCat(catDesc, catCapacity, catPrice));
+                    }
+                }
+
+                currentLine = fileScanner.nextLine();
+            }
+
+            categorySeatList = currentLine.split(";");
+
+            nameVenue = categorySeatList[0];
+            catDesc = categorySeatList[1];
+            catCapacity = Integer.valueOf(categorySeatList[2]);
+            catPrice = Double.valueOf(categorySeatList[3]);
+
+            for (int i = 0; i < venueList.length; i++) {
+                if (nameVenue.equals(venueList[i].getName())) {
+                    venueSeatCategory[i].add(new ShowSeatCat(catDesc, catCapacity, catPrice));
+                }
+            }
+
+            fileScanner.close();
+        } catch (FileNotFoundException ex) {
+            System.out.println("File does not exist!\n");
+        }
+
+        return venueSeatCategory;
     }
 }
