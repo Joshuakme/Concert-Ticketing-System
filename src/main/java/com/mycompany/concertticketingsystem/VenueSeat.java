@@ -11,7 +11,7 @@ public class VenueSeat {
     private String section;
 
     // Constructor
-    public VenueSeat(VenueSeatCat category, int seatNumber, char row, String section) {
+    public VenueSeat(VenueSeatCat category, String section, char row, int seatNumber) {
         this.category = category;
         this.seatNumber = seatNumber;
         this.row = row;
@@ -35,4 +35,24 @@ public class VenueSeat {
         return section;
     }
 
+    // Methods
+    public static String assignSection() {
+        String section = "A";
+
+        return section;
+    }
+
+    public static char assignRow() {
+        char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toUpperCase().toCharArray();
+
+        char assignedRow = alphabet[0];
+
+        return assignedRow;
+    }
+
+    public static int assignSeatNo() {
+        int seatNo = 0;
+
+        return seatNo;
+    }
 }
