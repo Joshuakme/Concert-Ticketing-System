@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.Painter;
+
 /**
  *
  * @author Joshua Koh
@@ -83,12 +85,15 @@ public class Catalog implements Search {
     // Methods
     @Override
     public List<Concert> searchByTitle(String title) {
+        if (title == null || title.isEmpty()) {
+            return null;
+        }
+
         List<Concert> matchedConcertList = new ArrayList<>();
 
         for (Map.Entry<String, List<Concert>> pairEntry : concertTitles.entrySet()) {
             if (pairEntry.getKey().toString().toUpperCase().contains(title.toUpperCase())) {
-                Concert concertList = (Concert) pairEntry.getValue();
-                matchedConcertList.add(concertList);
+                matchedConcertList = pairEntry.getValue();
             }
         }
 
@@ -120,7 +125,16 @@ public class Catalog implements Search {
 
     @Override
     public List<Concert> searchByArtist(String artist) {
-        return concertArtists.get(artist);
+        List<Concert> matchedConcertList = new ArrayList<>();
+
+        for (Map.Entry<String, List<Concert>> pairEntry : concertArtists.entrySet()) {
+            if (pairEntry.getKey().toString().toUpperCase().contains(artist.toUpperCase())) {
+                // System.out.println(pairEntry.getValue().);
+                matchedConcertList = pairEntry.getValue();
+            }
+        }
+
+        return matchedConcertList;
     }
 
     @Override

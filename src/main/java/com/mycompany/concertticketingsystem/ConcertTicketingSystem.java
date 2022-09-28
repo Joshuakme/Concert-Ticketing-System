@@ -90,6 +90,10 @@ public class ConcertTicketingSystem {
 
                     currentUserOrderList.add(orderConcert(selectedConcert, venueList, showSeatCatList));
 
+                    // Print ticket
+
+                    // Payment
+
                     // Display seat status(booked / empty) [table maybe]
                     // Ask for detail (no, ticketCat, etc.)
                     break;
@@ -596,6 +600,7 @@ public class ConcertTicketingSystem {
 
             System.out.print("Choice: ");
             int searchChoice = Character.getNumericValue(sc.next().charAt(0));
+            sc.nextLine(); // Read new line character "\n"
             System.out.println("");
 
             switch (searchChoice) {
@@ -609,33 +614,11 @@ public class ConcertTicketingSystem {
                     searchConcertDate(catalog);
                     break;
                 case 4: // Get Search Artist (Concert)
-
-                    System.out.print("Enter Concert Artist: ");
-                    String searchConcertArtist = sc.nextLine();
-
-                    // searchResult.add(catalog.searchByArtist(searchConcertArtist));
-
-                    // Display the Concerts
-                    displayConcert(searchResult);
-
-                    isEqual = true;
-
-                    // Press anything to continue
-                    blankInput();
+                    searchConcertArtist(catalog);
                     break;
                 case 5: // Get Search Venue (Concert)
-                    System.out.print("Enter Concert Venue: ");
-                    String searchConcertVenue = sc.nextLine();
+                    searchConcertVenue(catalog, venueList);
 
-                    // searchResult = catalog.searchByVenue(searchConcertVenue);
-
-                    // Display the Concerts
-                    displayConcert(searchResult);
-
-                    isEqual = true;
-
-                    // Press anything to continue
-                    blankInput();
                     break;
                 case 6:
                     exit = true;
@@ -657,7 +640,7 @@ public class ConcertTicketingSystem {
         String searchConcertName = sc.nextLine();
         System.out.println("");
 
-        // searchResult = catalog.searchByTitle(searchConcertName);
+        searchResult = catalog.searchByTitle(searchConcertName);
 
         // Display the Concerts
         if (searchResult != null) {
@@ -667,12 +650,22 @@ public class ConcertTicketingSystem {
             // Ask user to display detail or not
             System.out.print("Do you want to display detail of the concert?(Y/N): ");
             char searchDisplayAllChoice = sc.next().toUpperCase().charAt(0);
+            sc.nextLine();
             System.out.println("");
 
             switch (searchDisplayAllChoice) {
                 case 'Y':
                     boolean isValidNo = false;
                     while (!isValidNo) {
+                        if (searchResult.size() == 1) {
+                            System.out.println("");
+                            System.out.println("*Concert Detail*");
+                            searchResult.get(0).displayAllDetail();
+
+                            isValidNo = true;
+                            break;
+                        }
+
                         System.out.print("Enter Concert No.: ");
                         int concertDetailChoice = Character.getNumericValue(sc.next().charAt(0));
                         // Display selected concert
@@ -703,11 +696,10 @@ public class ConcertTicketingSystem {
 
         // Press anything to continue
         blankInput();
-        System.out.println("");
     }
 
     public static void searchConcertLang(Catalog catalog) {
-        List<Concert> searchResult = null;
+        List<Concert> searchResult = new ArrayList<>();
 
         // Get Search Language (Concert)
         String[] languageTitleList = catalog.getlanguageTitleList();
@@ -726,6 +718,7 @@ public class ConcertTicketingSystem {
         while (!isValidNo) {
             System.out.print("Select Concert Language: ");
             int searchConcertLanguageChoice = Character.getNumericValue(sc.next().charAt(0));
+            sc.nextLine();
 
             if (searchConcertLanguageChoice > 0 && searchConcertLanguageChoice <= languageTitleList.length) {
                 for (int i = 0; i < languageTitleList.length; i++) {
@@ -742,7 +735,7 @@ public class ConcertTicketingSystem {
             }
         }
 
-        // searchResult = catalog.searchByLanguage(searchConcertLanguage);
+        searchResult = catalog.searchByLanguage(searchConcertLanguage);
 
         // Display the Concerts
         displayConcert(searchResult);
@@ -791,7 +784,110 @@ public class ConcertTicketingSystem {
     }
 
     public static void searchConcertArtist(Catalog catalog) {
+        // Get Search Concert
+        System.out.print("Enter Concert Artist: ");
+        String searchConcertArtist = sc.nextLine();
 
+        List<Concert> searchResult = catalog.searchByArtist(searchConcertArtist);
+
+        // searchResult.add(catalog.searchByArtist(searchConcertArtist));
+
+        // Display the Concerts
+        if (searchResult != null) {
+            // Display the Concerts
+            System.out.println("Search Result");
+            displayConcertTitle(searchResult);
+
+            // Ask user to display detail or not
+            System.out.print("Do you want to display detail of the concert?(Y/N): ");
+            char searchDisplayAllChoice = sc.next().toUpperCase().charAt(0);
+            sc.nextLine();
+            System.out.println("");
+
+            switch (searchDisplayAllChoice) {
+                case 'Y':
+                    boolean isValidNo = false;
+                    while (!isValidNo) {
+                        System.out.print("Enter Concert No.: ");
+                        int concertDetailChoice = Character.getNumericValue(sc.next().charAt(0));
+
+                        // Display selected concert
+                        if (concertDetailChoice > 0 && concertDetailChoice <= searchResult.size()) {
+                            System.out.println("");
+                            System.out.println("*Concert Detail*");
+                            searchResult.get(concertDetailChoice - 1).displayAllDetail();
+
+                            isValidNo = true;
+                        } else {
+                            System.err.println("Invalid number");
+                            System.out.println("");
+                        }
+                    }
+                    break;
+                case 'N':
+                    break;
+                default:
+                    System.out.println("Invalid character!");
+            }
+        } else {
+            System.err.println(
+                    "We couldn't find a match for \"" + searchConcertArtist + "\", Do you want to try another search?");
+            System.out.println(
+                    "(Double check your search for any typo or spelling errors - or try different search term)");
+            System.out.println("");
+        }
+
+        // Press anything to continue
+        blankInput();
+    }
+
+    public static void searchConcertVenue(Catalog catalog, Venue[] venueList) {
+        List<Concert> searchResult = new ArrayList<>();
+
+        // Display Available Venue
+        System.out.println(" Venue Available ");
+        System.out.println("=================");
+        for (int i = 0; i < venueList.length; i++) {
+            System.out.println((i + 1) + ". " + venueList[i].getName());
+        }
+        System.out.println();
+
+        // Get user input for search venue
+        boolean isValidNo = false;
+        String searchConcertVenue = null;
+
+        // Input Validation
+        while (!isValidNo) {
+            System.out.print("Select Concert Language: ");
+            int searchConcertVenueChoice = Character.getNumericValue(sc.next().charAt(0));
+            sc.nextLine();
+
+            if (searchConcertVenueChoice > 0 && searchConcertVenueChoice <= venueList.length) {
+                for (int i = 0; i < venueList.length; i++) {
+                    if (searchConcertVenueChoice == (i + 1)) {
+                        searchConcertVenue = venueList[i].getName();
+                    }
+                }
+
+                isValidNo = true;
+            } else if (searchConcertVenueChoice > venueList.length) {
+                System.out.println("");
+                System.err.println("It is likely your choice exceed the maximum number of choice. Please try again.");
+                System.out.println("");
+            } else {
+                System.out.println("");
+                System.err.println("Invalid number! Please enter number between 1 to " + venueList.length + ".");
+                System.out.println("");
+            }
+        }
+
+        searchResult = catalog.searchByVenue(searchConcertVenue);
+
+        // Display the Concerts
+        displayConcert(searchResult);
+
+        // Press anything to continue
+        blankInput();
     }
 
     public static void displayConcert(Concert[] concertList) {
@@ -1292,6 +1388,7 @@ public class ConcertTicketingSystem {
     public static void blankInput() {
         System.out.print("Press any key to continue...");
         sc.nextLine();
+        System.out.println("");
     }
 
     public static boolean checkValidDate(String dateStr) {
