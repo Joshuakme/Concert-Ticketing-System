@@ -6,7 +6,7 @@ package com.mycompany.concertticketingsystem;
 
 /**
  *
- * @author Tiffany
+ * @author Chai Fen
  */
 public class ShowSeatCat extends VenueSeatCat {
     private int remainingSeat;

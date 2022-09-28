@@ -900,7 +900,7 @@ public class ConcertTicketingSystem {
         return featuredConcerts;
     }
 
-    // 3. Buy Ticket Methods (Tiffany)
+    // 3. Buy Ticket Methods (Chai Fen)
     public static List<ShowSeatCat>[] initializeSeatCategory(Venue[] venueList) { // return ShowSeatCat
         int fileLineNumber = (int) countFileLineNumber("category_seat.txt");
 
@@ -1118,7 +1118,7 @@ public class ConcertTicketingSystem {
         // Write Into order.txt
 
         // Print Ticket(s)
-        printTicket(newOrder);
+        printTicket(Concert][]concertList());
 
         return newOrder;
     }
@@ -1143,9 +1143,32 @@ public class ConcertTicketingSystem {
         }
     }
 
-    public static void printTicket(Order Order) {
-        System.out.println("Print Ticket...");
+    public static void printTicket(Concert[] concertList) {
+        System.out.println("Printing Ticket...");
         System.out.println();
+        System.out.println("\t\t\t=============================================================");
+        System.out.println("\t\t\t||        ======  ==   =====  =  ==  =====  ======         ||");
+        System.out.println("\t\t\t||          ==    ==   ==     = =    =        ==           ||");
+        System.out.println("\t\t\t||          ==    ==   ==     = =    =====    ==           ||");
+        System.out.println("\t\t\t||          ==    ==   ==     =  =   =        ==           ||");
+        System.out.println("\t\t\t||          ==    ==   =====  =   == =====    ==           ||");
+        System.out.println("\t\t\t||---------------------------------------------------------||");
+        System.out.println("\t\t\t||                                                         ||");
+        System.out.print("\t\t\t||   CONCERT NAME:                                         ||");
+        System.out.println("\t\t\t||                                                         ||");
+        System.out.print("\t\t\t||   DATE & TIME :                                         ||");
+        System.out.println("\t\t\t||                                                         ||");
+        System.out.print("\t\t\t||   VENUE       :                                         ||");
+        System.out.println("\t\t\t||                                                         ||");
+        System.out.println("\t\t\t||   CATEGORY    :                                         ||");
+        System.out.println("\t\t\t||                                                         ||");
+        System.out.println("\t\t\t||   SECTION     :                                         ||");
+        System.out.println("\t\t\t||                                                         ||");
+        System.out.println("\t\t\t||   ROW         :                                         ||");
+        System.out.println("\t\t\t||                                                         ||");
+        System.out.println("\t\t\t||   SEAT.NO     :                                         ||");
+        System.out.println("\t\t\t||                                                         ||");
+        System.out.println("\t\t\t=============================================================");
     }
 
     // 4. Login Methods (Wei Hao)
