@@ -8,8 +8,12 @@ import java.util.List;
  */
 public interface Search {
    public List<Concert> searchByTitle(String title);
+
    public List<Concert> searchByLanguage(String language);
+
    public List<Concert> searchByDate(String date);
+
    public List<Concert> searchByArtist(String artist);
-   public List<Concert> searchByVenue(String venue);    
+
+   public List<Concert> searchByVenue(String venue);
 }
