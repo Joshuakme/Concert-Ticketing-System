@@ -1414,7 +1414,9 @@ public class ConcertTicketingSystem {
         }
 
         // Print Ticket(s)
-        printTicket(newOrder);
+        for (int i = 0; i < ticketQtyChoice; i++) {
+            printTicket(newOrder);
+        }
 
         return newOrder;
     }
