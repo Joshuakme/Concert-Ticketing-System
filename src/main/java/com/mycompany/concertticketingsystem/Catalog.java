@@ -33,6 +33,19 @@ public class Catalog implements Search {
     }
 
     // Methods
+    public String[] getlanguageTitleList() {
+        String[] languageTitleList = new String[concertLanguages.entrySet().toArray().length];
+        int count = 0;
+
+        for (Map.Entry<String, List<Concert>> pairEntry : concertLanguages.entrySet()) {
+            languageTitleList[count] = (String) pairEntry.getKey();
+
+            count++;
+        }
+
+        return languageTitleList;
+    }
+
     @Override
     public List<Concert> searchByTitle(String title) {
         if (title == null || title.isEmpty()) {
@@ -48,19 +61,6 @@ public class Catalog implements Search {
         }
 
         return matchedConcertList;
-    }
-
-    public String[] getlanguageTitleList() {
-        String[] languageTitleList = new String[concertLanguages.entrySet().toArray().length];
-        int count = 0;
-
-        for (Map.Entry<String, List<Concert>> pairEntry : concertLanguages.entrySet()) {
-            languageTitleList[count] = (String) pairEntry.getKey();
-
-            count++;
-        }
-
-        return languageTitleList;
     }
 
     @Override
