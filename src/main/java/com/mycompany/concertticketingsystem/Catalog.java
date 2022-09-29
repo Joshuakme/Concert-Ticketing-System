@@ -32,56 +32,6 @@ public class Catalog implements Search {
         this.concertVenues = concertVenues;
     }
 
-    // Getters
-    public LocalDate getLastUpdated() {
-        return lastUpdated;
-    }
-
-    public Map<String, List<Concert>> getConcertTitles() {
-        return concertTitles;
-    }
-
-    public Map<String, List<Concert>> getConcertArtists() {
-        return concertArtists;
-    }
-
-    public Map<String, List<Concert>> getConcertLanguages() {
-        return concertLanguages;
-    }
-
-    public Map<String, List<Concert>> getConcertDates() {
-        return concertDates;
-    }
-
-    public Map<String, List<Concert>> getConcertVenues() {
-        return concertVenues;
-    }
-
-    // Setters
-    public void setLastUpdated(LocalDate lastUpdated) {
-        this.lastUpdated = lastUpdated;
-    }
-
-    public void setConcertTitles(Map<String, List<Concert>> concertTitles) {
-        this.concertTitles = concertTitles;
-    }
-
-    public void setConcertArtists(Map<String, List<Concert>> concertArtists) {
-        this.concertArtists = concertArtists;
-    }
-
-    public void setConcertLanguages(Map<String, List<Concert>> concertLanguages) {
-        this.concertLanguages = concertLanguages;
-    }
-
-    public void setConcertDates(Map<String, List<Concert>> concertDates) {
-        this.concertDates = concertDates;
-    }
-
-    public void setConcertVenues(Map<String, List<Concert>> concertVenues) {
-        this.concertVenues = concertVenues;
-    }
-
     // Methods
     @Override
     public List<Concert> searchByTitle(String title) {
