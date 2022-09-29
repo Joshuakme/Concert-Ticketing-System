@@ -7,11 +7,13 @@ This project is a **[JAVA](https://www.java.com/en/)** console-based ticketing s
 
 ## Preview
 
-### Preview 1   
-![Screenshot 1](./screenshots/output_ss_1.jpg)  
+### Preview 1
 
-### Preview 2    
-![Screenshot 2](#2.png)
+![Screenshot 1](./screenshots/output_ss_1.jpg)
+
+### Preview 2
+
+![Screenshot 2](./screenshots/output_ss_2.jpg)
 
 ## Developed by
 
