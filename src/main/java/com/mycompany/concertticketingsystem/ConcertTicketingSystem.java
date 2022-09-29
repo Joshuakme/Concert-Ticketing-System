@@ -1377,7 +1377,7 @@ public class ConcertTicketingSystem {
                 while (!validCardNum) {
                     cardNum = Character.getNumericValue(sc.next().charAt(0));
 
-                    if (cardNum < 0 || cardNum > 99999999) {
+                    if (cardNum >= 0 || cardNum <= 99999999) {
                         validCardNum = true;
                     } else {
                         System.err.println("Invalid card number! Please enter 8 digit card number.");
