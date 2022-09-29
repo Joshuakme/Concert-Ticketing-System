@@ -19,42 +19,21 @@ import java.util.Scanner;
  */
 public class TestConcert {
     public static void main(String[] args) {
+        // Venue venue = new Venue("Tset", "Shah Alam", "Auditorium Hall", 800);
+        // Venue venue2 = new Venue("Tset", "Shah Alam", "Auditorium Hall", 800);
+        // System.out.println(venue.equals(venue2));
+
         // // Object Initialization
-        // Artist[] artistList = initializeArtists();
+        Artist[] artistList = initializeArtists();
         Venue[] venueList = initializeVenues();
-        // Concert[] concertList = initializeConcerts(artistList, venueList);
+        Concert[] concertList = initializeConcerts(artistList, venueList);
         // Person[][] userList = initializePerson();
-        List<ShowSeatCat>[] showSeatCatList = initializeSeatCategory(venueList);
 
-        int count = 0;
-        for (int i = 0; i < showSeatCatList.length; i++) {
-            for (int j = 0; j < showSeatCatList[i].size(); j++) {
-                System.out
-                        .println(showSeatCatList[i].get(j).getDescription() + " : "
-                                + showSeatCatList[i].get(j).getSeatPrice());
-                count++;
-                System.out.println(count);
-            }
+        Catalog catatlog = createCatalog(artistList, venueList, concertList);
 
-        }
-
-        //
-        //
-        // // Create catalog
-        // Catalog catalog = createCatalog(artistList, venueList, concertList);
-
-        // System.out.println(userList[1].get(1).getLastName());
-        String fileName = "haha";
-
-        try {
-            File fileObj = new File(fileName + ".txt");
-            if (fileObj.createNewFile()) {
-                System.out.println("Huh");
-            } else {
-                System.out.println("File already exists.");
-            }
-        } catch (IOException e) {
-            System.out.println("File does not exist!\n");
+        for (int i = 0; i < catatlog.searchByVenue("Bukit Jalil National Stadium").size(); i++) {
+            System.out.println(catatlog.searchByVenue("Bukit Jalil National Stadium").get(i).getLanguage());
+            System.out.println();
         }
 
     }
@@ -153,23 +132,15 @@ public class TestConcert {
         }
 
         // Map for Concert Venue
-        String[] venueNameList = new String[venueList.length];
-
         for (int i = 0; i < venueList.length; i++) {
-            venueNameList[i] = venueList[i].getName();
-        }
+            List<Concert> concertByVenue = new ArrayList<>();
 
-        List<Concert> concertByVenue = new ArrayList<>();
-        for (int j = 0; j < concertList.length; j++) {
-            if (concertList[j] != null) {
-                for (int i = 0; i < venueNameList.length; i++) {
-                    if (concertList[j].getVenue().getName().toUpperCase().equals(venueNameList[i].toUpperCase())) {
-                        concertByVenue.add(concertList[i]);
-                    }
-                    concertVenues.put(venueNameList[i], concertByVenue);
+            for (int j = 0; j < concertList.length; j++) {
+                if (venueList[i].equals(concertList[j].getVenue())) {
+                    concertByVenue.add(concertList[i]);
                 }
-
             }
+            concertVenues.put(venueList[i].getName(), concertByVenue);
         }
 
         // Create Catalog Object
@@ -395,7 +366,7 @@ public class TestConcert {
 
                 for (int i = 0; i < venueList.length; i++) {
                     if (nameVenue.equals(venueList[i].getName())) {
-                        venueSeatCategory[i].add(new ShowSeatCat(catDesc, catCapacity, catPrice));
+                        venueSeatCategory[i].add(new ShowSeatCat(venueList[i], catDesc, catCapacity, catPrice));
                     }
                 }
 
@@ -411,7 +382,63 @@ public class TestConcert {
 
             for (int i = 0; i < venueList.length; i++) {
                 if (nameVenue.equals(venueList[i].getName())) {
-                    venueSeatCategory[i].add(new ShowSeatCat(catDesc, catCapacity, catPrice));
+                    venueSeatCategory[i].add(new ShowSeatCat(venueList[i], catDesc, catCapacity, catPrice));
+                }
+            }
+
+            fileScanner.close();
+        } catch (FileNotFoundException ex) {
+            System.out.println("File does not exist!\n");
+        }
+
+        return venueSeatCategory;
+    }
+
+    public static List<VenueSeatCat>[] initializeVenueSeatCat(Venue[] venueList) {
+        int fileLineNumber = (int) countFileLineNumber("venueSeatCat.txt");
+
+        // Variables
+        List<VenueSeatCat>[] venueSeatCategory = new List[venueList.length];
+        String[] seatCatDetails = new String[fileLineNumber];
+        String nameVenue = null;
+        String catDesc = null;
+        int catCapacity = 0;
+
+        for (int i = 0; i < venueSeatCategory.length; i++) {
+            venueSeatCategory[i] = new ArrayList<>();
+        }
+
+        // Try-Catch get data from artist.txt
+        try {
+            File concertCategoryFile = new File("venueSeatCat.txt");
+            Scanner fileScanner = new Scanner(concertCategoryFile);
+            String currentLine = fileScanner.nextLine();
+
+            while (fileScanner.hasNextLine()) {
+                seatCatDetails = currentLine.split(";");
+
+                nameVenue = seatCatDetails[0];
+                catDesc = seatCatDetails[1];
+                catCapacity = Integer.valueOf(seatCatDetails[2]);
+
+                for (int i = 0; i < venueList.length; i++) {
+                    if (nameVenue.equals(venueList[i].getName())) {
+                        venueSeatCategory[i].add(new VenueSeatCat(venueList[i], catDesc, catCapacity));
+                    }
+                }
+
+                currentLine = fileScanner.nextLine();
+            }
+
+            seatCatDetails = currentLine.split(";");
+
+            nameVenue = seatCatDetails[0];
+            catDesc = seatCatDetails[1];
+            catCapacity = Integer.valueOf(seatCatDetails[2]);
+
+            for (int i = 0; i < venueList.length; i++) {
+                if (nameVenue.equals(venueList[i].getName())) {
+                    venueSeatCategory[i].add(new VenueSeatCat(venueList[i], catDesc, catCapacity));
                 }
             }
 

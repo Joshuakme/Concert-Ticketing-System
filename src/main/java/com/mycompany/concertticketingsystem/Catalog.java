@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.Painter;
+
 /**
  *
  * @author Joshua Koh
@@ -30,71 +32,7 @@ public class Catalog implements Search {
         this.concertVenues = concertVenues;
     }
 
-    // Getters
-    public LocalDate getLastUpdated() {
-        return lastUpdated;
-    }
-
-    public Map<String, List<Concert>> getConcertTitles() {
-        return concertTitles;
-    }
-
-    public Map<String, List<Concert>> getConcertArtists() {
-        return concertArtists;
-    }
-
-    public Map<String, List<Concert>> getConcertLanguages() {
-        return concertLanguages;
-    }
-
-    public Map<String, List<Concert>> getConcertDates() {
-        return concertDates;
-    }
-
-    public Map<String, List<Concert>> getConcertVenues() {
-        return concertVenues;
-    }
-
-    // Setters
-    public void setLastUpdated(LocalDate lastUpdated) {
-        this.lastUpdated = lastUpdated;
-    }
-
-    public void setConcertTitles(Map<String, List<Concert>> concertTitles) {
-        this.concertTitles = concertTitles;
-    }
-
-    public void setConcertArtists(Map<String, List<Concert>> concertArtists) {
-        this.concertArtists = concertArtists;
-    }
-
-    public void setConcertLanguages(Map<String, List<Concert>> concertLanguages) {
-        this.concertLanguages = concertLanguages;
-    }
-
-    public void setConcertDates(Map<String, List<Concert>> concertDates) {
-        this.concertDates = concertDates;
-    }
-
-    public void setConcertVenues(Map<String, List<Concert>> concertVenues) {
-        this.concertVenues = concertVenues;
-    }
-
     // Methods
-    @Override
-    public List<Concert> searchByTitle(String title) {
-        List<Concert> matchedConcertList = new ArrayList<>();
-
-        for (Map.Entry<String, List<Concert>> pairEntry : concertTitles.entrySet()) {
-            if (pairEntry.getKey().toString().toUpperCase().contains(title.toUpperCase())) {
-                Concert concertList = (Concert) pairEntry.getValue();
-                matchedConcertList.add(concertList);
-            }
-        }
-
-        return matchedConcertList;
-    }
-
     public String[] getlanguageTitleList() {
         String[] languageTitleList = new String[concertLanguages.entrySet().toArray().length];
         int count = 0;
@@ -109,6 +47,23 @@ public class Catalog implements Search {
     }
 
     @Override
+    public List<Concert> searchByTitle(String title) {
+        if (title == null || title.isEmpty()) {
+            return null;
+        }
+
+        List<Concert> matchedConcertList = new ArrayList<>();
+
+        for (Map.Entry<String, List<Concert>> pairEntry : concertTitles.entrySet()) {
+            if (pairEntry.getKey().toString().toUpperCase().contains(title.toUpperCase())) {
+                matchedConcertList = pairEntry.getValue();
+            }
+        }
+
+        return matchedConcertList;
+    }
+
+    @Override
     public List<Concert> searchByLanguage(String language) {
         return concertLanguages.get(language);
     }
@@ -120,7 +75,16 @@ public class Catalog implements Search {
 
     @Override
     public List<Concert> searchByArtist(String artist) {
-        return concertArtists.get(artist);
+        List<Concert> matchedConcertList = new ArrayList<>();
+
+        for (Map.Entry<String, List<Concert>> pairEntry : concertArtists.entrySet()) {
+            if (pairEntry.getKey().toString().toUpperCase().contains(artist.toUpperCase())) {
+                // System.out.println(pairEntry.getValue().);
+                matchedConcertList = pairEntry.getValue();
+            }
+        }
+
+        return matchedConcertList;
     }
 
     @Override

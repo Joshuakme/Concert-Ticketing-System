@@ -1,0 +1,17 @@
+Arena of Stars;VIP;200
+Arena of Stars;PS 1;200
+Arena of Stars;PS 2;1000
+Arena of Stars;PS 3;300
+Arena of Stars;PS 4;400
+Bukit Jalil National Stadium;Rock Zone;1000
+Bukit Jalil National Stadium;VVIP;500
+Bukit Jalil National Stadium;PS 1;600
+Bukit Jalil National Stadium;PS 2;600
+Bukit Jalil National Stadium;PS 3;700
+Bukit Jalil National Stadium;PS 4 (LV.2);800
+Bukit Jalil National Stadium;PS 5 (LV.2);800
+Zepp Kuala Lumpur;VIP (Rock Zone);800
+Zepp Kuala Lumpur;CAT 1 (Rock Zone);800
+Zepp Kuala Lumpur;CAT 2 (Rock Zone);800
+Zepp Kuala Lumpur;CAT 2 (Premium Padded Seat);400
+Zepp Kuala Lumpur;CAT 3 (Non-Premium Padded Seat);200
