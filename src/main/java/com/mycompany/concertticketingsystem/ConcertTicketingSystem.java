@@ -96,8 +96,6 @@ public class ConcertTicketingSystem {
                         currentCustomer
                                 .makeNewOrder(orderConcert(currentCustomer, selectedConcert, venueList, showSeatCatList,
                                         venueSeatCatList));
-                        // currentUserOrderList.add(orderConcert(selectedConcert, venueList,
-                        // showSeatCatList));
 
                         // Print ticket
 
@@ -105,6 +103,8 @@ public class ConcertTicketingSystem {
 
                         // Display seat status(booked / empty) [table maybe]
                         // Ask for detail (no, ticketCat, etc.)
+                    } else if (currentUser instanceof Admin) {
+                        System.out.println("You are an Admin!\nYou are not allowed to buy concert tickets.");
                     }
 
                     break;
@@ -221,22 +221,23 @@ public class ConcertTicketingSystem {
     // Data Initialization Methods (from txt files)
     public static Catalog createCatalog(Artist[] artistList, Venue[] venueList, Concert[] concertList) {
         Catalog catalog;
-        final Map<String, List<Concert>> concertTitles = new HashMap<>();
-        final Map<String, List<Concert>> concertArtists = new HashMap<>();
-        final Map<String, List<Concert>> concertLanguages = new HashMap<>();
-        final Map<String, List<Concert>> concertDates = new HashMap<>();
-        final Map<String, List<Concert>> concertVenues = new HashMap<>();
+        Map<String, List<Concert>> concertTitles = new HashMap();
+        Map<String, List<Concert>> concertArtists = new HashMap();
+        Map<String, List<Concert>> concertLanguages = new HashMap();
+        Map<String, List<Concert>> concertDates = new HashMap();
+        Map<String, List<Concert>> concertVenues = new HashMap();
 
         // Get Current Date
         LocalDate now = LocalDate.now();
 
         // Map for Concert Titles
         for (int j = 0; j < concertList.length; j++) {
-            List<Concert> concertByTitle = new ArrayList<>();
+            List<Concert> concertByTitle = new ArrayList<Concert>();
 
             for (int i = 0; i < concertList.length; i++) {
                 if (concertList[j].getName().toUpperCase().equals(concertList[i].getName().toUpperCase())) {
                     concertByTitle.add(concertList[i]);
+                    break;
                 }
             }
             concertTitles.put(concertList[j].getName(), concertByTitle);
@@ -297,6 +298,7 @@ public class ConcertTicketingSystem {
         }
 
         // Insert concert[i] object into MAP according to the date
+
         for (int j = 0; j < uniqueDateList.size(); j++) {
             List<Concert> concertByDate = new ArrayList<>();
 
@@ -311,23 +313,15 @@ public class ConcertTicketingSystem {
         }
 
         // Map for Concert Venue
-        String[] venueNameList = new String[venueList.length];
-
         for (int i = 0; i < venueList.length; i++) {
-            venueNameList[i] = venueList[i].getName();
-        }
+            List<Concert> concertByVenue = new ArrayList<>();
 
-        List<Concert> concertByVenue = new ArrayList<>();
-        for (int j = 0; j < concertList.length; j++) {
-            if (concertList[j] != null) {
-                for (int i = 0; i < venueNameList.length; i++) {
-                    if (concertList[j].getVenue().getName().toUpperCase().equals(venueNameList[i].toUpperCase())) {
-                        concertByVenue.add(concertList[i]);
-                    }
-                    concertVenues.put(venueNameList[i], concertByVenue);
+            for (int j = 0; j < concertList.length; j++) {
+                if (venueList[i].equals(concertList[j].getVenue())) {
+                    concertByVenue.add(concertList[j]);
                 }
-
             }
+            concertVenues.put(venueList[i].getName(), concertByVenue);
         }
 
         // Create Catalog Object
@@ -675,6 +669,7 @@ public class ConcertTicketingSystem {
                     break;
                 case 6:
                     exit = true;
+                    isEqual = true;
                     break;
                 default:
                     System.out.println("Error! Please try again.\n");
@@ -906,11 +901,11 @@ public class ConcertTicketingSystem {
         System.out.println();
 
         // Get user input for search venue
-        boolean isValidNo = false;
+        boolean isValidVenueNo = false;
         String searchConcertVenue = null;
 
         // Input Validation
-        while (!isValidNo) {
+        while (!isValidVenueNo) {
             System.out.print("Select Concert Language: ");
             int searchConcertVenueChoice = Character.getNumericValue(sc.next().charAt(0));
             sc.nextLine();
@@ -922,7 +917,7 @@ public class ConcertTicketingSystem {
                     }
                 }
 
-                isValidNo = true;
+                isValidVenueNo = true;
             } else if (searchConcertVenueChoice > venueList.length) {
                 System.out.println("");
                 System.err.println("It is likely your choice exceed the maximum number of choice. Please try again.");
@@ -936,8 +931,39 @@ public class ConcertTicketingSystem {
 
         searchResult = catalog.searchByVenue(searchConcertVenue);
 
-        // Display the Concerts
-        displayConcert(searchResult);
+        if (searchResult != null) {
+            System.out.println("Search Result");
+            displayConcertTitle(searchResult);
+
+            // Ask user to display detail or not
+            System.out.print("Do you want to display detail of the concert?(Y/N): ");
+            char searchDisplayAllChoice = sc.next().toUpperCase().charAt(0);
+            sc.nextLine();
+            System.out.println("");
+
+            switch (searchDisplayAllChoice) {
+                case 'Y':
+                    boolean isValidNo = false;
+                    while (!isValidNo) {
+                        if (searchResult.size() == 1) {
+                            System.out.println("");
+                            System.out.println("*Concert Detail*");
+                            searchResult.get(0).displayAllDetail();
+
+                            isValidNo = true;
+                            break;
+                        }
+
+                        // Display the Concerts
+                        displayConcert(searchResult);
+                    }
+                    break;
+                case 'N':
+                    break;
+                default:
+                    System.out.println("Invalid character!");
+            }
+        }
 
         // Press anything to continue
         blankInput();

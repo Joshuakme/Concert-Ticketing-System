@@ -32,7 +32,7 @@ public class TestConcert {
         Catalog catatlog = createCatalog(artistList, venueList, concertList);
 
         for (int i = 0; i < catatlog.searchByVenue("Bukit Jalil National Stadium").size(); i++) {
-            System.out.println(catatlog.searchByVenue("Bukit Jalil National Stadium").get(i).getLanguage());
+            System.out.println(catatlog.searchByVenue("Bukit Jalil National Stadium").get(i).getName());
             System.out.println();
         }
 
@@ -137,7 +137,7 @@ public class TestConcert {
 
             for (int j = 0; j < concertList.length; j++) {
                 if (venueList[i].equals(concertList[j].getVenue())) {
-                    concertByVenue.add(concertList[i]);
+                    concertByVenue.add(concertList[j]);
                 }
             }
             concertVenues.put(venueList[i].getName(), concertByVenue);
@@ -336,117 +336,145 @@ public class TestConcert {
         return concertList;
     }
 
-    public static List<ShowSeatCat>[] initializeSeatCategory(Venue[] venueList) { // return ShowSeatCat
-        int fileLineNumber = (int) countFileLineNumber("category_seat.txt");
-
-        List<ShowSeatCat>[] venueSeatCategory = new List[venueList.length];
-        String[] categorySeatList = new String[fileLineNumber];
-        String nameVenue = null;
-        String catDesc = null;
-        int catCapacity = 0;
-        double catPrice = 0;
-
-        for (int i = 0; i < venueSeatCategory.length; i++) {
-            venueSeatCategory[i] = new ArrayList<>();
-        }
-
-        // Try-Catch get data from artist.txt
-        try {
-            File concertCategoryFile = new File("category_seat.txt");
-            Scanner fileScanner = new Scanner(concertCategoryFile);
-            String currentLine = fileScanner.nextLine();
-
-            while (fileScanner.hasNextLine()) {
-                categorySeatList = currentLine.split(";");
-
-                nameVenue = categorySeatList[0];
-                catDesc = categorySeatList[1];
-                catCapacity = Integer.valueOf(categorySeatList[2]);
-                catPrice = Double.valueOf(categorySeatList[3]);
-
-                for (int i = 0; i < venueList.length; i++) {
-                    if (nameVenue.equals(venueList[i].getName())) {
-                        venueSeatCategory[i].add(new ShowSeatCat(venueList[i], catDesc, catCapacity, catPrice));
-                    }
-                }
-
-                currentLine = fileScanner.nextLine();
-            }
-
-            categorySeatList = currentLine.split(";");
-
-            nameVenue = categorySeatList[0];
-            catDesc = categorySeatList[1];
-            catCapacity = Integer.valueOf(categorySeatList[2]);
-            catPrice = Double.valueOf(categorySeatList[3]);
-
-            for (int i = 0; i < venueList.length; i++) {
-                if (nameVenue.equals(venueList[i].getName())) {
-                    venueSeatCategory[i].add(new ShowSeatCat(venueList[i], catDesc, catCapacity, catPrice));
-                }
-            }
-
-            fileScanner.close();
-        } catch (FileNotFoundException ex) {
-            System.out.println("File does not exist!\n");
-        }
-
-        return venueSeatCategory;
-    }
-
-    public static List<VenueSeatCat>[] initializeVenueSeatCat(Venue[] venueList) {
-        int fileLineNumber = (int) countFileLineNumber("venueSeatCat.txt");
-
-        // Variables
-        List<VenueSeatCat>[] venueSeatCategory = new List[venueList.length];
-        String[] seatCatDetails = new String[fileLineNumber];
-        String nameVenue = null;
-        String catDesc = null;
-        int catCapacity = 0;
-
-        for (int i = 0; i < venueSeatCategory.length; i++) {
-            venueSeatCategory[i] = new ArrayList<>();
-        }
-
-        // Try-Catch get data from artist.txt
-        try {
-            File concertCategoryFile = new File("venueSeatCat.txt");
-            Scanner fileScanner = new Scanner(concertCategoryFile);
-            String currentLine = fileScanner.nextLine();
-
-            while (fileScanner.hasNextLine()) {
-                seatCatDetails = currentLine.split(";");
-
-                nameVenue = seatCatDetails[0];
-                catDesc = seatCatDetails[1];
-                catCapacity = Integer.valueOf(seatCatDetails[2]);
-
-                for (int i = 0; i < venueList.length; i++) {
-                    if (nameVenue.equals(venueList[i].getName())) {
-                        venueSeatCategory[i].add(new VenueSeatCat(venueList[i], catDesc, catCapacity));
-                    }
-                }
-
-                currentLine = fileScanner.nextLine();
-            }
-
-            seatCatDetails = currentLine.split(";");
-
-            nameVenue = seatCatDetails[0];
-            catDesc = seatCatDetails[1];
-            catCapacity = Integer.valueOf(seatCatDetails[2]);
-
-            for (int i = 0; i < venueList.length; i++) {
-                if (nameVenue.equals(venueList[i].getName())) {
-                    venueSeatCategory[i].add(new VenueSeatCat(venueList[i], catDesc, catCapacity));
-                }
-            }
-
-            fileScanner.close();
-        } catch (FileNotFoundException ex) {
-            System.out.println("File does not exist!\n");
-        }
-
-        return venueSeatCategory;
-    }
+    /*
+     * public static Catalog createCatalog(Artist[] artistList, Venue[] venueList,
+     * Concert[] concertList) {
+     * Catalog catalog;
+     * final Map<String, List<Concert>> concertTitles = new HashMap<>();
+     * final Map<String, List<Concert>> concertArtists = new HashMap<>();
+     * final Map<String, List<Concert>> concertLanguages = new HashMap<>();
+     * final Map<String, List<Concert>> concertDates = new HashMap<>();
+     * final Map<String, List<Concert>> concertVenues = new HashMap<>();
+     * 
+     * // Get Current Date
+     * LocalDate now = LocalDate.now();
+     * 
+     * // Map for Concert Titles
+     * for (int j = 0; j < concertList.length; j++) {
+     * List<Concert> concertByTitle = new ArrayList<>();
+     * 
+     * for (int i = 0; i < concertList.length; i++) {
+     * if (concertList[j].getName().toUpperCase().equals(concertList[i].getName().
+     * toUpperCase())) {
+     * concertByTitle.add(concertList[i]);
+     * }
+     * }
+     * concertTitles.put(concertList[j].getName(), concertByTitle);
+     * }
+     * 
+     * // Map for Concert Artists
+     * for (int j = 0; j < artistList.length; j++) {
+     * List<Concert> concertByArtist = new ArrayList<>();
+     * 
+     * for (int i = 0; i < concertList.length; i++) {
+     * if (artistList[j].getName().toUpperCase().equals(concertList[i].getArtist().
+     * getName().toUpperCase())) {
+     * concertByArtist.add(concertList[i]);
+     * }
+     * }
+     * concertArtists.put(artistList[j].getName(), concertByArtist);
+     * }
+     * 
+     * // Map for Concert Language
+     * String[] languageList = { "Cantonese", "English", "Mandarin", "Korean" };
+     * 
+     * for (int j = 0; j < languageList.length; j++) {
+     * List<Concert> concertByLanguage = new ArrayList<>();
+     * 
+     * for (int i = 0; i < concertList.length; i++) {
+     * if (concertList[i] != null) {
+     * if (languageList[j].toUpperCase().equals(concertList[i].getLanguage().
+     * toUpperCase())) {
+     * concertByLanguage.add(concertList[i]);
+     * }
+     * }
+     * }
+     * concertLanguages.put(languageList[j], concertByLanguage);
+     * }
+     * 
+     * // Map for Concert Date
+     * DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+     * List<String> rawDateList = new ArrayList<>(); // Use List instead of Array
+     * because the size is unknown
+     * List<String> uniqueDateList = new ArrayList<>(); // Same here
+     * 
+     * // Get rawDateList
+     * for (int i = 0; i < concertList.length; i++) {
+     * rawDateList.add(concertList[i].getDatetime().format(dateFormat));
+     * }
+     * 
+     * // Filter out duplicate date
+     * for (int i = 0; i < rawDateList.size(); i++) {
+     * boolean isDuplicated = false; // flag to determine the value is duplicate or
+     * not
+     * 
+     * for (int j = 0; j < i; j++) {
+     * if (rawDateList.get(i).equals(rawDateList.get(j))) { // Skip those duplicated
+     * date
+     * isDuplicated = true;
+     * break; // skip to next outer loop if there is ANY ONE duplicate
+     * }
+     * }
+     * // copy date to uniqueList
+     * if (!isDuplicated) {
+     * uniqueDateList.add(rawDateList.get(i));
+     * }
+     * }
+     * 
+     * // Insert concert[i] object into MAP according to the date
+     * for (int j = 0; j < uniqueDateList.size(); j++) {
+     * List<Concert> concertByDate = new ArrayList<>();
+     * 
+     * for (int i = 0; i < concertList.length; i++) {
+     * String formattedDateStr = concertList[i].getDatetime().format(dateFormat);
+     * 
+     * if (uniqueDateList.get(j).equals(formattedDateStr)) {
+     * concertByDate.add(concertList[i]);
+     * }
+     * }
+     * concertDates.put(uniqueDateList.get(j), concertByDate);
+     * }
+     * 
+     * // Map for Concert Venue
+     * String[] venueNameList = new String[venueList.length];
+     * 
+     * for (int i = 0; i < venueList.length; i++) {
+     * venueNameList[i] = venueList[i].getName();
+     * }
+     * 
+     * List<Concert> concertByVenue = new ArrayList<>();
+     * for (int i = 0; i < venueNameList.length; i++) {
+     * for (int j = 0; j < concertList.length; j++) {
+     * if
+     * (venueNameList[i].toUpperCase().equals(concertList[j].getVenue().getName().
+     * toUpperCase())) {
+     * concertByVenue.add(concertList[i]);
+     * }
+     * }
+     * concertVenues.put(venueNameList[i], concertByVenue);
+     * }
+     * 
+     * // for (int j = 0; j < concertList.length; j++) {
+     * // if (concertList[j] != null) {
+     * // for (int i = 0; i < venueNameList.length; i++) {
+     * // if
+     * //
+     * (concertList[j].getVenue().getName().toUpperCase().equals(venueNameList[i].
+     * toUpperCase()))
+     * // {
+     * // concertByVenue.add(concertList[i]);
+     * // }
+     * // concertVenues.put(venueNameList[i], concertByVenue);
+     * // }
+     * 
+     * // }
+     * // }
+     * 
+     * // Create Catalog Object
+     * catalog = new Catalog(now, concertTitles, concertArtists, concertLanguages,
+     * concertDates, concertVenues);
+     * 
+     * return catalog;
+     * }
+     */
 }
